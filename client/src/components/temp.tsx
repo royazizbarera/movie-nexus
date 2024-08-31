@@ -1,10 +1,9 @@
 import React from "react";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import MovieModel from "../model/MovieModel";
-import { useTheme } from "@mui/material/styles";
 
 /* Title, Poster, and Trailer with Glassmorphism Background */
 interface MovieHeroSectionProps {
@@ -12,8 +11,6 @@ interface MovieHeroSectionProps {
 }
 
 const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
-  const theme = useTheme();
-  
   return (
     <Box
       sx={{
@@ -38,16 +35,16 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
       }}
     >
       <Box position="relative" zIndex={1}>
-        {/* Title and Info with Ratings */}
+        {/* Title and Info */}
         <Box
           display="flex"
           justifyContent={{ xs: "center", md: "space-between" }}
-          alignItems="center"
+          alignItems={{ xs: "flex-start", md: "center" }}
           flexDirection={{ xs: "column", md: "row" }}
           mb={2}
           textAlign={{ xs: "center", md: "left" }}
         >
-          <Box mb={{ xs: 2, md: 0 }}>
+          <Box>
             <Typography variant="h4" fontWeight="bold">
               {movie.title}
             </Typography>
@@ -55,35 +52,9 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
               {movie.year} ・ {movie.rating} ・ {movie.duration}
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center" gap={4}>
-            {/* IMDb Rating */}
-            <Box display="flex" alignItems="center" gap={1}>
-              <StarIcon sx={{ color: theme.palette.ratingColor.main }} />
-              <Typography variant="h6">{movie.rating}/10</Typography>
-              <Typography variant="h6">{movie.votes}</Typography>
-            </Box>
-            {/* Your Rating */}
-            {/* Text Button Rating */}
-            <Box>
-              <Button color="secondary" variant="text" startIcon={<StarBorderIcon />}>Rate</Button>
-            </Box>
-            {/* Popularity */}
-            <Box display="flex" alignItems="center" gap={1}>
-              <TrendingUpIcon sx={{ color: "#0F9D58" }} />
-              <Typography variant="h6">666</Typography>
-              <Typography variant="body2">
-                +232
-              </Typography>
-            </Box>
-          </Box>
         </Box>
         {/* Poster and Trailer */}
-        <Grid
-          container
-          spacing={2}
-          alignItems="stretch"
-          direction={{ xs: "column", md: "row" }}
-        >
+        <Grid container spacing={2} alignItems="stretch">
           {/* Poster Image */}
           <Grid item xs={12} md={3}>
             <Box
@@ -122,12 +93,46 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
                   objectFit: "cover", // Menyesuaikan video agar mengisi area dengan baik
                 }}
               >
-                <source src={movie.trailerUrl} type="video/mp4" />
+                <source
+                  src={movie.trailerUrl}
+                  type="video/mp4"
+                />
                 Your browser does not support the video tag.
               </video>
             </Box>
           </Grid>
         </Grid>
+        {/* Rating Section */}
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={4}
+          mt={{ xs: 2, md: 4 }} // Margin top untuk ruang pada tampilan xs
+          flexDirection={{ xs: "row", md: "row" }}
+          justifyContent={{ xs: "center", md: "flex-start" }} // Center pada xs dan kiri pada md
+        >
+          {/* IMDb Rating */}
+          <Box display="flex" alignItems="center" gap={1}>
+            <StarIcon sx={{ color: "#f5c518" }} />
+            <Typography variant="h6">{movie.rating}/10</Typography>
+            <Typography variant="body2">{movie.votes}</Typography>
+          </Box>
+          {/* Your Rating */}
+          <Box display="flex" alignItems="center" gap={1}>
+            <StarBorderIcon sx={{ color: "#fff" }} />
+            <Typography variant="h6" color="#fff">
+              Rate
+            </Typography>
+          </Box>
+          {/* Popularity */}
+          <Box display="flex" alignItems="center" gap={1}>
+            <TrendingUpIcon sx={{ color: "#0F9D58" }} />
+            <Typography variant="h6">666</Typography>
+            <Typography variant="body2" color="textSecondary">
+              +232
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

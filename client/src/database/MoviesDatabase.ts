@@ -10,7 +10,7 @@ const MoviesDatabase: MovieModel[] = [
     votes: 1000,
     duration: "2h 16m",
     trailerUrl:
-      "https://imdb-video.media-imdb.com/vi2597829145/1434659607842-pgv4ql-1543618688198.mp4?Expires=1724993200&Signature=PDkEjFndHhNfFpHkccf9JBE64W2oDcS8aSqEJ8FcQz6DF-hWaAK-3kzum-6VGQ0ceSZjUNasEEwTCGy3eJdIUE5iRRYZJ0CMwlvUtsGJRiFwIGr-Wg0ATfSZzRAekxQxMI81ugndJbHQV3vUD0Q-~ZS0gvlfYSfR7~4kS-5BNBkRN8b5Flt31zL3ORQCYsE7CgFOOOojxdr~COiAC7~r2Z2gcBXwvcvtPqzLCcTjnMVJwYibgIrqrcoIuIfINLXZ6o9M1NgqsRNO6rtAUaznKRAWrXdN5dRL-HiJX0xe9gYMP-WTdXf5Fcc3sIvT9FfNBoYPOYVkGevYDQwtfXT7NA__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+      "https://imdb-video.media-imdb.com/vi717595161/1434659607842-pgv4ql-1616203117233.mp4?Expires=1725200070&Signature=OyojP~oNI0bqqytVVr072mj9vEfy3uiQ8Ap5haV5j2nXisb4ciqxyoyeI3mfx3ca5zcdHJIL3Xt9vgLe-OKbGarmANmnGUHKqFgf~fy5vS26eI9lftcA82HIsEL45IOGRm89MZ~qKOyqB8g7Yf3m9NGbazvNa7z5lyFx2MK0w0vpI49IDYhd0mGq0-ufFzJKacOyEV9ZUhO5Ri7jzVvg3RgEw4c24ZvFrUV3S0MklasMAma1fBe~5uMvIXqN-cWBU2sii3ejcYW~dZfPdfE3bHEUMoTQPe9HzcPw9Kz5BDoxVwkjNn5WuwCjSFKcnkjT7trdUYJKzv~YpUT7XQ3YVw__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BMTM5ODEwMTg3NV5BMl5BanBnXkFtZTcwMzIyNjg2Nw@@._V1_FMjpg_UY2048_.jpg",
     genres: ["Superhero", "Urban Adventure", "Action", "Adventure", "Sci-Fi"],
