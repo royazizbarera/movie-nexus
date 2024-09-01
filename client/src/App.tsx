@@ -1,14 +1,17 @@
 import { Box } from "@mui/material";
 import "./App.css";
-import DetailMovie from "./pages/DetailMovie";
-import MoviesDatabase from "./database/MoviesDatabase";
+import AdminPages from "./pages/admin/AdminPages";
+import AdminSignin from "./pages/admin/auth/AdminSignin";
+// import DetailMovie from "./pages/DetailMovie";
+// import MoviesDatabase from "./database/MoviesDatabase";
 
 
 function App() {
   return (
     <Box>
-      {/* <Home /> */}
-      <DetailMovie movie={MoviesDatabase[0]}/>
+      {/* <Admin Dashboard/> */}
+      {/* <AdminPages/> */}
+      <AdminSignin />
     </Box>
   );
 }
