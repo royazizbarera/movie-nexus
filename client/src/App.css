@@ -1,9 +1,4 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  background-color: #121212;  /* Ensure the global background is set to black */
-  color: #ffffff;
-}
+
 
 .App {
   text-align: center;
