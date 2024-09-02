@@ -97,6 +97,7 @@ export default function AdminMoviesList() {
   };
 
   const columns: GridColDef[] = [
+    { field: "id", headerName: "Id", width: 50, editable: false },
     { field: "title", headerName: "Title", width: 200, editable: true },
     { field: "year", headerName: "Year", width: 100, editable: true },
     { field: "rating", headerName: "Rating", width: 100, editable: true },
