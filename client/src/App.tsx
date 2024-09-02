@@ -7,23 +7,25 @@ import Home from "./pages/Home";
 import DetailMovie from "./pages/DetailMovie";
 import MoviesDatabase from "./database/MoviesDatabase";
 import ErrorPage from "./pages/util/ErrorPage";
+import AdminRoutes from "./routes/AdminRoutes";
+
 
 function App() {
   return (
     <Box>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<Layout />}> */}
           <Route index element={<Home />} />
-          <Route path="admin" element={<AdminPages />} />
-          <Route path="admin-sign" element={<AdminSignin />} />
           <Route
             path="detail-movie"
             element={<DetailMovie movie={MoviesDatabase[0]} />}
           />
 
+          {/* Admin Pages */}
+          <Route path="admin/*" element={<AdminRoutes />} />
+
+          {/* Error Page */}
           <Route path="*" element={<ErrorPage />} />
-          {/* </Route> */}
         </Routes>
       </BrowserRouter>
     </Box>

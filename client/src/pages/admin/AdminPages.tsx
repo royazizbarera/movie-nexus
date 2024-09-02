@@ -3,8 +3,9 @@ import type { Navigation, Router, Session } from "@toolpad/core";
 import React from "react";
 import theme from "../../config/theme";
 import { Box, Chip } from "@mui/material";
+import { useNavigate, Outlet } from "react-router-dom";
 
-// Icon
+// Icons
 import MovieIcon from "@mui/icons-material/Movie";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AddTaskIcon from "@mui/icons-material/AddTask";
@@ -13,7 +14,8 @@ import MovieFilterIcon from "@mui/icons-material/MovieFilter";
 
 // logo
 import logo from "../../assets/logo.png";
-import AdminMoviesList from "./AdminMoviesList";
+
+const rootSegment = "admin/";
 
 const NAVIGATION: Navigation = [
   {
@@ -21,12 +23,12 @@ const NAVIGATION: Navigation = [
     title: "Management",
   },
   {
-    segment: "dashboard",
+    segment: rootSegment + "dashboard",
     title: "Dashboard",
     icon: <DashboardIcon />,
   },
   {
-    segment: "movies",
+    segment: rootSegment + "movies",
     title: "Movies",
     icon: <MovieIcon />,
   },
@@ -38,7 +40,7 @@ const NAVIGATION: Navigation = [
     title: "Reviews",
   },
   {
-    segment: "approvement",
+    segment: rootSegment.split("/")[0],
     title: "Approvement",
     icon: <AddTaskIcon />,
     action: <Chip label={10} color="primary" size="small" />,
@@ -85,15 +87,20 @@ function AdminPages() {
     };
   }, []);
 
-  const [pathname, setPathname] = React.useState("/dashboard");
+  const navigate = useNavigate();
+
+  const [pathname, setPathname] = React.useState("admin/dashboard");
 
   const router = React.useMemo<Router>(() => {
     return {
       pathname,
       searchParams: new URLSearchParams(),
-      navigate: (path) => setPathname(String(path)),
+      navigate: (path) => {
+        setPathname(String(path));
+        navigate(path); // Use React Router's navigate function
+      },
     };
-  }, [pathname]);
+  }, [pathname, navigate]);
 
   return (
     <AppProvider
@@ -110,7 +117,7 @@ function AdminPages() {
       <DashboardLayout>
         <Box
           sx={{
-            backgroundColor: "background.paper", // Menggunakan warna dari tema
+            backgroundColor: "background.paper",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -118,7 +125,7 @@ function AdminPages() {
             width: "100%",
           }}
         >
-          <AdminMoviesList />
+          <Outlet />
         </Box>
       </DashboardLayout>
     </AppProvider>

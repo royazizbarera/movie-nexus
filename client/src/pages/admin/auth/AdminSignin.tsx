@@ -1,9 +1,13 @@
 import { AuthProvider, AppProvider, SignInPage } from "@toolpad/core";
 import { useTheme } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import { AppBar, Box, Toolbar } from "@mui/material";
 
 // logo
 import logo from "../../../assets/logo.png";
+import Logo from "../../../components/elements/Logo";
+import { Navigation } from "@mui/icons-material";
+import SearchBar from "../../../components/elements/SearchBar";
+import ProfileMenu from "../../../components/widgets/ProfileMenu";
 
 const providers = [
   { id: "credentials", name: "Email and Password" },
@@ -27,6 +31,41 @@ const signIn: (provider: AuthProvider, formData: FormData) => void = async (
   return promise;
 };
 
+function header() {
+  return (
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: "#ffffff",
+        padding: "0 0.5rem",
+        boxShadow: "none",
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
+          <Logo />
+        </Box>
+        <Box sx={{ display: { xs: "flex", md: "none" }, alignItems: "center" }}>
+          <Logo />
+        </Box>
+        <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
+          <SearchBar />
+          <ProfileMenu />
+        </Box>
+        <Box sx={{ display: { xs: "flex", md: "none" }, alignItems: "center" }}>
+          <SearchBar />
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
 export default function AdminSignin() {
   const theme = useTheme();
   return (
@@ -38,15 +77,22 @@ export default function AdminSignin() {
         title: "Movie Nexus",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <SignInPage signIn={signIn} providers={providers} />
+      <Box>
+        {header()}
+        <Box
+          sx={{
+            backgroundColor: "background.paper",
+            // color: "background.paper",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100vh",
+          }}
+        >
+          <SignInPage signIn={signIn} providers={providers} />
+        </Box>
       </Box>
     </AppProvider>
   );
