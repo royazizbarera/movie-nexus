@@ -7,6 +7,14 @@ const primaryColor = '#6200ee'; // A deep purple often used in M3
 const secondaryColor = '#9F5AFF'; // A deep purple often used in M3
 const ratingColor = '#FFD700';
 
+// Menu Colors
+const menuColors = {
+  primary: 'rgba(255, 255, 255, 0.7)',
+  hover: 'white',
+  active: 'white',
+  backgroundHover: 'rgba(255, 255, 255, 0.1)',
+}
+
 const customColors = {
   blue: '#5799ef',
   green: '#43a047',
@@ -48,10 +56,12 @@ declare module '@mui/material/styles' {
   interface Palette {
     ratingColor: Palette['primary'];
     commonColors: typeof customColorPalettes;
+    menuColor: typeof menuColors;
   }
   interface PaletteOptions {
     ratingColor?: PaletteOptions['primary'];
     commonColors?: typeof customColorPalettes;
+    menuColor?: typeof menuColors;
   }
 }
 
@@ -69,6 +79,10 @@ const theme = createTheme({
       main: secondaryColor,
       dark: Color(secondaryColor).darken(0.5).hex(),
       contrastText: '#fff',
+    },
+    background: {
+      default: '#141414',
+      paper: '#fff',
     },
     ratingColor: {
       light: Color(ratingColor).lighten(0.5).hex(),
