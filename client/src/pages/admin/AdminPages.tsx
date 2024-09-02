@@ -1,8 +1,8 @@
-import { AppProvider, DashboardLayout,  } from "@toolpad/core";
+import { AppProvider, DashboardLayout } from "@toolpad/core";
 import type { Navigation, Router, Session } from "@toolpad/core";
 import React from "react";
 import theme from "../../config/theme";
-import { Box, Chip,  } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 
 // Icon
 import MovieIcon from "@mui/icons-material/Movie";
@@ -110,14 +110,16 @@ function AdminPages() {
       <DashboardLayout>
         <Box
           sx={{
+            backgroundColor: "background.paper", // Menggunakan warna dari tema
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
           }}
-        ></Box>
-        <AdminMoviesList />
+        >
+          <AdminMoviesList />
+        </Box>
       </DashboardLayout>
     </AppProvider>
   );

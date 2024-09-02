@@ -35,10 +35,18 @@ const initialRows: GridRowsProp = MoviesDatabase.map((movie, index) => ({
 
 export default function AdminMoviesList() {
   const [rows, setRows] = React.useState(initialRows);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-  const [paginationModel, setPaginationModel] = React.useState({ page: 0, pageSize: 5 });
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
+    {}
+  );
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 5,
+  });
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (params, event) => {
+  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
+    params,
+    event
+  ) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
@@ -79,8 +87,11 @@ export default function AdminMoviesList() {
   };
 
   const handleAddRow = () => {
-    const id = Math.max(...rows.map(row => row.id)) + 1;
-    setRows((oldRows) => [...oldRows, { id, title: "", year: "", isNew: true }]);
+    const id = Math.max(...rows.map((row) => row.id)) + 1;
+    setRows((oldRows) => [
+      ...oldRows,
+      { id, title: "", year: "", isNew: true },
+    ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "title" },
@@ -174,6 +185,14 @@ export default function AdminMoviesList() {
               toolbar: { setRows, setRowModesModel, handleAddRow },
             }}
             autoHeight
+            sx={{
+              "--DataGrid-containerBackground": "#fff", // Ubah warna latar belakang container
+              "--DataGrid-pinnedBackground": "#fff", // Ubah warna latar belakang pinned
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: "#f5f5f5", // Atur warna header sesuai keinginan
+                color: "#000",
+              },
+            }}
           />
         </Box>
       </Box>
