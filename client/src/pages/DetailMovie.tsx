@@ -5,6 +5,7 @@ import MovieHeroSection from "../components/MovieHeroSection";
 import MovieDescriptionSection from "../components/MovieDescriptionSection";
 import ActorListSection from "../components/ActorListSection";
 import MovieReviewSection from "../components/MovieReviewSection";
+import Header from "../components/layouts/Header";
 
 // Props detail movie menggunakan MovieModel
 interface DetailMovieProps {
@@ -22,6 +23,7 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
         minHeight: "100vh",
       }}
     >
+        <Header />
       {/* Title, Poster, and Trailer with Glassmorphism Background */}
       <MovieHeroSection movie={movie} />
 

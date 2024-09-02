@@ -22,7 +22,9 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
         backgroundPosition: "center",
         backdropFilter: "blur(10px)", // Blur untuk efek glass
         boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Bayangan halus
-        padding: { xs: 2, md: 4 }, // Padding responsif
+        paddingX: { xs: 2, md: 4 }, // Padding responsif
+          paddingBottom: { xs: 2, md: 4 },
+          paddingTop: 10,
         position: "relative",
         overflow: "hidden",
         "&:before": {
