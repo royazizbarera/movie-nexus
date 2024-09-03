@@ -3,7 +3,7 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import MovieModel from "../model/MovieModel";
+import MovieModel from "../../model/MovieModel";
 import { useTheme } from "@mui/material/styles";
 
 /* Title, Poster, and Trailer with Glassmorphism Background */
@@ -13,7 +13,7 @@ interface MovieHeroSectionProps {
 
 const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
   const theme = useTheme();
-  
+
   return (
     <Box
       sx={{
@@ -23,8 +23,8 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
         backdropFilter: "blur(10px)", // Blur untuk efek glass
         boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Bayangan halus
         paddingX: { xs: 2, md: 4 }, // Padding responsif
-          paddingBottom: { xs: 2, md: 4 },
-          paddingTop: 10,
+        paddingBottom: { xs: 2, md: 4 },
+        paddingTop: 10,
         position: "relative",
         overflow: "hidden",
         "&:before": {
@@ -67,15 +67,19 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
             {/* Your Rating */}
             {/* Text Button Rating */}
             <Box>
-              <Button color="secondary" variant="text" startIcon={<StarBorderIcon />}>Rate</Button>
+              <Button
+                color="secondary"
+                variant="text"
+                startIcon={<StarBorderIcon />}
+              >
+                Rate
+              </Button>
             </Box>
             {/* Popularity */}
             <Box display="flex" alignItems="center" gap={1}>
               <TrendingUpIcon sx={{ color: "#0F9D58" }} />
               <Typography variant="h6">666</Typography>
-              <Typography variant="body2">
-                +232
-              </Typography>
+              <Typography variant="body2">+232</Typography>
             </Box>
           </Box>
         </Box>

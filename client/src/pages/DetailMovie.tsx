@@ -1,10 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
 import MovieModel from "../model/MovieModel";
-import MovieHeroSection from "../components/MovieHeroSection";
-import MovieDescriptionSection from "../components/MovieDescriptionSection";
-import ActorListSection from "../components/ActorListSection";
-import MovieReviewSection from "../components/MovieReviewSection";
+import MovieHeroSection from "../components/layouts/MovieHeroSection";
+import MovieDescriptionSection from "../components/layouts/MovieDescriptionSection";
+import ActorListSection from "../components/layouts/ActorListSection";
+import MovieReviewSection from "../components/layouts/MovieReviewSection";
 import Header from "../components/layouts/Header";
 
 // Props detail movie menggunakan MovieModel
@@ -23,7 +23,7 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
         minHeight: "100vh",
       }}
     >
-        <Header />
+      <Header />
       {/* Title, Poster, and Trailer with Glassmorphism Background */}
       <MovieHeroSection movie={movie} />
 

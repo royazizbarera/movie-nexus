@@ -1,6 +1,6 @@
 import { Box, Rating, Typography, useTheme, Grid } from "@mui/material";
-import { MAIN_PADING } from "../config/constants";
-import CustomLabel from "./CustomLabel";
+import { MAIN_PADING } from "../../config/constants";
+import CustomLabel from "../widgets/CustomLabel";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
@@ -19,10 +19,9 @@ const MovieReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
   return (
     <Box padding={MAIN_PADING}>
       <CustomLabel title="Reviews" />
-      
+
       {/* Grid Container to handle layout on different screen sizes */}
       <Grid container alignItems="center" spacing={1}>
-        
         {/* "People think about this movie" text */}
         <Grid item xs={12} sm={6}>
           <Typography variant="subtitle1">
@@ -31,7 +30,14 @@ const MovieReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
         </Grid>
 
         {/* "Filtered by" section with Rating */}
-        <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          display="flex"
+          alignItems="center"
+          justifyContent={{ xs: "flex-start", sm: "flex-end" }}
+        >
           <Typography variant="body2" marginRight={1}>
             Filtered by:
           </Typography>
@@ -40,15 +46,17 @@ const MovieReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
             precision={0.5}
             readOnly
             icon={<StarIcon sx={{ color: theme.palette.ratingColor.main }} />} // Filled star color
-            emptyIcon={<StarBorderIcon sx={{ color: theme.palette.ratingColor.main }} />} // Outline color
+            emptyIcon={
+              <StarBorderIcon sx={{ color: theme.palette.ratingColor.main }} />
+            } // Outline color
             sx={{
-              '& .MuiRating-iconFilled': {
+              "& .MuiRating-iconFilled": {
                 color: theme.palette.commonColors.onPrimary.main, // Color for filled stars
               },
-              '& .MuiRating-iconEmpty': {
+              "& .MuiRating-iconEmpty": {
                 color: theme.palette.commonColors.onPrimary.main, // Color for empty stars
               },
-              '& .MuiRating-iconHover': {
+              "& .MuiRating-iconHover": {
                 color: theme.palette.commonColors.onPrimary.main, // Color when hovered
               },
             }}

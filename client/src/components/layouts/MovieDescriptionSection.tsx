@@ -1,12 +1,6 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import MovieModel from "../model/MovieModel";
-import { MAIN_PADING } from "../config/constants";
+import { Box, Button, Chip, Typography, useTheme } from "@mui/material";
+import MovieModel from "../../model/MovieModel";
+import { MAIN_PADING } from "../../config/constants";
 import AddIcon from "@mui/icons-material/Add";
 import AdditionalInfo from "./AdditionalInfoMovie";
 
@@ -65,8 +59,8 @@ const MovieDescriptionSection: React.FC<MovieDescriptionSectionProps> = ({
             gap={2}
             mt={2}
           >
-            <AdditionalInfo title="Director" info={[movie.director]}/>
-            <AdditionalInfo title="Writers" info={movie.writers}/>
+            <AdditionalInfo title="Director" info={[movie.director]} />
+            <AdditionalInfo title="Writers" info={movie.writers} />
           </Box>
         </Box>
 
@@ -77,7 +71,12 @@ const MovieDescriptionSection: React.FC<MovieDescriptionSectionProps> = ({
           justifyContent="space-between"
           mt={3}
         >
-          <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            width="100%"
+          >
             <Button
               variant="contained"
               color="primary"

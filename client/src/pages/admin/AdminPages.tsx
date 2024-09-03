@@ -11,6 +11,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import MovieFilterIcon from "@mui/icons-material/MovieFilter";
+import HailIcon from '@mui/icons-material/Hail';
+
 
 // logo
 import logo from "../../assets/logo.png";
@@ -31,6 +33,11 @@ const NAVIGATION: Navigation = [
     segment: rootSegment + "movies",
     title: "Movies",
     icon: <MovieIcon />,
+  },
+  {
+    segment: rootSegment + "actors",
+    title: "Actor",
+    icon: <HailIcon />,
   },
   {
     kind: "divider",

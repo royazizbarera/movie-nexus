@@ -1,7 +1,5 @@
 import { Box } from "@mui/material";
 import "./App.css";
-import AdminPages from "./pages/admin/AdminPages";
-import AdminSignin from "./pages/admin/auth/AdminSignin";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import DetailMovie from "./pages/DetailMovie";

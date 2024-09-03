@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { MAIN_PADING } from "../config/constants";
-import ActorModel from "../model/ActorModel";
-import CustomLabel from "./CustomLabel";
+import { MAIN_PADING } from "../../config/constants";
+import ActorModel from "../../model/ActorModel";
+import CustomLabel from "../widgets/CustomLabel";
 
 interface ActorListSectionProps {
   actors: ActorModel[];
@@ -41,7 +41,9 @@ const ActorListSection: React.FC<ActorListSectionProps> = ({ actors }) => {
                   mb: 1,
                 }}
               />
-              <Typography variant="body2">{actor.personalDetail.name}</Typography>
+              <Typography variant="body2">
+                {actor.personalDetail.name}
+              </Typography>
             </Box>
           ))}
         </Stack>

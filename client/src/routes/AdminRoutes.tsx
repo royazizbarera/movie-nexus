@@ -5,6 +5,7 @@ import AdminMoviesList from "../pages/admin/AdminMoviesList";
 import AdminApprovement from "../pages/admin/AdminApprovement";
 import AdminSignin from "../pages/admin/auth/AdminSignin";
 import AdminPages from "../pages/admin/AdminPages";
+import AdminActorsList from "../pages/admin/AdminActorsList";
 
 export default function AdminRoutes() {
   return (
@@ -17,6 +18,7 @@ export default function AdminRoutes() {
         <Route path="/" element={<AdminDashboard />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="movies" element={<AdminMoviesList />} />
+        <Route path="actors" element={<AdminActorsList />} />
         <Route path="approvement" element={<AdminApprovement />} />
         <Route path="approvement-movies" element={<AdminApprovement />} />
         <Route path="approvement-rating" element={<AdminApprovement />} />
