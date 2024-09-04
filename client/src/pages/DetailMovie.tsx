@@ -34,7 +34,7 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
       <ActorListSection actors={movie.actors} />
 
       {/* Review Section */}
-      <MovieReviewSection reviews={movie.reviews} />
+      <MovieReviewSection reviews={movie.reviews!} />
     </Box>
   );
 };

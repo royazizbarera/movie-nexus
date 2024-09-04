@@ -8,7 +8,7 @@ export interface PersonalDetail {
   height?: string;
   children?: string[];
   parents?: string[];
-  otherWorks: string;
+  otherWorks?: string;
 }
 
 export default interface ActorModel {

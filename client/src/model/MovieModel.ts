@@ -5,7 +5,7 @@ export default interface MovieModel {
   title: string;
   description?: string;
   year: number;
-  duration: string;
+  duration?: string;
   trailerUrl: string;
   posterUrl: string;
   genres: string[];
@@ -14,7 +14,7 @@ export default interface MovieModel {
   actors: ActorModel[];
   
   // Input user
-  rating: number;
-  votes: number;
-  reviews: { user: string; date: string; rating: number; comment: string }[];
+  rating?: number;
+  votes?: number;
+  reviews?: { user: string; date: string; rating: number; comment: string }[];
 }

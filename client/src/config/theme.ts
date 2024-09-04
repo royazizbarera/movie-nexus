@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 import Color from 'color';
 
+import logo from "../assets/logo.svg";
+
 // Example primary color
 const primaryColor = '#6200ee'; // A deep purple often used in M3
 const secondaryColor = '#9F5AFF'; // A deep purple often used in M3

@@ -5,15 +5,14 @@ import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 interface ReviewSectionProps {
-  reviews: {
+  reviews?: {
     user: string;
     date: string;
     rating: number;
     comment: string;
   }[];
 }
-
-const MovieReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
+const MovieReviewSection: React.FC<ReviewSectionProps> = ({ reviews = [] }) => {
   const theme = useTheme();
 
   return (
@@ -66,38 +65,46 @@ const MovieReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
 
       {/* Daftar Ulasan */}
       <Box mt={2}>
-        {reviews.map((review, index) => (
-          <Box
-            key={index}
-            display="flex"
-            alignItems="flex-start"
-            paddingY={1}
-            borderBottom="1px solid #e0e0e0"
-          >
+        {reviews.length > 0 ? (
+          reviews.map((review, index) => (
             <Box
-              component={"img"}
-              src="https://m.media-amazon.com/images/M/MV5BMjI4NjM1NDkyN15BMl5BanBnXkFtZTgwODgyNTY1MjE@._V1_FMjpg_UY2048_.jpg"
-              sx={{
-                objectFit: "cover",
-                width: "40px",
-                height: "40px",
-                bgcolor: "#941B1B",
-                borderRadius: "50%",
-                marginRight: 2,
-              }}
-            />
-            <Box flex="1" textAlign={"left"}>
-              <Typography variant="body2" fontWeight="bold">
-                {review.user} ({review.date}) said:
-              </Typography>
-              <Rating value={review.rating} size="small" readOnly />
-              <Typography variant="body2">{review.comment}</Typography>
+              key={index}
+              display="flex"
+              alignItems="flex-start"
+              paddingY={1}
+              borderBottom="1px solid #e0e0e0"
+            >
+              <Box
+                component={"img"}
+                src={"https://m.media-amazon.com/images/M/MV5BMjE2MjI2OTk1OV5BMl5BanBnXkFtZTgwNTY1NzM4MDI@._V1_QL75_UX190_CR0,3,190,281_.jpg"} // Placeholder avatar
+                alt={`${review.user} avatar`}
+                sx={{
+                  objectFit: "cover",
+                  width: "40px",
+                  height: "40px",
+                  bgcolor: "#941B1B",
+                  borderRadius: "50%",
+                  marginRight: 2,
+                }}
+              />
+              <Box flex="1" textAlign={"left"}>
+                <Typography variant="body2" fontWeight="bold">
+                  {review.user} ({review.date}) said:
+                </Typography>
+                <Rating value={review.rating} size="small" readOnly />
+                <Typography variant="body2">{review.comment}</Typography>
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            No reviews available for this movie.
+          </Typography>
+        )}
       </Box>
     </Box>
   );
 };
+
 
 export default MovieReviewSection;

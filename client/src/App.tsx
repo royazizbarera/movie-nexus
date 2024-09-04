@@ -20,6 +20,9 @@ function App() {
           />
 
           {/* Admin Pages */}
+          {/* <Route path="admin/*" element={<AdminRoutes />} /> */}
+
+          {/* Admin V2 Pages */}
           <Route path="admin/*" element={<AdminRoutes />} />
 
           {/* Error Page */}
