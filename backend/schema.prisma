@@ -1,0 +1,51 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Movie {
+  id        Int      @id @default(autoincrement())
+  title     String
+  year      Int
+  duration  Int      // Durasi dalam menit
+  rating    Float    // Rating IMDb atau lainnya
+  genres    Genre[]  @relation("MovieGenres")
+  actors    Actor[]  @relation("MovieActors")
+  director  Director @relation(fields: [directorId], references: [id])
+  directorId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Actor {
+  id        Int      @id @default(autoincrement())
+  name      String
+  birthdate DateTime
+  movies    Movie[]  @relation("MovieActors")
+}
+
+model Director {
+  id        Int      @id @default(autoincrement())
+  name      String
+  birthdate DateTime
+  movies    Movie[]
+}
+
+model Genre {
+  id     Int      @id @default(autoincrement())
+  name   String
+  movies Movie[]  @relation("MovieGenres")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  role     String   // Role seperti "ADMIN", "USER"
+}
