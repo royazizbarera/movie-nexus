@@ -3,7 +3,7 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import MovieModel from "../../model/MovieModel";
+import MovieModel from "../../model/temp/MovieModel";
 import { useTheme } from "@mui/material/styles";
 
 /* Title, Poster, and Trailer with Glassmorphism Background */

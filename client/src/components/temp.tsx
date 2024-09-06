@@ -3,7 +3,7 @@ import { Box, Typography, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import MovieModel from "../model/MovieModel";
+import MovieModel from "../model/temp/MovieModel";
 
 /* Title, Poster, and Trailer with Glassmorphism Background */
 interface MovieHeroSectionProps {
@@ -93,10 +93,7 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
                   objectFit: "cover", // Menyesuaikan video agar mengisi area dengan baik
                 }}
               >
-                <source
-                  src={movie.trailerUrl}
-                  type="video/mp4"
-                />
+                <source src={movie.trailerUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </Box>

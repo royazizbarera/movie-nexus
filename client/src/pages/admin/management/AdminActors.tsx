@@ -1,84 +1,158 @@
-import AdminManagement, { HeadCell } from "./AdminManagement";
+import { Box, Button, TextField } from "@mui/material";
+import AdminToolbar from "../components/AdminToolbar";
+import { ColumnModel } from "../models/ColumnModel";
 
-interface Data {
-  id: number;
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
-}
+// icon
+import ActorModel from "../../../model/ActorModel";
+import CountrySelect from "../components/CountrySelect";
+import CustomDatePicker from "../components/CustomDatePicker";
+import CustomDataGrid from "../components/CustomDataGrid";
 
-function createData(
-  id: number,
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-): Data {
-  return {
-    id,
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-const rows = [
-  createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-  createData(2, "Donut", 452, 25.0, 51, 4.9),
-  createData(3, "Eclair", 262, 16.0, 24, 6.0),
-  createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-  createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-  createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-  createData(9, "KitKat", 518, 26.0, 65, 7.0),
-  createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-  createData(11, "Marshmallow", 318, 0, 81, 2.0),
-  createData(12, "Nougat", 360, 19.0, 9, 37.0),
-  createData(13, "Oreo", 437, 18.0, 63, 4.0),
+const rows: ActorModel[] = [
+  {
+    id: 1,
+    name: "Frozen yoghurt",
+    country: "Indonesia",
+    birth: "19 July 1996",
+  },
+  {
+    id: 2,
+    name: "Ice cream sandwich",
+    country: "Indonesia",
+    birth: "19 July 1996",
+  },
+  {
+    id: 3,
+    name: "Eclair",
+    country: "Indonesia",
+    birth: "19 July 1996",
+  },
+  {
+    id: 4,
+    name: "Cupcake",
+    country: "Indonesia",
+    birth: "19 July 1996",
+  },
+  ...Array.from({ length: 100 }, (_, i) => ({
+    id: i + 5,
+    name: "Gingerbread",
+    country: "Indonesia",
+    birth: "19 July 1996",
+  })),
 ];
 
-
-const headCells: HeadCell[] = [
+const columnModels: ColumnModel[] = [
+  {
+    id: "id",
+    disablePadding: false,
+    label: "id",
+    minWidht: 50,
+    type: "number",
+    align: "left",
+  },
+  {
+    id: "country",
+    disablePadding: false,
+    label: "Countries",
+    minWidht: 50,
+    type: "string",
+    align: "left",
+  },
   {
     id: "name",
-    numeric: false,
     disablePadding: false,
-    label: "Dessert (100g serving)",
+    label: "Actor Name",
+    minWidht: 50,
+    type: "string",
+    align: "left",
   },
   {
-    id: "calories",
-    numeric: true,
+    id: "birth",
     disablePadding: false,
-    label: "Calories",
-  },
-  {
-    id: "fat",
-    numeric: true,
-    disablePadding: false,
-    label: "Fat (g)",
-  },
-  {
-    id: "carbs",
-    numeric: true,
-    disablePadding: false,
-    label: "Carbs (g)",
-  },
-  {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
-    label: "Protein (g)",
+    label: "Birth Date",
+    minWidht: 50,
+    type: "date",
+    align: "left",
   },
 ];
+
+function toolbarAction() {
+  return <AdminToolbar title="Actors" />;
+}
+
+function formAddData() {
+  return (
+    <Box
+      component="form"
+      sx={{
+        p: 2,
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+        backgroundColor: "#D5C4EF",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "row",
+            lg: "row",
+            xl: "row",
+          },
+          justifyContent: "space-between",
+          gap: 1,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: {
+              xs: "column",
+              sm: "column",
+              md: "row",
+              lg: "row",
+              xl: "row",
+            },
+            gap: 1,
+          }}
+        >
+          <CountrySelect />
+          <TextField required id="outlined-required" label="Actor Name" />
+          <CustomDatePicker />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: {
+              xs: "column",
+              sm: "column",
+              md: "row",
+              lg: "row",
+              xl: "row",
+            },
+            gap: 1,
+          }}
+        >
+          <Button variant="contained" color="primary">
+            Submit
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
 
 export default function AdminActors() {
   return (
-    <AdminManagement title="Actors" rows={rows} headCells={headCells} />
+    <CustomDataGrid
+      // formAddData={formAddData()}
+      // toolbarAction={toolbarAction()}
+      rows={rows}
+      columnModels={columnModels}
+    />
   );
 }

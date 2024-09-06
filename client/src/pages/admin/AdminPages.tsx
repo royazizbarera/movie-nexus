@@ -3,7 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Outlet } from "react-router-dom";
 
 
-import AdminSidebar from "./AdminSidebar";
+import AdminSidebar from "./components/AdminSidebar";
 
 export default function MiniDrawer() {
   return (
@@ -20,8 +20,7 @@ export default function MiniDrawer() {
             display: "flex",
             flexDirection: "column",
             flexGrow: 1,
-            pl: 1,
-            pb: 1,
+            p: 1,
             backgroundColor: "background.paper",
             minHeight: "100vh",
           }}

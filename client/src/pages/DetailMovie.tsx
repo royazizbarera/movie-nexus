@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import MovieModel from "../model/MovieModel";
+import MovieModel from "../model/temp/MovieModel";
 import MovieHeroSection from "../components/layouts/MovieHeroSection";
 import MovieDescriptionSection from "../components/layouts/MovieDescriptionSection";
 import ActorListSection from "../components/layouts/ActorListSection";

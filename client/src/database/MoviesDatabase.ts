@@ -1,10 +1,11 @@
-import MovieModel from "../model/MovieModel";
+import MovieModel from "../model/temp/MovieModel";
 import ActorsDatabase from "./ActorsDatabase";
 
 const MoviesDatabase: MovieModel[] = [
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -74,7 +75,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -144,7 +146,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -214,7 +217,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -284,7 +288,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -354,7 +359,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -424,7 +430,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -494,7 +501,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -564,7 +572,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -634,7 +643,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -704,7 +714,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -774,7 +785,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -844,7 +856,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -914,7 +927,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -984,7 +998,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1054,7 +1069,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1124,7 +1140,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1194,7 +1211,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1264,7 +1282,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1334,7 +1353,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1404,7 +1424,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1474,7 +1495,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1544,7 +1566,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1614,7 +1637,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1684,7 +1708,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1754,7 +1779,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1824,7 +1850,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1894,7 +1921,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -1964,7 +1992,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2034,7 +2063,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2104,7 +2134,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2174,7 +2205,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2244,7 +2276,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2314,7 +2347,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2384,7 +2418,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2454,7 +2489,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2524,7 +2560,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2594,7 +2631,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2664,7 +2702,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2734,7 +2773,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2804,7 +2844,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2874,7 +2915,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -2944,7 +2986,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3014,7 +3057,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3084,7 +3128,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3154,7 +3199,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3224,7 +3270,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3294,7 +3341,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3364,7 +3412,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3434,7 +3483,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3504,7 +3554,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3574,7 +3625,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3644,7 +3696,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3714,7 +3767,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3784,7 +3838,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3854,7 +3909,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3924,7 +3980,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -3994,7 +4051,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4064,7 +4122,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4134,7 +4193,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4204,7 +4264,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4274,7 +4335,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4344,7 +4406,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4414,7 +4477,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4484,7 +4548,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4554,7 +4619,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4624,7 +4690,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4694,7 +4761,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4764,7 +4832,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4834,7 +4903,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4904,7 +4974,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -4974,7 +5045,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5044,7 +5116,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5114,7 +5187,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5184,7 +5258,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5254,7 +5329,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5324,7 +5400,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5394,7 +5471,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5464,7 +5542,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5534,7 +5613,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5604,7 +5684,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5674,7 +5755,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5744,7 +5826,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5814,7 +5897,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5884,7 +5968,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -5954,7 +6039,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6024,7 +6110,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6094,7 +6181,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6164,7 +6252,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6234,7 +6323,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6304,7 +6394,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6374,7 +6465,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6444,7 +6536,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6514,7 +6607,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6584,7 +6678,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6654,7 +6749,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6724,7 +6820,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6794,7 +6891,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6864,7 +6962,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -6934,7 +7033,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7004,7 +7104,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7074,7 +7175,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7144,7 +7246,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7214,7 +7317,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7284,7 +7388,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7354,7 +7459,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7424,7 +7530,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7494,7 +7601,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7564,7 +7672,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7634,7 +7743,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7704,7 +7814,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7774,7 +7885,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7844,7 +7956,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7914,7 +8027,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -7984,7 +8098,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8054,7 +8169,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8124,7 +8240,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8194,7 +8311,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8264,7 +8382,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8334,7 +8453,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8404,7 +8524,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8474,7 +8595,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8544,7 +8666,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8614,7 +8737,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8684,7 +8808,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8754,7 +8879,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8824,7 +8950,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8894,7 +9021,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -8964,7 +9092,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -9034,7 +9163,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -9104,7 +9234,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,
@@ -9174,7 +9305,8 @@ const MoviesDatabase: MovieModel[] = [
   },
   {
     title: "The Amazing Spider-Man",
-    description: "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
+    description:
+      "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
     year: 2012,
     rating: 9,
     votes: 1000,

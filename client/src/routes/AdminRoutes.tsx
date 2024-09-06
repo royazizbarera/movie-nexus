@@ -4,43 +4,7 @@ import { Typography } from "@mui/material";
 // Component
 import AdminPages from "../pages/admin/AdminPages";
 import AdminActors from "../pages/admin/management/AdminActors";
-import AdminMovies from "../pages/admin/management/AdminMovies";
-
-// ActorsContent.js
-export const ActorsContent = () => {
-  return (
-    <div>
-      <Typography variant="h4">Actors List</Typography>
-      <Typography>
-        This is where the list of actors will be displayed.
-      </Typography>
-    </div>
-  );
-};
-
-// MoviesContent.js
-export const MoviesContent = () => {
-  return (
-    <div>
-      <Typography variant="h4">Movies List</Typography>
-      <Typography>
-        This is where the list of movies will be displayed.
-      </Typography>
-    </div>
-  );
-};
-
-// CountriesContent.js
-export const CountriesContent = () => {
-  return (
-    <div>
-      <Typography variant="h4">Countries List</Typography>
-      <Typography>
-        This is where the list of countries will be displayed.
-      </Typography>
-    </div>
-  );
-};
+import { AdminCountries } from "../pages/admin/management/AdminCountries";
 
 // AwardsContent.js
 export const AwardsContent = () => {
@@ -74,10 +38,9 @@ export default function AdminRoutes() {
 
       {/* Admin Pages */}
       <Route path="/" element={<AdminPages />}>
-        <Route path="/" element={<ActorsContent />} />
+        <Route path="/" element={<AdminActors />} />
         <Route path="actors" element={<AdminActors />} />
-        <Route path="movies" element={<AdminMovies />} />
-        <Route path="countries" element={<CountriesContent />} />
+        <Route path="countries" element={<AdminCountries />} />
         <Route path="awards" element={<AwardsContent />} />
         <Route path="genres" element={<GenresContent />} />
       </Route>

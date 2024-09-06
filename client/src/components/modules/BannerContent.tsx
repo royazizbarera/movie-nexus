@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Button, CardMedia } from "@mui/material";
-import MovieModel from "../../model/MovieModel";
+import MovieModel from "../../model/temp/MovieModel";
 import { Link } from "react-router-dom";
 
 interface BannerContentProps {

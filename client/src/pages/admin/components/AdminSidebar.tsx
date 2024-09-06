@@ -20,7 +20,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
 import { Link } from "react-router-dom";
-import Logo from "../../components/elements/Logo";
+import Logo from "../../../components/elements/Logo";
 
 // Constants for Drawer width
 const drawerWidth = 240;

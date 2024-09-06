@@ -1,4 +1,4 @@
-import ActorModel from "../model/ActorModel";
+import ActorModel from "../model/temp/ActorModel";
 
 const ActorsDatabase: ActorModel[] = [
   {
