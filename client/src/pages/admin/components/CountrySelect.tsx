@@ -7,7 +7,7 @@ export default function CountrySelect() {
   return (
     <Autocomplete
       id="country-select-demo"
-      sx={{ width: 300 }}
+      sx={{ width: "100%" }}
       options={countries}
       autoHighlight
       getOptionLabel={(option) => option.label}
@@ -45,14 +45,14 @@ export default function CountrySelect() {
   );
 }
 
-interface CountryType {
+export interface CountryType {
   code: string;
   label: string;
   phone: string;
   suggested?: boolean;
 }
 // From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
-const countries: readonly CountryType[] = [
+export const countries: CountryType[] = [
   { code: "AD", label: "Andorra", phone: "376" },
   {
     code: "AE",

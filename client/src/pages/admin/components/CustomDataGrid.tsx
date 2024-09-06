@@ -30,6 +30,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ColumnModel } from "../models/ColumnModel";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 interface Filter {
   id: number;
@@ -84,6 +87,7 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
   const handleSave = () => {
     // Simulate save, e.g., send the `tempRow` to an API or update state
     console.log("Save data:", tempRow);
+
     // Exit edit mode
     setEditableRow(null);
   };
@@ -111,6 +115,46 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
     () => [...rows].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [rows, page, rowsPerPage]
   );
+
+  const handleTempRowChange = (columnId: string, value: any) => {
+    setTempRow((prevRow: any) => ({
+      ...prevRow,
+      [columnId]: value,
+    }));
+  };
+
+  const renderEditField = (column: ColumnModel, value: any) => {
+    switch (column.type) {
+      case "date":
+        return (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Date"
+              value={value ? dayjs(value) : null}
+              onChange={(newValue) => handleTempRowChange(column.id, newValue)}
+              slotProps={{ textField: { size: 'small' } }}
+            />
+          </LocalizationProvider>
+        );
+      case "number":
+        return (
+          <TextField
+            size="small"
+            type="number"
+            value={value || ""}
+            onChange={(e) => handleTempRowChange(column.id, e.target.value)}
+          />
+        );
+      default:
+        return (
+          <TextField
+            size="small"
+            value={value || ""}
+            onChange={(e) => handleTempRowChange(column.id, e.target.value)}
+          />
+        );
+    }
+  };
 
   // Filter function
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -148,16 +192,15 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
     setFilters(filters.filter((filter) => filter.id !== id)); // Hapus filter berdasarkan id
   };
 
-
   // Call back
   const memoizedColumns = React.useMemo(() => {
     return [
       ...columnModels,
       {
         id: "actions",
-        disablePadding: false,
+        disablePadding: true,
         label: "Actions",
-        minWidht: 50,
+        minWidht: 10,
         type: "string",
         align: "center",
       },
@@ -224,7 +267,11 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                     <Select
                       value={filter.operator}
                       onChange={(e) =>
-                        handleFilterChange(filter.id, "operator", e.target.value)
+                        handleFilterChange(
+                          filter.id,
+                          "operator",
+                          e.target.value
+                        )
                       }
                       label="Operator"
                     >
@@ -237,6 +284,7 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                   </FormControl>
                   <FormControl variant="standard" sx={{ minWidth: 200 }}>
                     <TextField
+                      size="small"
                       label="Value"
                       value={filter.value}
                       onChange={(e) =>
@@ -253,7 +301,6 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                   </IconButton>
                 </Box>
               ))}
-
 
               {/* New filter */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -289,6 +336,7 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
 
                 <FormControl variant="standard" sx={{ minWidth: 200 }}>
                   <TextField
+                    size="small"
                     label="Value"
                     value={filterValue}
                     onChange={(e) => setFilterValue(e.target.value)}
@@ -324,7 +372,8 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                       alignContent: ColumnModel.align,
                       fontWeight: "bold",
                       backgroundColor: "#AFA6A6",
-                      minWidth: ColumnModel.minWidht,
+                      minWidth: ColumnModel.minWidht || 50,
+                      width: ColumnModel.minWidht || 50,
                     }}
                   >
                     {ColumnModel.label}
@@ -358,19 +407,14 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                           textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
                         }}
                       >
-                        {isEditing ? (
-                          <TextField
-                            value={tempRow[ColumnModel.id] ?? ""}
-                            onChange={(e) =>
-                              setTempRow({
-                                ...tempRow,
-                                [ColumnModel.id]: e.target.value,
-                              })
-                            }
-                          />
-                        ) : (
-                          row[ColumnModel.id]
-                        )}
+                        {isEditing
+                          ? renderEditField(
+                              ColumnModel,
+                              tempRow[ColumnModel.id]
+                            )
+                          : ColumnModel.type === "date" && row[ColumnModel.id]
+                            ? dayjs(row[ColumnModel.id]).format("YYYY-MM-DD") // Format Dayjs object to string
+                            : row[ColumnModel.id]}
                       </TableCell>
                     ))}
                     <TableCell align="center">

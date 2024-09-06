@@ -2,43 +2,27 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import { ColumnModel } from "../models/ColumnModel";
 
 // icon
-import ActorModel from "../../../model/ActorModel";
-import CountrySelect from "../components/CountrySelect";
-import CustomDatePicker from "../components/CustomDatePicker";
 import CustomDataGrid from "../components/CustomDataGrid";
-import dayjs from "dayjs";
 import LayoutAddData from "../components/LayoutAddData";
+import CountrySelect, { countries } from "../components/CountrySelect";
+import AwardModel from "../../../model/AwardModel";
 
-const rows: ActorModel[] = [
-  {
-    id: 1,
-    name: "Frozen yoghurt",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  {
-    id: 2,
-    name: "Ice cream sandwich",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  {
-    id: 3,
-    name: "Eclair",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  {
-    id: 4,
-    name: "Cupcake",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
+function random<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+const rows: AwardModel[] = [
   ...Array.from({ length: 100 }, (_, i) => ({
-    id: i + 5,
-    name: "Gingerbread",
-    country: "Indonesia",
-    birth: dayjs(),
+    id: i + 1,
+    year: 2021,
+    award: random([
+      "Japanese Awards WOw",
+      "Korean Awards",
+      "Chinese Awards",
+      "Hollywood Awards",
+      "Bollywood Awards",
+    ]),
+    country: random(countries).label,
   })),
 ];
 
@@ -55,28 +39,28 @@ const columnModels: ColumnModel[] = [
   {
     id: "country",
     disablePadding: false,
-    label: "Countries",
-    widht: "100%",
-    minWidht: 200,
-    type: "string",
-    align: "left",
-  },
-  {
-    id: "name",
-    disablePadding: false,
-    label: "Actor Name",
-    widht: "100%",
-    minWidht: 200,
-    type: "string",
-    align: "left",
-  },
-  {
-    id: "birth",
-    disablePadding: false,
-    label: "Birth Date",
+    label: "Country",
     widht: "100%",
     minWidht: "100%",
-    type: "date",
+    type: "string",
+    align: "left",
+  },
+  {
+    id: "year",
+    disablePadding: false,
+    label: "year",
+    widht: "100%",
+    minWidht: 200,
+    type: "number",
+    align: "left",
+  },
+  {
+    id: "awards",
+    disablePadding: false,
+    label: "Awards",
+    widht: 200,
+    minWidht: "100%",
+    type: "number",
     align: "left",
   },
 ];
@@ -113,8 +97,22 @@ function formAddData() {
           }}
         >
           <CountrySelect />
-          <TextField required id="outlined-required" label="Actor Name" />
-          <CustomDatePicker />
+          <TextField required id="outlined-required" label="Year" />
+          <TextField
+            required
+            id="outlined-required"
+            label="Award"
+            sx={{
+              width: "100%",
+              minWidth: {
+                xs: "100%",
+                sm: "100%",
+                md: 200,
+                lg: 400,
+                xl: 400,
+              }
+            }}
+          />
         </Box>
         <Box
           sx={{
@@ -138,7 +136,7 @@ function formAddData() {
   );
 }
 
-export default function AdminActors() {
+export default function AdminAwards() {
   return (
     <Stack direction={"column"} spacing={2}>
       {formAddData()}
