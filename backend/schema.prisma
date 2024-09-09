@@ -9,43 +9,79 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Movie {
-  id        Int      @id @default(autoincrement())
-  title     String
-  year      Int
-  duration  Int      // Durasi dalam menit
-  rating    Float    // Rating IMDb atau lainnya
-  genres    Genre[]  @relation("MovieGenres")
-  actors    Actor[]  @relation("MovieActors")
-  director  Director @relation(fields: [directorId], references: [id])
-  directorId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+
+// Country model
+model Country {
+  code       String    @id
+  label      String
+  phone      String
+  actors     Actor[]
+  awards     Award[]
+  movies     Movie[]
 }
 
-model Actor {
-  id        Int      @id @default(autoincrement())
-  name      String
-  birthdate DateTime
-  movies    Movie[]  @relation("MovieActors")
-}
-
-model Director {
-  id        Int      @id @default(autoincrement())
-  name      String
-  birthdate DateTime
-  movies    Movie[]
-}
-
+// Genre model
 model Genre {
-  id     Int      @id @default(autoincrement())
-  name   String
-  movies Movie[]  @relation("MovieGenres")
+  id         Int       @id @default(autoincrement())
+  name       String
+  movies     Movie[]   @relation("MovieGenres")
 }
 
+// Actor model
+model Actor {
+  id         Int       @id @default(autoincrement())
+  name       String
+  birthdate  DateTime
+  countryId  String
+  country    Country   @relation(fields: [countryId], references: [code])
+  movies     Movie[]   @relation("MovieActors")
+}
+
+// Award model
+model Award {
+  id         Int       @id @default(autoincrement())
+  name       String
+  year       Int
+  countryId  String
+  country    Country   @relation(fields: [countryId], references: [code])
+  movies     Movie[]   @relation("MovieAwards")
+}
+
+// Movie model
+model Movie {
+  id              Int       @id @default(autoincrement())
+  title           String
+  synopsis        String
+  release_date    DateTime
+  approval_status Boolean
+  countryId       String
+  country         Country   @relation(fields: [countryId], references: [code])
+  rating          Float
+  Director        String
+  genres          Genre[]   @relation("MovieGenres")
+  actors          Actor[]   @relation("MovieActors")
+  awards          Award[]   @relation("MovieAwards")
+  reviews         Review[]
+}
+
+// Review model
+model Review {
+  id         Int       @id @default(autoincrement())
+  content    String
+  rating     Int
+  movieId    Int
+  movie      Movie     @relation(fields: [movieId], references: [id])
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
+}
+
+// User model
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  password String
-  role     String   // Role seperti "ADMIN", "USER"
+  id            Int       @id @default(autoincrement())
+  username      String
+  password      String
+  photoProfile  String?
+  provider      String?
+  reviews       Review[]
 }

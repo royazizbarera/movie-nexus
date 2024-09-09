@@ -132,7 +132,7 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
               label="Date"
               value={value ? dayjs(value) : null}
               onChange={(newValue) => handleTempRowChange(column.id, newValue)}
-              slotProps={{ textField: { size: 'small' } }}
+              slotProps={{ textField: { size: "small" } }}
             />
           </LocalizationProvider>
         );
@@ -369,6 +369,7 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                   <TableCell
                     key={ColumnModel.id}
                     sx={{
+                      textAlign: ColumnModel.align as any || "center",
                       alignContent: ColumnModel.align,
                       fontWeight: "bold",
                       backgroundColor: "#AFA6A6",
@@ -428,9 +429,14 @@ export default function CustomDataGrid(props: CustomDataGridProps) {
                           </IconButton>
                         </Stack>
                       ) : (
-                        <IconButton onClick={() => handleEdit(rowIndex, row)}>
-                          <EditIcon />
-                        </IconButton>
+                        <Stack direction="row" justifyContent={"center"}>
+                          <IconButton onClick={() => handleEdit(rowIndex, row)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton onClick={() => handleEdit(rowIndex, row)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Stack>
                       )}
                     </TableCell>
                   </TableRow>

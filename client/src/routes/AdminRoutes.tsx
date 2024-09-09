@@ -6,6 +6,7 @@ import AdminActors from "../pages/admin/management/AdminActors";
 import AdminCountries from "../pages/admin/management/AdminCountries";
 import AdminAwards from "../pages/admin/management/AdminAwards";
 import AdminGenres from "../pages/admin/management/AdminGenres";
+import AdminMovies from "../pages/admin/management/AdminMovies";
 
 
 export default function AdminRoutes() {
@@ -17,6 +18,7 @@ export default function AdminRoutes() {
       {/* Admin Pages */}
       <Route path="/" element={<AdminPages />}>
         <Route path="/" element={<AdminActors />} />
+        <Route path="movies" element={<AdminMovies />} />
         <Route path="actors" element={<AdminActors />} />
         <Route path="countries" element={<AdminCountries />} />
         <Route path="awards" element={<AdminAwards />} />

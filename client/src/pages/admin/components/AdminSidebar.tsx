@@ -1,26 +1,29 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
+
+// mui
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Collapse } from "@mui/material";
+import Logo from "../../../components/elements/Logo";
+
+// icon
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import MovieIcon from "@mui/icons-material/Movie";
-import AddIcon from "@mui/icons-material/Add";
 import HailIcon from "@mui/icons-material/Hail";
 import PublicIcon from "@mui/icons-material/Public";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
-import { Link } from "react-router-dom";
-import Logo from "../../../components/elements/Logo";
 
 // Constants for Drawer width
 const drawerWidth = 240;
@@ -79,8 +82,15 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
+interface NavigationItem {
+  path: string;
+  title: string;
+  icon: JSX.Element;
+  children?: NavigationItem[];
+}
+
 // Navigation structure
-const topNavigation = [
+const topNavigation: NavigationItem[] = [
   {
     path: "actors",
     title: "Actors",
@@ -90,18 +100,6 @@ const topNavigation = [
     path: "movies",
     title: "Movies",
     icon: <MovieIcon />,
-    children: [
-      {
-        path: "add-movies",
-        title: "Add Movies",
-        icon: <AddIcon />,
-      },
-      {
-        path: "movies",
-        title: "Validation",
-        icon: <AutoAwesomeMotionIcon />,
-      },
-    ],
   },
   {
     path: "countries",
@@ -153,7 +151,7 @@ export default function AdminSidebar() {
         }}
       >
         <DrawerHeader>
-        {open && <Logo />}
+          {open && <Logo />}
           <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
             {theme.direction === "rtl" ? (
               open ? (
@@ -215,9 +213,7 @@ export default function AdminSidebar() {
                           sx={{ pl: 4 }} // Padding to indent submenu
                           onClick={() => handleListItemClick(subItem.title)}
                         >
-                          <ListItemIcon>
-                            {subItem.icon}
-                          </ListItemIcon>
+                          <ListItemIcon>{subItem.icon}</ListItemIcon>
                           <ListItemText primary={subItem.title} />
                         </ListItemButton>
                       ))}
