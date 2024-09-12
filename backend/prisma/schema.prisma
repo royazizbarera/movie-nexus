@@ -11,12 +11,13 @@ generator client {
 
 // Country model
 model Country {
-  code   String  @id
-  label  String
-  phone  String
-  actors Actor[]
-  awards Award[]
-  movies Movie[]
+  code     String     @id
+  label    String
+  phone    String
+  actors   Actor[]
+  awards   Award[]
+  movies   Movie[]
+  Director Director[]
 }
 
 // Genre model
@@ -46,21 +47,30 @@ model Actor {
   movies      MovieActors[]
 }
 
+model Director {
+  id          Int              @id @default(autoincrement())
+  name        String
+  birthdate   DateTime
+  country     Country          @relation(fields: [countryCode], references: [code])
+  countryCode String
+  movies      MovieDirectors[]
+}
+
 // Movie model
 model Movie {
-  id              Int      @id @default(autoincrement())
-  title           String
-  synopsis        String
-  posterUrl       String
+  id             Int      @id @default(autoincrement())
+  title          String
+  synopsis       String
+  posterUrl      String
   releaseDate    DateTime
   approvalStatus Boolean
-  rating          Float
-  director        String
+  rating         Float
 
   // relationship
-  country     Country       @relation(fields: [countryCode], references: [code])
+  country     Country          @relation(fields: [countryCode], references: [code])
   countryCode String
   actors      MovieActors[]
+  directors   MovieDirectors[]
   genres      MovieGenres[]
   awards      MovieAwards[]
   reviews     Review[]
@@ -75,6 +85,17 @@ model MovieActors {
 
   @@id([actorId, movieId]) // Primary key gabungan
 }
+
+model MovieDirectors {
+  director   Director @relation(fields: [directorId], references: [id])
+  directorId Int
+  movie      Movie    @relation(fields: [movieId], references: [id])
+  movieId    Int
+
+  @@id([directorId, movieId]) // Primary key gabungan
+}
+
+// Table rela
 
 // Tabel relasi many-to-many antara Genre dan Movie
 model MovieGenres {

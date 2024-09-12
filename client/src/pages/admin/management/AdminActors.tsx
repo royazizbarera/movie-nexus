@@ -1,46 +1,18 @@
+// Mui
 import { Box, Button, Stack, TextField } from "@mui/material";
-import { ColumnModel } from "../models/ColumnModel";
 
-// icon
+// react
+import { useEffect, useState } from "react";
+
+// model
+import { ColumnModel } from "../models/ColumnModel";
 import ActorModel from "../../../model/ActorModel";
+
 import CountrySelect from "../components/CountrySelect";
 import CustomDatePicker from "../components/CustomDatePicker";
 import CustomDataGrid from "../components/CustomDataGrid";
-import dayjs from "dayjs";
 import LayoutAddData from "../components/LayoutAddData";
-
-const rows: ActorModel[] = [
-  {
-    id: 1,
-    name: "Frozen yoghurt",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  {
-    id: 2,
-    name: "Ice cream sandwich",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  {
-    id: 3,
-    name: "Eclair",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  {
-    id: 4,
-    name: "Cupcake",
-    country: "Indonesia",
-    birth: dayjs(),
-  },
-  ...Array.from({ length: 100 }, (_, i) => ({
-    id: i + 5,
-    name: "Gingerbread",
-    country: "Indonesia",
-    birth: dayjs(),
-  })),
-];
+import { API_URL } from "../../../config/constants";
 
 const columnModels: ColumnModel[] = [
   {
@@ -53,15 +25,6 @@ const columnModels: ColumnModel[] = [
     align: "left",
   },
   {
-    id: "country",
-    disablePadding: false,
-    label: "Countries",
-    widht: "100%",
-    minWidht: 200,
-    type: "string",
-    align: "left",
-  },
-  {
     id: "name",
     disablePadding: false,
     label: "Actor Name",
@@ -71,7 +34,16 @@ const columnModels: ColumnModel[] = [
     align: "left",
   },
   {
-    id: "birth",
+    id: "country",
+    disablePadding: false,
+    label: "Countries",
+    widht: "100%",
+    minWidht: 200,
+    type: "string",
+    align: "left",
+  },
+  {
+    id: "birthdate",
     disablePadding: false,
     label: "Birth Date",
     widht: "100%",
@@ -139,6 +111,25 @@ function formAddData() {
 }
 
 export default function AdminActors() {
+  const [rows, setRows] = useState<ActorModel[]>([]);
+
+  // Fetch data movie dari API ketika komponen dimuat
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        // Memanggil API untuk mendapatkan data movie
+        const response = await fetch(`${API_URL}/actors`); // Ganti URL sesuai API Anda
+        const body = await response.json();
+
+        // Memperbarui state rows dengan body yang diambil dari API
+        setRows(body.data);
+      } catch (error) {
+        console.error("Error fetching actors:", error);
+      }
+    };
+
+    fetchMovies();
+  }, []);
   return (
     <Stack direction={"column"} spacing={2}>
       {formAddData()}

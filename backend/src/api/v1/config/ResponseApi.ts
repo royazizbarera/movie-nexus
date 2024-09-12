@@ -11,7 +11,7 @@ export interface ResponseApiProps {
   data?: any;
   errors?: any;
   pagination?: PaginationProps;
-  version: number;
+  version?: number;
 }
 
 export default function ResponseApi(props: ResponseApiProps) {
@@ -21,7 +21,7 @@ export default function ResponseApi(props: ResponseApiProps) {
     data?: any;
     errors?: any;
     pagination?: PaginationProps;
-    version: number;
+    version?: number;
   } = {
     code: props.code,
     message: props.message,

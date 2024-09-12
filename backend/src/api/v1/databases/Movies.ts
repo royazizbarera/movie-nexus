@@ -1,16 +1,6 @@
-export interface MovieType {
-  id: number;
-  title: string;
-  synopsis: string;
-  posterUrl: string;
-  releaseDate: Date;
-  approvalStatus: boolean;
-  countryCode: string;
-  rating: number;
-  director: string;
-}
+import MovieModel from "../models/MovieModel";
 
-export const movies: MovieType[] = [
+export const movies: MovieModel[] = [
   {
     id: 1,
     title: "Inception",
@@ -20,7 +10,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 8.8,
-    director: "Christopher Nolan",
   },
   {
     id: 2,
@@ -31,7 +20,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 9.0,
-    director: "Christopher Nolan",
   },
   {
     id: 3,
@@ -42,7 +30,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "KR",
     rating: 8.6,
-    director: "Bong Joon Ho",
   },
   {
     id: 4,
@@ -53,7 +40,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 8.6,
-    director: "Christopher Nolan",
   },
   {
     id: 5,
@@ -64,7 +50,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 9.3,
-    director: "Frank Darabont",
   },
   {
     id: 6,
@@ -75,7 +60,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 9.2,
-    director: "Francis Ford Coppola",
   },
   {
     id: 7,
@@ -86,7 +70,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 8.9,
-    director: "Peter Jackson",
   },
   {
     id: 8,
@@ -97,7 +80,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 8.7,
-    director: "Lana Wachowski, Lilly Wachowski",
   },
   {
     id: 9,
@@ -108,7 +90,6 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 8.4,
-    director: "Christopher Nolan",
   },
   {
     id: 10,
@@ -119,6 +100,5 @@ export const movies: MovieType[] = [
     approvalStatus: true,
     countryCode: "US",
     rating: 8.8,
-    director: "Peter Jackson",
   },
 ];

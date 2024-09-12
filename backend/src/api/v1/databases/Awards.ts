@@ -1,12 +1,6 @@
-export interface AwardType {
-  id: number;
-  name: string;
-  year: number;
-  countryCode: string;
-}
+import AwardModel from "../models/AwardModel";
 
-
-export const awards: AwardType[] = [
+export const awards: AwardModel[] = [
   {
     id: 1,
     name: "Best Picture",

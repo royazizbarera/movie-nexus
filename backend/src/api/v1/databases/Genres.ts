@@ -1,9 +1,6 @@
-export interface GenreType {
-  id: number;
-  name: string;
-}
+import GenreModel from "../models/GenreModel";
 
-export const genres: GenreType[] = [
+export const genres: GenreModel[] = [
   {
     id: 1,
     name: "Action",

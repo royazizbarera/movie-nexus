@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 
 // import routes
 import routers from "./api/v1/routes/index";
-import insertDummyData from "./insertDummyData";
+import insertDummyData from "./api/v1/helpers/insertDummyData";
 
 // INITIALIZE SERVER
 dotenv.config();

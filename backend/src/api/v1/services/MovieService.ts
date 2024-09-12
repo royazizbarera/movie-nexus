@@ -1,9 +1,5 @@
 // MovieService.ts
-
-import { PrismaClient } from "@prisma/client";
-
-// Inisialisasi Prisma Client
-const prisma = new PrismaClient();
+import prisma from "../config/client";
 
 class MovieService {
   // Metode untuk mendapatkan semua movie
@@ -41,5 +37,5 @@ class MovieService {
   }
 }
 
-
-export const movieService = new MovieService();
+const movieService = new MovieService();
+export default movieService;

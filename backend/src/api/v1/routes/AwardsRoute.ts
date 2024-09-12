@@ -1,5 +1,5 @@
 import express from "express";
-import movieController from "../controllers/MovieController";
+import awardController from "../controllers/AwardController";
 import HttpStatus from "../config/constants/HttpStatus";
 import ResponseApi from "../config/ResponseApi";
 
@@ -7,12 +7,12 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const movies = await movieController.getMovies();
+    const awards = await awardController.getAwards();
     return res.json(
       ResponseApi({
         code: HttpStatus.OK,
-        message: "Movies fetched successfully",
-        data: movies,
+        message: "Awards fetched successfully",
+        data: awards,
         version: 1.0,
       })
     );
@@ -31,12 +31,12 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   console.log(req.params.id);
   try {
-    const movie = await movieController.getMovieById(parseInt(req.params.id));
+    const award = await awardController.getAwardById(parseInt(req.params.id));
     return res.json(
       ResponseApi({
         code: HttpStatus.OK,
-        message: "Movie fetched successfully",
-        data: movie,
+        message: "Award fetched successfully",
+        data: award,
         version: 1.0,
       })
     );
@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
     return res.json(
       ResponseApi({
         code: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: "Failed to fetch movie",
+        message: "Failed to fetch award",
         errors: error,
         version: 1.0,
       })

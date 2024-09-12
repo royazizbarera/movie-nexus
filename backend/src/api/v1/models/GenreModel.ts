@@ -1,6 +1,4 @@
-import Movie from "./MovieModel";
-
-export default interface Genre {
+export default interface GenreModel {
   id: number;
   name: string;
 }

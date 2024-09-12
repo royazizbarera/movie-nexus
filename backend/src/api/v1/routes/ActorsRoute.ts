@@ -1,5 +1,5 @@
 import express from "express";
-import movieController from "../controllers/MovieController";
+import actorController from "../controllers/ActorController";
 import HttpStatus from "../config/constants/HttpStatus";
 import ResponseApi from "../config/ResponseApi";
 
@@ -7,12 +7,12 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const movies = await movieController.getMovies();
+    const actors = await actorController.getActors();
     return res.json(
       ResponseApi({
         code: HttpStatus.OK,
         message: "Movies fetched successfully",
-        data: movies,
+        data: actors,
         version: 1.0,
       })
     );
@@ -31,12 +31,12 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   console.log(req.params.id);
   try {
-    const movie = await movieController.getMovieById(parseInt(req.params.id));
+    const actor = await actorController.getActorById(parseInt(req.params.id));
     return res.json(
       ResponseApi({
         code: HttpStatus.OK,
         message: "Movie fetched successfully",
-        data: movie,
+        data: actor,
         version: 1.0,
       })
     );
@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
     return res.json(
       ResponseApi({
         code: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: "Failed to fetch movie",
+        message: "Failed to fetch actor",
         errors: error,
         version: 1.0,
       })

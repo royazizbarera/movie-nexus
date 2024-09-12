@@ -1,6 +1,6 @@
-import ActorModel from "../models/ActorModel";
+import DirectorModel from "../models/DirectorModel";
 
-export const actors: ActorModel[] = [
+export const directors: DirectorModel[] = [
   {
     id: 1,
     name: "Tom Hanks",
