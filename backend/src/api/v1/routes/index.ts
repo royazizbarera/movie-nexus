@@ -8,6 +8,6 @@ import movieRouter from "./MoviesRoute";
 
 // Use router
 routers.use("/auth", authRouter);
-routers.use("/movie", movieRouter);
+routers.use("/movies", movieRouter);
 
 export default routers;

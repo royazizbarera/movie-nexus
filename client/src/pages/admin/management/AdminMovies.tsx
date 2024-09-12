@@ -1,25 +1,14 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import { ColumnModel } from "../models/ColumnModel";
-
-// icon
 import MovieModel from "../../../model/MovieModel";
 import CountrySelect from "../components/CountrySelect";
 import CustomDatePicker from "../components/CustomDatePicker";
 import CustomDataGrid from "../components/CustomDataGrid";
 import LayoutAddData from "../components/LayoutAddData";
+import { API_URL } from "../../../config/constants";
 
-const rows: MovieModel[] = [
-  ...Array.from({ length: 100 }, (_, i) => ({
-    id: 1 + i,
-    title: `Frozen yoghurt ${i}`,
-    year: 2012,
-    rating: 7,
-    director: "Roy",
-    genre: ["Action", "Adventure"],
-    country: "Indonesia",
-  })),
-];
-
+// Kolom yang digunakan di tabel
 const columnModels: ColumnModel[] = [
   {
     id: "id",
@@ -39,7 +28,7 @@ const columnModels: ColumnModel[] = [
     align: "left",
   },
   {
-    id: "year",
+    id: "releaseDate",
     disablePadding: false,
     label: "Year",
     widht: 200,
@@ -85,6 +74,7 @@ const columnModels: ColumnModel[] = [
   },
 ];
 
+// Fungsi Form untuk menambah data
 function formAddData() {
   return (
     <LayoutAddData>
@@ -142,7 +132,28 @@ function formAddData() {
   );
 }
 
+// Komponen Utama AdminMovies
 export default function AdminMovies() {
+  // State untuk menyimpan data movie
+  const [rows, setRows] = useState<MovieModel[]>([]);
+
+  // Fetch data movie dari API ketika komponen dimuat
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        // Memanggil API untuk mendapatkan data movie
+        const response = await fetch(`${API_URL}/movies`); // Ganti URL sesuai API Anda
+        const body = await response.json();
+
+        // Memperbarui state rows dengan body yang diambil dari API
+        setRows(body.data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    };
+
+    fetchMovies();
+  }, []);
   return (
     <Stack direction={"column"} spacing={2}>
       {formAddData()}

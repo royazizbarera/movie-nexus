@@ -1,25 +1,18 @@
-import { Request, Response } from 'express';
-import * as movieService from '../services/MovieService';
+import { movieService } from "../services/MovieService";
 
-export const getAllMovies = async (req: Request, res: Response) => {
+
+export const getAllMovies = async () => {
   try {
-    const movies = await movieService.getAllMovies();
-    res.status(200).json(movies);
+    return await movieService.getMovies();
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch movies' });
+    throw error;
   }
 };
 
-export const getMovieById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  
+export const getMovieById = async (id: number) => {
   try {
-    const movie = await movieService.getMovieById(Number(id));
-    if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
-    }
-    res.status(200).json(movie);
+    return await movieService.getMovieById(id);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch movie' });
+    throw error;
   }
 };
