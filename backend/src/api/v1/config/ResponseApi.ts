@@ -1,8 +1,8 @@
 export interface PaginationProps {
-  currentPage: number;
+  page: number;
   pageSize: number;
-  totalItems: number;
-  totalPages: number;
+  totalItems?: number;
+  totalPages?: number;
 }
 
 export interface ResponseApiProps {

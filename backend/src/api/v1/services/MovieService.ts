@@ -1,4 +1,7 @@
+import { title } from "process";
 import prisma from "../config/client";
+import SearchParams from "../helpers/SearchParams";
+import { PaginationProps } from "../config/ResponseApi";
 
 class MovieService {
   // Join table untuk digunakan di berbagai metode
@@ -31,22 +34,45 @@ class MovieService {
 
   // Fungsi refactor untuk movie
   refactorMovies(movies: any[]) {
-    return movies.map(movie => ({
-      ...movie,
-      genres: movie.genres.map((g: any) => g.genre), // Mengubah genre menjadi array string
-      actors: movie.actors.map((a: any) => a.actor), // Mengubah actors menjadi array aktor langsung
-      awards: movie.awards.map((a: any) => a.award), // Mengubah awards menjadi array awards langsung
-    })).sort((a,b) => a.id - b.id);
+    return movies
+      .map((movie) => ({
+        ...movie,
+        genres: movie.genres
+          .map((g: any) => g.genre)
+          .sort((a: { id: number }, b: { id: number }) => a.id - b.id), // Mengubah genre menjadi array string
+        actors: movie.actors
+          .map((a: any) => a.actor)
+          .sort((a: { id: number }, b: { id: number }) => a.id - b.id), // Mengubah actors menjadi array aktor langsung
+        awards: movie.awards
+          .map((a: any) => a.award)
+          .sort((a: { id: number }, b: { id: number }) => a.id - b.id), // Mengubah awards menjadi array awards langsung
+      }))
+      .sort((a, b) => a.id - b.id);
+  }
+
+  async countMovies() {
+    try {
+      return await prisma.movie.count();
+    } catch (error) {
+      throw new Error(" Could not count movies");
+    }
   }
 
   // Metode untuk mendapatkan semua movie
-  async getMovies() {
+  async getMovies({ page = 0, pageSize = 10 }: PaginationProps) {
+    // Hitung nilai skip berdasarkan halaman dan limit
+    const skip = (page - 1) * pageSize;
+
     try {
-      const movies = await prisma.movie.findMany(this.joinTable);
+      const movies = await prisma.movie.findMany({
+        ...this.joinTable,
+        skip: skip,
+        take: pageSize,
+      });
       const refactorMovies = this.refactorMovies(movies);
       return refactorMovies;
     } catch (error) {
-      console.error("Error fetching movies: ", error);
+      // console.error("Error fetching movies: ", error);
       throw new Error("Could not fetch movies");
     }
   }
@@ -74,8 +100,7 @@ class MovieService {
   }
 
   // Metode untuk mengupdate data movie
-  async updateMovie(id: number, updatedData: any) {
-    console.error(updatedData)
+  async updateMovieById(id: number, updatedData: any) {
     try {
       // Update data di tabel movie
       const updatedMovie = await prisma.movie.update({
@@ -84,9 +109,11 @@ class MovieService {
         },
         data: {
           title: updatedData.title,
+          synopsis: updatedData.synopsis,
+          posterUrl: updatedData.posterUrl,
           releaseDate: updatedData.releaseDate,
-          rating: updatedData.rating,
           approvalStatus: updatedData.approvalStatus,
+          rating: updatedData.rating,
           country: {
             connect: { code: updatedData.countryCode }, // Update country dengan relasi
           },
@@ -122,6 +149,109 @@ class MovieService {
       console.error(`Error updating movie with ID ${id}: `, error);
       throw new Error(`Could not update movie with ID ${id}`);
     }
+  }
+
+  // Metode untuk menghapus movie berdasarkan ID
+  async deleteMovieById(id: number) {
+    try {
+      // Transaksi untuk memastikan operasi atomik
+      const deletedMovie = await prisma.$transaction(async (prisma) => {
+        // Hapus relasi dari tabel perantara
+        await prisma.movieActors.deleteMany({
+          where: { movieId: id },
+        });
+
+        await prisma.movieGenres.deleteMany({
+          where: { movieId: id },
+        });
+
+        await prisma.movieAwards.deleteMany({
+          where: { movieId: id },
+        });
+
+        // Hapus movie setelah semua relasi dihapus
+        const movie = await prisma.movie.delete({
+          where: {
+            id: id,
+          },
+        });
+
+        return movie;
+      });
+
+      return {
+        message: `Movie with ID ${id} deleted successfully`,
+        deletedMovie,
+      };
+    } catch (error) {
+      console.error(`Error deleting movie with ID ${id}: `, error);
+      throw new Error(`Could not delete movie with ID ${id}`);
+    }
+  }
+
+  async searchMovies(params: SearchParams) {
+    const { searchTerm, genres, country, sortBy, sortOrder } = params;
+    const whereClause: any = {
+      AND: [],
+    };
+
+    // Kondisi untuk searchTerm (pencarian di title atau synopsis)
+    if (searchTerm) {
+      whereClause.AND.push({
+        OR: [
+          { title: { contains: searchTerm, mode: "insensitive" } }, // Pencarian di title
+          { synopsis: { contains: searchTerm, mode: "insensitive" } }, // Pencarian di synopsis
+        ],
+      });
+    }
+
+    // Kondisi untuk genres filter (lebih dari satu genre)
+    if (genres && genres.length > 0) {
+      whereClause.AND.push({
+        genres: {
+          some: {
+            genre: {
+              name: {
+                in: genres, // Filter berdasarkan genre
+              },
+            },
+          },
+        },
+      });
+    }
+
+    // Kondisi untuk filter berdasarkan country
+    if (country) {
+      whereClause.AND.push({
+        country: {
+          label: {
+            contains: country,
+            mode: "insensitive", // Insensitive case untuk nama negara
+          },
+        },
+      });
+    }
+
+    // Jika tidak ada kondisi yang ditambahkan, hapus AND agar query tidak error
+    if (whereClause.AND.length === 0) {
+      delete whereClause.AND;
+    }
+
+    // Membuat query prisma untuk pencarian
+    const movies = await prisma.movie.findMany({
+      where: whereClause,
+      orderBy: sortBy
+        ? {
+            [sortBy]: sortOrder || "asc", // Sorting berdasarkan field
+          }
+        : undefined,
+      include: {
+        genres: true, // Menyertakan genre
+        country: true, // Menyertakan negara
+      },
+    });
+
+    return movies;
   }
 }
 
