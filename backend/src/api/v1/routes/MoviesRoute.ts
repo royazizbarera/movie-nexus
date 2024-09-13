@@ -1,6 +1,6 @@
 import express from "express";
 import * as movieController from "../controllers/MovieController";
-import HttpStatus from "../../config/constants/HttpStatus";
+import HttpStatus from "../../../config/constants/HttpStatus";
 
 const router = express.Router();
 
