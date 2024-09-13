@@ -12,7 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Collapse } from "@mui/material";
-import Logo from "../../../components/elements/Logo";
+// import Logo from "../../../assets/logo.png";
 
 // icon
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -24,6 +24,7 @@ import HailIcon from "@mui/icons-material/Hail";
 import PublicIcon from "@mui/icons-material/Public";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
+import Logo from "./Logo";
 
 // Constants for Drawer width
 const drawerWidth = 240;
