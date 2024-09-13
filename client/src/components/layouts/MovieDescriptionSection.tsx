@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Typography, useTheme } from "@mui/material";
-import MovieModel from "../../model/temp/MovieModel";
+import MovieModel from "../../models/MovieModel";
 import { MAIN_PADING } from "../../config/constants";
 import AddIcon from "@mui/icons-material/Add";
 import AdditionalInfo from "./AdditionalInfoMovie";

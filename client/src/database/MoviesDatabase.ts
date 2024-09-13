@@ -1,4 +1,4 @@
-import MovieModel from "../model/temp/MovieModel";
+import MovieModel from "../models/MovieModel";
 import ActorsDatabase from "./ActorsDatabase";
 
 const MoviesDatabase: MovieModel[] = [

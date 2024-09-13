@@ -6,7 +6,7 @@ class ActorService {
   async getActors() {
     try {
       // Mengambil semua data film dari database
-      const actors = await prisma.actor.findMany();
+      const actors = await prisma.actor.findMany({});
       return actors;
     } catch (error) {
       console.error("Error fetching actors: ", error);

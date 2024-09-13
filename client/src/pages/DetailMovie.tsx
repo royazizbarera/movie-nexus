@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import MovieModel from "../model/temp/MovieModel";
+import MovieModel from "../models/MovieModel";
 import MovieHeroSection from "../components/layouts/MovieHeroSection";
 import MovieDescriptionSection from "../components/layouts/MovieDescriptionSection";
 import ActorListSection from "../components/layouts/ActorListSection";
@@ -31,10 +31,10 @@ const DetailMovie: React.FC<DetailMovieProps> = ({ movie }) => {
       <MovieDescriptionSection movie={movie} />
 
       {/* Actor List Section */}
-      <ActorListSection actors={movie.actors} />
+      {/* <ActorListSection actors={movie.actors} /> */}
 
       {/* Review Section */}
-      <MovieReviewSection reviews={movie.reviews!} />
+      {/* <MovieReviewSection reviews={movie.reviews!} /> */}
     </Box>
   );
 };

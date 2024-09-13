@@ -43,7 +43,7 @@ const columnModels: ColumnModel[] = [
     align: "left",
   },
   {
-    id: "birthdate",
+    id: "birthDate",
     disablePadding: false,
     label: "Birth Date",
     widht: "100%",

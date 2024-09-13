@@ -1,7 +1,7 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ColumnModel } from "../models/ColumnModel";
-import MovieModel from "../../../model/MovieModel";
+import MovieModel from "../../../models/MovieModel";
 import CountrySelect from "../components/CountrySelect";
 import CustomDatePicker from "../components/CustomDatePicker";
 import CustomDataGrid from "../components/CustomDataGrid";
@@ -55,12 +55,12 @@ const columnModels: ColumnModel[] = [
     align: "left",
   },
   {
-    id: "genre",
+    id: "genres",
     disablePadding: false,
     label: "Genre",
     widht: 200,
     minWidht: "10%",
-    type: "string",
+    type: "strings",
     align: "left",
   },
   {
@@ -145,8 +145,23 @@ export default function AdminMovies() {
         const response = await fetch(`${API_URL}/movies`); // Ganti URL sesuai API Anda
         const body = await response.json();
 
+        // refactory data
+
+        // Refactor data
+        const refactoredData = body.data.map((movie: any) => ({
+          ...movie,
+          // Ubah genres menjadi array string
+          genres: movie.genres.map((g: any) => g.genre.name),
+          // Ubah actors menjadi array string berisi nama aktor
+          actors: movie.actors.map((a: any) => a.actor.name),
+          // Ubah country menjadi string (misalnya country label)
+          country: movie.country.label,
+          // Ubah director menjadi string (misalnya nama sutradara)
+          director: movie.director?.name || "Unknown", // Antisipasi jika director tidak ada
+        }));
+        console.log(refactoredData[0])
         // Memperbarui state rows dengan body yang diambil dari API
-        setRows(body.data);
+        setRows(refactoredData);
       } catch (error) {
         console.error("Error fetching movies:", error);
       }

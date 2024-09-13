@@ -1,8 +1,6 @@
-
-
 export default interface AwardModel {
   id: number;
+  name: string;
   year: number;
-  award: string;
-  country: string;
+  countryCode: string;
 }

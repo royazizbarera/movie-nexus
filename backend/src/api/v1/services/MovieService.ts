@@ -1,12 +1,40 @@
 // MovieService.ts
+import { join } from "path";
 import prisma from "../config/client";
 
 class MovieService {
+  // Join table
+  joinTable = {
+    include: {
+      country: true,
+      director: true,
+      genres: {
+        select: {
+          genre: true,
+        },
+      },
+      actors: {
+        select: {
+          actor: {
+            include: {
+              country: true,
+            },
+          },
+        },
+      },
+      awards: {
+        select: {
+          award: true,
+        },
+      },
+      reviews: true,
+    },
+  };
   // Metode untuk mendapatkan semua movie
   async getMovies() {
     try {
       // Mengambil semua data film dari database
-      const movies = await prisma.movie.findMany();
+      const movies = await prisma.movie.findMany(this.joinTable);
       return movies;
     } catch (error) {
       console.error("Error fetching movies: ", error);
@@ -22,6 +50,7 @@ class MovieService {
         where: {
           id: id,
         },
+        ...this.joinTable,
       });
 
       // Jika movie tidak ditemukan, lempar error

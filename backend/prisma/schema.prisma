@@ -41,19 +41,20 @@ model Award {
 model Actor {
   id          Int           @id @default(autoincrement())
   name        String
-  birthdate   DateTime
+  birthDate   DateTime
   country     Country       @relation(fields: [countryCode], references: [code])
   countryCode String
   movies      MovieActors[]
 }
 
+
 model Director {
-  id          Int              @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
-  birthdate   DateTime
-  country     Country          @relation(fields: [countryCode], references: [code])
+  birthDate   DateTime
+  country     Country  @relation(fields: [countryCode], references: [code])
   countryCode String
-  movies      MovieDirectors[]
+  movies      Movie[]
 }
 
 // Movie model
@@ -67,10 +68,11 @@ model Movie {
   rating         Float
 
   // relationship
-  country     Country          @relation(fields: [countryCode], references: [code])
+  country     Country       @relation(fields: [countryCode], references: [code])
   countryCode String
+  director    Director?     @relation(fields: [directorId], references: [id])
+  directorId  Int?
   actors      MovieActors[]
-  directors   MovieDirectors[]
   genres      MovieGenres[]
   awards      MovieAwards[]
   reviews     Review[]
@@ -83,16 +85,7 @@ model MovieActors {
   movie   Movie @relation(fields: [movieId], references: [id])
   movieId Int
 
-  @@id([actorId, movieId]) // Primary key gabungan
-}
-
-model MovieDirectors {
-  director   Director @relation(fields: [directorId], references: [id])
-  directorId Int
-  movie      Movie    @relation(fields: [movieId], references: [id])
-  movieId    Int
-
-  @@id([directorId, movieId]) // Primary key gabungan
+  @@id([movieId, actorId]) // Primary key gabungan
 }
 
 // Table rela
@@ -104,7 +97,7 @@ model MovieGenres {
   movie   Movie @relation(fields: [movieId], references: [id])
   movieId Int
 
-  @@id([genreId, movieId]) // Primary key gabungan
+  @@id([movieId, genreId]) // Primary key gabungan
 }
 
 // Table relasi many-to-many antara Movie dan Award
@@ -132,6 +125,7 @@ model Review {
 model User {
   id           Int      @id @default(autoincrement())
   username     String
+  email        String
   password     String
   photoProfile String?
   provider     String?

@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { MAIN_PADING } from "../../config/constants";
-import ActorModel from "../../model/temp/ActorModel";
+import ActorModel from "../../models/ActorModel";
 import CustomLabel from "../widgets/CustomLabel";
 
 interface ActorListSectionProps {
