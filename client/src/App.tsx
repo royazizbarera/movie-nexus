@@ -1,9 +1,6 @@
 import { Box } from "@mui/material";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import DetailMovie from "./pages/DetailMovie";
-import MoviesDatabase from "./database/MoviesDatabase";
 import ErrorPage from "./pages/util/ErrorPage";
 import AdminRoutes from "./routes/AdminRoutes";
 
@@ -13,11 +10,7 @@ function App() {
     <Box>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home />} />
-          <Route
-            path="detail-movie"
-            element={<DetailMovie movie={MoviesDatabase[0]} />}
-          />
+          <Route index element={<ErrorPage />} />
 
           {/* Admin Pages */}
           {/* <Route path="admin/*" element={<AdminRoutes />} /> */}

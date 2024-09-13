@@ -119,6 +119,18 @@ export const movies: MovieModel[] = [
     directorId: 6,
     rating: 8.8,
   },
+  {
+    id: 11,
+    title: "The Lord of the Rings 2: The Fellowship of the Ring",
+    synopsis:
+      "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+    posterUrl: "https://picsum.photos/seed/movies/1080/1920",
+    releaseDate: new Date("2001-12-19"),
+    approvalStatus: true,
+    countryCode: "US",
+    directorId: 6,
+    rating: 8.8,
+  },
 ];
 
 interface MovieActorsModel {
@@ -129,7 +141,7 @@ interface MovieActorsModel {
 export const movieActors: MovieActorsModel[] = Array.from(
   { length: 100 },
   (_, index) => ({
-    movieId: Math.floor(index / 10) + 1,
+    movieId: Math.floor(index / 11) + 1,
     actorId: Math.floor(Math.random() * 25) + 1,
   })
 );
@@ -143,7 +155,7 @@ interface MovieGenresModel {
 export const movieGenres: MovieGenresModel[] = Array.from(
   { length: 100 },
   (_, index) => ({
-    movieId: Math.floor(index / 10) + 1,
+    movieId: Math.floor(index / 11) + 1,
     genreId: Math.floor(Math.random() * 25) + 1,
   })
 );
@@ -156,7 +168,7 @@ interface MovieAwardsModel {
 export const movieAwards: MovieAwardsModel[] = Array.from(
   { length: 100 },
   (_, index) => ({
-    movieId: Math.floor(index / 10) + 1,
+    movieId: Math.floor(index / 11) + 1,
     awardId: Math.floor(Math.random() * 25) + 1,
   })
 );

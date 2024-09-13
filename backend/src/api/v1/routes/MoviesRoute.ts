@@ -29,7 +29,6 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  console.log(req.params.id);
   try {
     const movie = await movieController.getMovieById(parseInt(req.params.id));
     return res.json(
@@ -45,6 +44,37 @@ router.get("/:id", async (req, res) => {
       ResponseApi({
         code: HttpStatus.INTERNAL_SERVER_ERROR,
         message: "Failed to fetch movie",
+        errors: error,
+        version: 1.0,
+      })
+    );
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const movieId = parseInt(req.params.id);
+    
+    // Get data from the request body for updating the movie
+    const movieData = req.body;
+
+    // Call the controller method to update the movie
+    const updatedMovie = await movieController.updateMovie(movieId, movieData);
+
+    // Send the response with the updated movie data
+    return res.json(
+      ResponseApi({
+        code: HttpStatus.OK,
+        message: "Movie updated successfully",
+        data: updatedMovie,
+        version: 1.0,
+      })
+    );
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+      ResponseApi({
+        code: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: "Failed to update movie",
         errors: error,
         version: 1.0,
       })

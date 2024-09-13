@@ -16,6 +16,14 @@ class MovieController {
       throw error;
     }
   }
+
+  async updateMovie(id: number, updateData: any) {
+    try {
+      return await movieService.updateMovie(id, updateData);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const movieController = new MovieController();
