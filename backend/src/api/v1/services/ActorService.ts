@@ -9,7 +9,6 @@ class ActorService {
       const actors = await prisma.actor.findMany({});
       return actors;
     } catch (error) {
-      console.error("Error fetching actors: ", error);
       throw new Error("Could not fetch actors");
     }
   }
@@ -31,7 +30,6 @@ class ActorService {
 
       return actor;
     } catch (error) {
-      console.error(`Error fetching actor by ID ${id}: `, error);
       throw new Error(`Could not fetch actor with ID ${id}`);
     }
   }

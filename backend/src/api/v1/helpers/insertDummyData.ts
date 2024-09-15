@@ -5,7 +5,12 @@ import { actors } from "../databases/Actors";
 import { awards } from "../databases/Awards";
 import { countries } from "../databases/Countries";
 import { genres } from "../databases/Genres";
-import { movieActors, movieAwards, movieGenres, movies } from "../databases/Movies";
+import {
+  movieActors,
+  movieAwards,
+  movieGenres,
+  movies,
+} from "../databases/Movies";
 import { directors } from "../databases/Directors";
 
 export default async function insertDummyData() {
@@ -24,25 +29,7 @@ export default async function insertDummyData() {
       await prisma.genre.upsert({
         where: { id: genre.id }, // Menggunakan id sebagai identifier unik
         update: {}, // Tidak ada perubahan
-        create: genre, // Insert jika belum ada
-      });
-    }
-
-    // Insert actors with upsert
-    for (const actor of actors) {
-      await prisma.actor.upsert({
-        where: { id: actor.id }, // Menggunakan id sebagai identifier unik
-        update: {}, // Tidak ada perubahan
-        create: actor, // Insert jika belum ada
-      });
-    }
-
-    // Insert directors with upsert
-    for (const director of directors) {
-      await prisma.director.upsert({
-        where: { id: director.id }, // Menggunakan id sebagai identifier unik
-        update: {}, // Tidak ada perubahan
-        create: director, // Insert jika belum ada
+        create: { ...genre, id: undefined }, // Insert jika belum ada
       });
     }
 
@@ -51,17 +38,35 @@ export default async function insertDummyData() {
       await prisma.award.upsert({
         where: { id: award.id }, // Menggunakan id sebagai identifier unik
         update: {}, // Tidak ada perubahan
-        create: award, // Insert jika belum ada
+        create: { ...award, id: undefined }, // Insert jika belum ada
+      });
+    }
+
+    // Insert actors with upsert
+    for (const actor of actors) {
+      await prisma.actor.upsert({
+        where: { id: actor.id }, // Menggunakan id sebagai identifier unik
+        update: {}, // Tidak ada perubahan
+        create: { ...actor, id: undefined }, // Insert jika belum ada
+      });
+    }
+
+    // Insert directors with upsert
+    for (const director of directors) {
+      await prisma.director.upsert({
+        where: { id: director.id }, // Menggunakan id sebagai identifier unik
+        update: {}, // Tidak ada perubahan
+        create: { ...director, id: undefined }, // Insert jika belum ada
       });
     }
 
     // Insert movies with upsert
     for (const movie of movies) {
-      console.error(movie);
+      console.log(movie.id);
       await prisma.movie.upsert({
         where: { id: movie.id }, // Menggunakan id sebagai identifier unik
         update: {}, // Tidak ada perubahan
-        create: movie, // Insert jika belum ada
+        create: {...movie, id: undefined}, // Insert jika belum ada
       });
     }
 
@@ -84,8 +89,6 @@ export default async function insertDummyData() {
 
     // Insert movies actor
     for (const movieActor of movieActors) {
-      console.error(movieActor);
-
       await prisma.movieActors.upsert({
         where: {
           movieId_actorId: {

@@ -9,7 +9,6 @@ class CountryService {
       const countries = await prisma.country.findMany();
       return countries;
     } catch (error) {
-      console.error("Error fetching countries: ", error);
       throw new Error("Could not fetch countries");
     }
   }
@@ -31,7 +30,6 @@ class CountryService {
 
       return country;
     } catch (error) {
-      console.error(`Error fetching country by ID ${code}: `, error);
       throw new Error(`Could not fetch country with ID ${code}`);
     }
   }

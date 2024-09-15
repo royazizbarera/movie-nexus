@@ -131,6 +131,17 @@ export const movies: MovieModel[] = [
     directorId: 6,
     rating: 8.8,
   },
+  ...Array.from({ length: 89 }, (_, index) => ({
+    id: index + 12,
+    title: `Movie ${index + 1}`,
+    synopsis: `Synopsis ${index + 1}`,
+    posterUrl: "https://picsum.photos/seed/movies/1080/1920",
+    releaseDate: new Date("2021-01-01"),
+    approvalStatus: true,
+    countryCode: "US",
+    directorId: 1,
+    rating: 8.8,
+  })),
 ];
 
 interface MovieActorsModel {
@@ -139,9 +150,9 @@ interface MovieActorsModel {
 }
 
 export const movieActors: MovieActorsModel[] = Array.from(
-  { length: 100 },
+  { length: movies.length * 10 },
   (_, index) => ({
-    movieId: Math.floor(index / 11) + 1,
+    movieId: Math.floor(index / 10) + 1,
     actorId: Math.floor(Math.random() * 25) + 1,
   })
 );
@@ -153,9 +164,9 @@ interface MovieGenresModel {
 }
 
 export const movieGenres: MovieGenresModel[] = Array.from(
-  { length: 100 },
+  { length: movies.length * 10 },
   (_, index) => ({
-    movieId: Math.floor(index / 11) + 1,
+    movieId: Math.floor(index / 10) + 1,
     genreId: Math.floor(Math.random() * 25) + 1,
   })
 );
@@ -166,9 +177,9 @@ interface MovieAwardsModel {
 }
 
 export const movieAwards: MovieAwardsModel[] = Array.from(
-  { length: 100 },
+  { length: movies.length * 10 },
   (_, index) => ({
-    movieId: Math.floor(index / 11) + 1,
+    movieId: Math.floor(index / 10) + 1,
     awardId: Math.floor(Math.random() * 25) + 1,
   })
 );

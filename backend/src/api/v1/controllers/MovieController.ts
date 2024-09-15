@@ -4,10 +4,35 @@ import HttpStatus from "../config/constants/HttpStatus";
 import { Response, Request } from "express";
 
 class MovieController {
+  async createMovie(req: Request, res: Response) {
+    try {
+      const movieData = req.body;
+      const newMovie = await movieService.createMovie(movieData);
+
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.CREATED,
+          message: "Movie created successfully",
+          data: newMovie,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to create movie",
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
   async getMovies(req: Request, res: Response) {
     try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const page = parseInt(req.query.page as string) || undefined;
+      const limit = parseInt(req.query.limit as string) || undefined;
       const movies = await movieService.getMovies({
         page: page,
         pageSize: limit,

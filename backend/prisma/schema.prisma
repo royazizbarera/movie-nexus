@@ -31,7 +31,7 @@ model Genre {
 model Award {
   id          Int           @id @default(autoincrement())
   name        String
-  year        Int
+  year        DateTime
   country     Country       @relation(fields: [countryCode], references: [code])
   countryCode String
   movies      MovieAwards[]
@@ -46,7 +46,6 @@ model Actor {
   countryCode String
   movies      MovieActors[]
 }
-
 
 model Director {
   id          Int      @id @default(autoincrement())
@@ -68,8 +67,8 @@ model Movie {
   rating         Float
 
   // relationship
-  country     Country       @relation(fields: [countryCode], references: [code])
-  countryCode String
+  country     Country?      @relation(fields: [countryCode], references: [code])
+  countryCode String?
   director    Director?     @relation(fields: [directorId], references: [id])
   directorId  Int?
   actors      MovieActors[]

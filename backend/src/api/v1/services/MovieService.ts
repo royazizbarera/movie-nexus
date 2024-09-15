@@ -58,11 +58,76 @@ class MovieService {
     }
   }
 
-  // Metode untuk mendapatkan semua movie
-  async getMovies({ page = 0, pageSize = 10 }: PaginationProps) {
-    // Hitung nilai skip berdasarkan halaman dan limit
-    const skip = (page - 1) * pageSize;
+  // add a new route to create a movie
+  async createMovie(movieData: any) {
+    try {
+      // Transaction to ensure atomic operations
+      const newMovie = await prisma.$transaction(async (prisma) => {
+        // Create a new movie with associated relations in a transaction
+        
+        var newMovieId;
+        await prisma.movie.create({
+          data: {
+            title: movieData.title,
+            synopsis: movieData.synopsis,
+            posterUrl: movieData.posterUrl,
+            releaseDate: new Date(movieData.releaseDate),
+            approvalStatus: movieData.approvalStatus,
+            rating: movieData.rating,
+            country: {
+              connect: { code: movieData.countryCode }, // Connect to the related country
+            },
+            director: {
+              connect: { id: movieData.directorId }, // Connect to the related director
+            },
+            genres: {
+              create: movieData.genres.map((genreId: number) => ({
+                genre: { connect: { id: genreId } }, // Connect each genre by ID
+              })),
+            },
+            actors: {
+              create: movieData.actors.map((actorId: number) => ({
+                actor: { connect: { id: actorId } }, // Connect each actor by ID
+              })),
+            },
+            awards: {
+              create: movieData.awards.map((awardId: number) => ({
+                award: { connect: { id: awardId } }, // Connect each award by ID
+              })),
+            },
+          },
+        }).then((movie) => {
+          newMovieId = movie.id;
+        });
+  
+        // Fetch the newly created movie with all its relations
+        const movieWithRelations = await prisma.movie.findUnique({
+          where: {
+            id: newMovieId,
+          },
+          ...this.joinTable, // Fetch the full movie data with relations
+        });
+  
+        return movieWithRelations;
+      });
+  
+      // Refactor the movie result before returning
+      const refactorMovie = this.refactorMovies([newMovie])[0];
+      return refactorMovie;
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      throw new Error("Could not create movie");
+    }
+  }
+  
 
+  // Metode untuk mendapatkan semua movie
+  async getMovies({ page = undefined, pageSize = undefined }: PaginationProps) {
+    // Hitung nilai skip berdasarkan halaman dan limit
+    var skip = undefined;
+    if (page && pageSize) {
+      skip = (page - 1) * pageSize;
+    }
     try {
       const movies = await prisma.movie.findMany({
         ...this.joinTable,
@@ -72,7 +137,6 @@ class MovieService {
       const refactorMovies = this.refactorMovies(movies);
       return refactorMovies;
     } catch (error) {
-      // console.error("Error fetching movies: ", error);
       throw new Error("Could not fetch movies");
     }
   }
@@ -94,7 +158,6 @@ class MovieService {
       const refactorMovie = this.refactorMovies([movie])[0];
       return refactorMovie;
     } catch (error) {
-      console.error(`Error fetching movie by ID ${id}: `, error);
       throw new Error(`Could not fetch movie with ID ${id}`);
     }
   }
@@ -146,7 +209,6 @@ class MovieService {
       const refactorMovie = this.refactorMovies([updatedMovie])[0];
       return refactorMovie;
     } catch (error) {
-      console.error(`Error updating movie with ID ${id}: `, error);
       throw new Error(`Could not update movie with ID ${id}`);
     }
   }
@@ -184,7 +246,6 @@ class MovieService {
         deletedMovie,
       };
     } catch (error) {
-      console.error(`Error deleting movie with ID ${id}: `, error);
       throw new Error(`Could not delete movie with ID ${id}`);
     }
   }

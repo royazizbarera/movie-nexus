@@ -9,7 +9,6 @@ class GenreService {
       const genres = await prisma.genre.findMany();
       return genres;
     } catch (error) {
-      console.error("Error fetching genres: ", error);
       throw new Error("Could not fetch genres");
     }
   }
@@ -31,7 +30,6 @@ class GenreService {
 
       return genre;
     } catch (error) {
-      console.error(`Error fetching genre by ID ${id}: `, error);
       throw new Error(`Could not fetch genre with ID ${id}`);
     }
   }

@@ -9,7 +9,6 @@ class AwardService {
       const awards = await prisma.award.findMany();
       return awards;
     } catch (error) {
-      console.error("Error fetching awards: ", error);
       throw new Error("Could not fetch awards");
     }
   }
@@ -31,7 +30,6 @@ class AwardService {
 
       return award;
     } catch (error) {
-      console.error(`Error fetching award by ID ${id}: `, error);
       throw new Error(`Could not fetch award with ID ${id}`);
     }
   }

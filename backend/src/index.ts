@@ -31,7 +31,6 @@ app.route("/api/v1/insertDummyData").get(async (req, res) => {
     await insertDummyData(); // Tunggu sampai proses insert selesai
     res.status(200).send("Dummy data inserted successfully!"); // Kirim respons sukses ke klien
   } catch (error) {
-    console.error("Error inserting dummy data:", error);
     res.status(500).send(error); // Kirim respons error jika terjadi kesalahan
   }
 });

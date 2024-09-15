@@ -23,13 +23,12 @@ import {
   Toolbar,
   Typography,
   Slide,
+  Switch,
 } from "@mui/material";
 
 // icon
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -41,6 +40,10 @@ import React from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import axios from "axios";
 import { ResponseApiProps } from "../../../config/ResponseApi";
+import AwardModel from "../../../models/AwardModel";
+import ActorModel from "../../../models/ActorModel";
+import AddMovieDialog from "../components/AddMovie";
+import AddDataDialog from "../components/AddMovie";
 
 interface Filter {
   id: number;
@@ -70,12 +73,39 @@ export default function MoviesTable() {
         align: "left",
       },
       {
+        id: "synopsis",
+        disablePadding: false,
+        label: "Synopsis",
+        widht: 300,
+        minWidht: "80%",
+        type: "string",
+        align: "left",
+      },
+      {
+        id: "posterUrl",
+        disablePadding: false,
+        label: "Poster Url",
+        widht: 300,
+        minWidht: "80%",
+        type: "string",
+        align: "left",
+      },
+      {
         id: "releaseDate",
         disablePadding: false,
-        label: "Year",
+        label: "Release Date",
         widht: 200,
         minWidht: "10%",
         type: "number",
+        align: "left",
+      },
+      {
+        id: "approvalStatus",
+        disablePadding: false,
+        label: "Approval Status",
+        widht: 200,
+        minWidht: "10%",
+        type: "boolean",
         align: "left",
       },
       {
@@ -85,6 +115,15 @@ export default function MoviesTable() {
         widht: 200,
         minWidht: "10%",
         type: "number",
+        align: "left",
+      },
+      {
+        id: "country",
+        disablePadding: false,
+        label: "Country",
+        widht: 200,
+        minWidht: "10%",
+        type: "string",
         align: "left",
       },
       {
@@ -99,16 +138,25 @@ export default function MoviesTable() {
       {
         id: "genres",
         disablePadding: false,
-        label: "Genre",
+        label: "Genres",
         widht: 200,
         minWidht: "10%",
         type: "string",
         align: "left",
       },
       {
-        id: "country",
+        id: "actors",
         disablePadding: false,
-        label: "Country",
+        label: "Actors",
+        widht: 200,
+        minWidht: "10%",
+        type: "string",
+        align: "left",
+      },
+      {
+        id: "awards",
+        disablePadding: false,
+        label: "Awards",
         widht: 200,
         minWidht: "10%",
         type: "string",
@@ -166,6 +214,35 @@ export default function MoviesTable() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
+  // Add dialog
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+
+  const handleOpenAddDialog = () => {
+    setOpenAddDialog(true);
+  };
+
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
+  };
+
+  // Function to handle adding a new movie
+  const handleAddData = async (movieData: any) => {
+    try {
+      // Send POST request to the backend to add the new movie
+      const response = await axios.post<ResponseApiProps>(`${API_URL}/movies`, movieData);
+
+      // Get the newly added movie from the response
+      const newMovie = response.data?.data;
+
+      // Add the new movie to the current state
+      if (newMovie) {
+        setRows((prevRows) => [...prevRows, newMovie]);
+      }
+    } catch (error) {
+      console.error("Error adding movie:", error);
+    }
+  };
+
   // State untuk mengatur dialog
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -181,41 +258,41 @@ export default function MoviesTable() {
     setTempRow({ ...rowData }); // Create a copy of the row for editing
   };
 
-  const handleCancelEdit = () => {
-    setTempRow(null); // Clear temporary row data
-  };
+  // const handleCancelEdit = () => {
+  //   setTempRow(null); // Clear temporary row data
+  // };
 
-  const handleTempRowChange = (columnId: string, value: any) => {
-    setTempRow((prevRow: any) => ({
-      ...prevRow,
-      [columnId]: value,
-    }));
-  };
-  const handleSaveEdit = async () => {
-    // Simulate save, e.g., send the `tempRow` to an API or update state
-    console.log("Save data:", tempRow);
-    const updatedMovie = await updateMovie(tempRow); // Simpan perubahan ke API
-    if (updatedMovie) {
-      const updatedRows = rows.map((row) =>
-        row.id === updatedMovie.id ? updatedMovie : row
-      ); // Update row yang sesuai di state
-      setRows(updatedRows);
-      handleCloseDialog(); // Tutup dialog setelah menyimpan
-    }
-  };
+  // const handleTempRowChange = (columnId: string, value: any) => {
+  //   setTempRow((prevRow: any) => ({
+  //     ...prevRow,
+  //     [columnId]: value,
+  //   }));
+  // };
+  // const handleSaveEdit = async () => {
+  //   // Simulate save, e.g., send the `tempRow` to an API or update state
+  //   console.log("Save data:", tempRow);
+  //   const updatedMovie = await updateMovie(tempRow); // Simpan perubahan ke API
+  //   if (updatedMovie) {
+  //     const updatedRows = rows.map((row) =>
+  //       row.id === updatedMovie.id ? updatedMovie : row
+  //     ); // Update row yang sesuai di state
+  //     setRows(updatedRows);
+  //     handleCloseAddDialog(); // Tutup dialog setelah menyimpan
+  //   }
+  // };
 
-  const updateMovie = async (movieData: any) => {
-    try {
-      const res = await axios.put<ResponseApiProps>(
-        `${API_URL}/movies/${movieData.id}`,
-        movieData
-      );
-      return res.data?.data; // Kembalikan data movie yang telah diperbarui
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
+  // const updateMovie = async (movieData: any) => {
+  //   try {
+  //     const res = await axios.put<ResponseApiProps>(
+  //       `${API_URL}/movies/${movieData.id}`,
+  //       movieData
+  //     );
+  //     return res.data?.data; // Kembalikan data movie yang telah diperbarui
+  //   } catch (error) {
+  //     console.error(error);
+  //     return null;
+  //   }
+  // };
 
   // Page function
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -234,15 +311,6 @@ export default function MoviesTable() {
     [rows, page, rowsPerPage]
   );
 
-  // Dialog function edit
-  const handleOpenDialog = (rowData: any) => {
-    setTempRow({ ...rowData });
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
 
   // Filter function
   const handleOpenFilter = (event: React.MouseEvent<HTMLElement>) => {
@@ -281,46 +349,116 @@ export default function MoviesTable() {
   };
 
   return (
-    <Box sx={{ width: "100%", overflow: "hidden" }}>
+    <Box sx={{ width: "100%", overflow: "hidden", m: 1 }}>
       {/* Filter Section */}
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleOpenFilter}
-          >
-            Filter
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={() => setAnchorEl(null)}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <Box
+      <Paper elevation={2} sx={{ m: 1 }}>
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          sx={{
+            p: 1,
+          }}
+        >
+          <Stack direction={"row"}>
+            <Button
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleOpenFilter}
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                m: 2,
-                overflow: "auto",
+                widht: "auto",
               }}
             >
-              {filters.map((filter) => (
-                <Box key={filter.id} sx={{ display: "flex", gap: 2 }}>
+              Filter
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  m: 2,
+                  overflow: "auto",
+                }}
+              >
+                {filters.map((filter) => (
+                  <Box key={filter.id} sx={{ display: "flex", gap: 2 }}>
+                    <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                      <InputLabel>Columns</InputLabel>
+                      <Select
+                        value={filter.column}
+                        onChange={(e) =>
+                          handleFilterChange(
+                            filter.id,
+                            "column",
+                            e.target.value
+                          )
+                        }
+                        label="Columns"
+                      >
+                        {columnModels.map((column) => (
+                          <MenuItem key={column.id} value={column.id}>
+                            {column.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                      <InputLabel>Operator</InputLabel>
+                      <Select
+                        value={filter.operator}
+                        onChange={(e) =>
+                          handleFilterChange(
+                            filter.id,
+                            "operator",
+                            e.target.value
+                          )
+                        }
+                        label="Operator"
+                      >
+                        {operators.map((operator) => (
+                          <MenuItem key={operator.id} value={operator.id}>
+                            {operator.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="standard" sx={{ minWidth: 200 }}>
+                      <TextField
+                        size="small"
+                        label="Value"
+                        value={filter.value}
+                        onChange={(e) =>
+                          handleFilterChange(filter.id, "value", e.target.value)
+                        }
+                        variant="standard"
+                      />
+                    </FormControl>
+                    <IconButton
+                      onClick={() => handleDeleteFilter(filter.id)}
+                      aria-label="Delete"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
+
+                {/* New filter */}
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <FormControl variant="standard" sx={{ minWidth: 120 }}>
                     <InputLabel>Columns</InputLabel>
                     <Select
-                      value={filter.column}
-                      onChange={(e) =>
-                        handleFilterChange(filter.id, "column", e.target.value)
-                      }
+                      value={selectedColumn}
+                      onChange={(e) => setSelectedColumn(e.target.value)}
                       label="Columns"
                     >
                       {columnModels.map((column) => (
@@ -330,17 +468,12 @@ export default function MoviesTable() {
                       ))}
                     </Select>
                   </FormControl>
+
                   <FormControl variant="standard" sx={{ minWidth: 120 }}>
                     <InputLabel>Operator</InputLabel>
                     <Select
-                      value={filter.operator}
-                      onChange={(e) =>
-                        handleFilterChange(
-                          filter.id,
-                          "operator",
-                          e.target.value
-                        )
-                      }
+                      value={selectedOperator}
+                      onChange={(e) => setSelectedOperator(e.target.value)}
                       label="Operator"
                     >
                       {operators.map((operator) => (
@@ -350,78 +483,40 @@ export default function MoviesTable() {
                       ))}
                     </Select>
                   </FormControl>
+
                   <FormControl variant="standard" sx={{ minWidth: 200 }}>
                     <TextField
                       size="small"
                       label="Value"
-                      value={filter.value}
-                      onChange={(e) =>
-                        handleFilterChange(filter.id, "value", e.target.value)
-                      }
+                      value={filterValue}
+                      onChange={(e) => setFilterValue(e.target.value)}
+                      placeholder="Filter value"
                       variant="standard"
                     />
                   </FormControl>
-                  <IconButton
-                    onClick={() => handleDeleteFilter(filter.id)}
-                    aria-label="Delete"
-                  >
-                    <DeleteIcon />
+                  <IconButton onClick={handleAddFilter} aria-label="Add">
+                    <AddIcon />
                   </IconButton>
                 </Box>
-              ))}
-
-              {/* New filter */}
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <FormControl variant="standard" sx={{ minWidth: 120 }}>
-                  <InputLabel>Columns</InputLabel>
-                  <Select
-                    value={selectedColumn}
-                    onChange={(e) => setSelectedColumn(e.target.value)}
-                    label="Columns"
-                  >
-                    {columnModels.map((column) => (
-                      <MenuItem key={column.id} value={column.id}>
-                        {column.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl variant="standard" sx={{ minWidth: 120 }}>
-                  <InputLabel>Operator</InputLabel>
-                  <Select
-                    value={selectedOperator}
-                    onChange={(e) => setSelectedOperator(e.target.value)}
-                    label="Operator"
-                  >
-                    {operators.map((operator) => (
-                      <MenuItem key={operator.id} value={operator.id}>
-                        {operator.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl variant="standard" sx={{ minWidth: 200 }}>
-                  <TextField
-                    size="small"
-                    label="Value"
-                    value={filterValue}
-                    onChange={(e) => setFilterValue(e.target.value)}
-                    placeholder="Filter value"
-                    variant="standard"
-                  />
-                </FormControl>
-                <IconButton onClick={handleAddFilter} aria-label="Add">
-                  <AddIcon />
-                </IconButton>
               </Box>
-            </Box>
-          </Menu>
-        </div>
+            </Menu>
+          </Stack>
+          <Stack direction={"row"}>
+            <Button
+              variant="contained"
+              onClick={handleOpenAddDialog}
+              sx={{
+                widht: "auto",
+                textTransform: "none",
+              }}
+            >
+              Add Movie
+            </Button>
+          </Stack>
+        </Stack>
       </Paper>
       {/* Data grid Section */}
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper sx={{ m: 1 }}>
         <TableContainer sx={{ maxHeight: "80vh" }}>
           <Table
             sx={{ minWidth: 750, width: "100%" }}
@@ -466,7 +561,7 @@ export default function MoviesTable() {
                     {/* Action */}
                     <TableCell align="center">
                       <Stack direction="row" justifyContent={"center"}>
-                        <IconButton onClick={() => handleOpenDialog(row)}>
+                        <IconButton>
                           <EditIcon />
                         </IconButton>
                         <IconButton onClick={() => handleEditRow(row)}>
@@ -499,6 +594,30 @@ export default function MoviesTable() {
                       {row.title}
                     </TableCell>
                     <TableCell
+                      key={"synopsis"}
+                      align={"left"}
+                      sx={{
+                        maxWidth: 600, // Batasi lebar sel menjadi 600px
+                        whiteSpace: "nowrap", // Pastikan hanya menampilkan satu baris
+                        overflow: "hidden", // Sembunyikan teks yang melebihi batas
+                        textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
+                      }}
+                    >
+                      {row.synopsis}
+                    </TableCell>
+                    <TableCell
+                      key={"posterUrl"}
+                      align={"left"}
+                      sx={{
+                        maxWidth: 600, // Batasi lebar sel menjadi 600px
+                        whiteSpace: "nowrap", // Pastikan hanya menampilkan satu baris
+                        overflow: "hidden", // Sembunyikan teks yang melebihi batas
+                        textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
+                      }}
+                    >
+                      {row.posterUrl}
+                    </TableCell>
+                    <TableCell
                       key={"releaseDate"}
                       align={"left"}
                       sx={{
@@ -511,6 +630,22 @@ export default function MoviesTable() {
                       {new Date(row["releaseDate"]).getFullYear()}
                     </TableCell>
                     <TableCell
+                      key={"approvalStatus"}
+                      align={"left"}
+                      sx={{
+                        maxWidth: 600, // Batasi lebar sel menjadi 600px
+                        whiteSpace: "nowrap", // Pastikan hanya menampilkan satu baris
+                        overflow: "hidden", // Sembunyikan teks yang melebihi batas
+                        textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
+                      }}
+                    >
+                      {/* Switch Component */}
+                      <Switch
+                        checked={row.approvalStatus}
+                        inputProps={{ "aria-label": "controlled" }}
+                      />
+                    </TableCell>
+                    <TableCell
                       key={"rating"}
                       align={"left"}
                       sx={{
@@ -521,6 +656,18 @@ export default function MoviesTable() {
                       }}
                     >
                       {row.rating}
+                    </TableCell>
+                    <TableCell
+                      key={"country"}
+                      align={"left"}
+                      sx={{
+                        maxWidth: 600, // Batasi lebar sel menjadi 600px
+                        whiteSpace: "nowrap", // Pastikan hanya menampilkan satu baris
+                        overflow: "hidden", // Sembunyikan teks yang melebihi batas
+                        textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
+                      }}
+                    >
+                      {row.country?.label}
                     </TableCell>
                     <TableCell
                       key={"director"}
@@ -559,16 +706,52 @@ export default function MoviesTable() {
                       </Box>
                     </TableCell>
                     <TableCell
-                      key={"country"}
-                      align={"left"}
+                      key={"actors"}
                       sx={{
-                        maxWidth: 600, // Batasi lebar sel menjadi 600px
-                        whiteSpace: "nowrap", // Pastikan hanya menampilkan satu baris
-                        overflow: "hidden", // Sembunyikan teks yang melebihi batas
-                        textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
+                        // maxWidth: 900,
+                        overflow: "hidden",
                       }}
                     >
-                      {row.country?.label}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          overflowX: "auto", // Scroll secara horizontal
+                          // maxWidth: 600,
+                          scrollbarWidth: "thin", // Untuk Firefox, membuat scrollbar lebih tipis
+                        }}
+                      >
+                        <Stack direction="row" spacing={1}>
+                          {row.actors.map(
+                            (actor: ActorModel, index: number) => (
+                              <Chip key={index} label={actor.name} />
+                            )
+                          )}
+                        </Stack>
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      key={"awards"}
+                      sx={{
+                        // maxWidth: 900,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          overflowX: "auto", // Scroll secara horizontal
+                          // maxWidth: 600,
+                          scrollbarWidth: "thin", // Untuk Firefox, membuat scrollbar lebih tipis
+                        }}
+                      >
+                        <Stack direction="row" spacing={1}>
+                          {row.awards.map(
+                            (award: AwardModel, index: number) => (
+                              <Chip key={index} label={award.name} />
+                            )
+                          )}
+                        </Stack>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 );
@@ -587,155 +770,76 @@ export default function MoviesTable() {
         />
       </Paper>
 
+      {/* Dialog Add Movie */}
+
       {/* Dialog edit */}
       {/* Fullscreen Dialog */}
-      <Dialog
-        fullScreen
-        open={openDialog}
-        onClose={handleCloseDialog}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleCloseDialog}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-              Edit Movie Details
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleSaveEdit}>
-              Save
-            </Button>
-          </Toolbar>
-        </AppBar>
 
-        {/* Layout pengeditan di dalam dialog */}
-        <Box p={2}>
-          <form>
-            <Stack spacing={2}>
-              {/* Title */}
-              <FormControl fullWidth>
-                <TextField
-                  label="Title"
-                  variant="outlined"
-                  value={tempRow?.title || ""}
-                  onChange={(e) => handleTempRowChange("title", e.target.value)}
-                  required
-                />
-              </FormControl>
-
-              {/* Release Date */}
-              <FormControl fullWidth>
-                <TextField
-                  label="Release Year"
-                  type="number"
-                  variant="outlined"
-                  value={
-                    tempRow?.releaseDate
-                      ? new Date(tempRow.releaseDate).getFullYear()
-                      : ""
-                  }
-                  onChange={(e) =>
-                    handleTempRowChange("releaseDate", e.target.value)
-                  }
-                  required
-                />
-              </FormControl>
-
-              {/* Rating */}
-              <FormControl fullWidth>
-                <TextField
-                  label="Rating"
-                  type="number"
-                  inputProps={{ min: 0, max: 10, step: 0.1 }}
-                  variant="outlined"
-                  value={tempRow?.rating || ""}
-                  onChange={(e) =>
-                    handleTempRowChange("rating", e.target.value)
-                  }
-                  required
-                />
-              </FormControl>
-
-              {/* Director */}
-              <FormControl fullWidth>
-                <TextField
-                  label="Director"
-                  variant="outlined"
-                  value={tempRow?.director?.name || ""}
-                  onChange={(e) =>
-                    handleTempRowChange("director.name", e.target.value)
-                  }
-                  required
-                />
-              </FormControl>
-
-              {/* Genres */}
-              <FormControl fullWidth>
-                <InputLabel id="genre-label">Genre</InputLabel>
-                <Select
-                  labelId="genre-label"
-                  multiple
-                  value={tempRow?.genres?.map((g: any) => g.name) || []}
-                  onChange={(e) =>
-                    handleTempRowChange("genres", e.target.value)
-                  }
-                  renderValue={(selected) => selected.join(", ")}
-                >
-                  {["Action", "Comedy", "Drama", "Horror", "Sci-Fi"].map(
-                    (genre) => (
-                      <MenuItem key={genre} value={genre}>
-                        {genre}
-                      </MenuItem>
-                    )
-                  )}
-                </Select>
-              </FormControl>
-
-              {/* Country */}
-              <FormControl fullWidth>
-                <TextField
-                  label="Country"
-                  variant="outlined"
-                  value={tempRow?.country?.label || ""}
-                  onChange={(e) =>
-                    handleTempRowChange("country.label", e.target.value)
-                  }
-                  required
-                />
-              </FormControl>
-
-              {/* Buttons */}
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSaveEdit}
-                >
-                  Save
-                </Button>
-                <Button variant="outlined" onClick={handleCloseDialog}>
-                  Cancel
-                </Button>
-              </Stack>
-            </Stack>
-          </form>
-        </Box>
-      </Dialog>
+      <AddDataDialog
+        open={openAddDialog}
+        onClose={handleCloseAddDialog}
+        onAdd={handleAddData}
+        fields={[
+          { name: "title", label: "Title", type: "text", isRequired: true },
+          { name: "synopsis", label: "Synopsis", type: "text", isRequired: true },
+          { name: "posterUrl", label: "Poster URL", type: "text", isRequired: true },
+          { name: "releaseDate", label: "Release Date", type: "date", isRequired: true },
+          { name: "approvalStatus", label: "Approval Status", type: "boolean" },
+          { name: "rating", label: "Rating", type: "number", isRequired: true },
+          {
+            name: "countryCode",
+            label: "Country",
+            type: "select",
+            options: [
+              { value: "US", label: "United States" },
+              { value: "CA", label: "Canada" },
+              { value: "FR", label: "France" },
+            ],
+            isRequired: true,
+          },
+          {
+            name: "directorId",
+            label: "Directors",
+            type: "select",
+            options: [
+              { value: 1, label: "Tom Hanks" },
+              { value: 2, label: "Brad Pitt" },
+              { value: 3, label: "Natalie Portman" },
+            ],
+          },
+          {
+            name: "actors",
+            label: "Actors",
+            type: "multiselect",
+            options: [
+              { value: 1, label: "Leonardo DiCaprio" },
+              { value: 2, label: "Brad Pitt" },
+              { value: 3, label: "Natalie Portman" },
+            ],
+          },
+          {
+            name: "genres",
+            label: "Genres",
+            type: "multiselect",
+            options: [
+              { value: 1, label: "Action" },
+              { value: 2, label: "Drama" },
+              { value: 3, label: "Comedy" },
+            ],
+          },
+          {
+            name: "awards",
+            label: "Awards",
+            type: "multiselect",
+            options: [
+              { value: 1, label: "Oscar" },
+              { value: 2, label: "Golden Globe" },
+              { value: 3, label: "BAFTA" },
+            ],
+          },
+        ]}
+        title="Add Movie"
+      />
     </Box>
   );
 }
-
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any>;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});

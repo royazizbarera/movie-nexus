@@ -13,5 +13,7 @@ router.put("/:id", movieController.updateMovieById);
 
 router.delete("/:id", movieController.deleteMovieById);
 
+// add a new route to create a movie
+router.post("/", movieController.createMovie);
 
 export default router;

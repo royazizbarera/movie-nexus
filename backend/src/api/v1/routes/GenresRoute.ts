@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  console.log(req.params.id);
+  (req.params.id);
   try {
     const genre = await genreController.getGenreById(parseInt(req.params.id));
     return res.json(

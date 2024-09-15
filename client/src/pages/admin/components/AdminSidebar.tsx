@@ -11,7 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Collapse } from "@mui/material";
+import { Box, Collapse } from "@mui/material";
 // import Logo from "../../../assets/logo.png";
 
 // icon
@@ -121,7 +121,7 @@ const topNavigation: NavigationItem[] = [
 
 export default function AdminSidebar() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("Actors");
   const [openMoviesMenu, setOpenMoviesMenu] = React.useState(false); // State to manage Movies submenu
 
@@ -142,7 +142,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <>
+    <Box>
       <Drawer
         variant="permanent"
         open={open}
@@ -256,6 +256,6 @@ export default function AdminSidebar() {
           ))}
         </List>
       </Drawer>
-    </>
+    </Box>
   );
 }
