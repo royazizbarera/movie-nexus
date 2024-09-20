@@ -20,7 +20,7 @@ export default function MiniDrawer() {
             display: "flex",
             flexDirection: "column",
             flexGrow: 1,
-            p: 1,
+            // p: 1,
             backgroundColor: "background.paper",
             minHeight: "100vh",
           }}

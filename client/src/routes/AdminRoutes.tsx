@@ -8,6 +8,11 @@ import AdminPages from "../pages/admin/AdminPages";
 // import AdminGenres from "../pages/admin/management/AdminGenres";
 // import AdminMovies from "../pages/admin/management/AdminMovies";
 import MoviesTable from "../pages/admin/management/MoviesTable";
+import GenresTable from "../pages/admin/management/GenresTable";
+import CountriesTable from "../pages/admin/management/CountriesTable";
+import AwardsTable from "../pages/admin/management/AwardsTable";
+import ActorsTable from "../pages/admin/management/ActorsTable";
+import DirectorsTable from "../pages/admin/management/DirectorsTable";
 
 export default function AdminRoutes() {
   return (
@@ -19,10 +24,11 @@ export default function AdminRoutes() {
       <Route path="/" element={<AdminPages />}>
         <Route path="/" element={<MoviesTable />} />
         <Route path="movies" element={<MoviesTable />} />
-        {/* <Route path="actors" element={<AdminActors />} />
-        <Route path="countries" element={<AdminCountries />} />
-        <Route path="awards" element={<AdminAwards />} />
-        <Route path="genres" element={<AdminGenres />} /> */}
+        <Route path="genres" element={<GenresTable />} />
+        <Route path="actors" element={<ActorsTable />} />
+        <Route path="directors" element={<DirectorsTable />} />
+        <Route path="countries" element={<CountriesTable />} />
+        <Route path="awards" element={<AwardsTable/>} />
       </Route>
     </Routes>
   );

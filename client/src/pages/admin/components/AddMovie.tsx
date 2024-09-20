@@ -19,14 +19,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
 import { TransitionProps } from "@mui/material/transitions";
-
-interface Field {
-  name: string;
-  label: string;
-  type: "text" | "number" | "date" | "select" | "multiselect" | "boolean";
-  options?: { value: any; label: string }[]; // For select fields
-  isRequired?: boolean;
-}
+import Field from "../models/FieldModel";
 
 interface AddDataProps {
   open: boolean;
@@ -42,7 +35,7 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} timeout={200} {...props} />; // Reduced timeout
 });
 
 export default function AddDataDialog(props: AddDataProps) {
