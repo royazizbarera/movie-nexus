@@ -1,3 +1,4 @@
+// Component
 import {
   Box,
   Button,
@@ -14,14 +15,16 @@ import {
   Chip,
   TablePagination,
 } from "@mui/material";
+import Field from "../models/FieldModel";
+import AddDataDialog from "./AddMovie";
+import FilterMenu, { Filter } from "./FilterButton";
 
 // icon
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+// System
 import { memo, useMemo, useState } from "react";
-import Field from "../models/FieldModel";
-import AddDataDialog from "./AddMovie";
 
 interface DataTableProps {
   columns: Field[];
@@ -71,6 +74,28 @@ const DataTable = memo(function DataTable({
     setOpenAddDialog(false);
   };
 
+  // Filter
+  const [filters, setFilters] = useState<Filter[]>([]);
+  const handleAddFilter = (newFilter: Filter) => {
+    setFilters((prevFilters) => [...prevFilters, newFilter]);
+  };
+
+  const handleFilterChange = (
+    id: number,
+    field: keyof Filter,
+    value: string
+  ) => {
+    setFilters((prevFilters) =>
+      prevFilters.map((filter) =>
+        filter.id === id ? { ...filter, [field]: value } : filter
+      )
+    );
+  };
+
+  const handleDeleteFilter = (id: number) => {
+    setFilters(filters.filter((filter) => filter.id !== id));
+  };
+
   return (
     // Layout
     <Box sx={{ width: "100%", overflow: "hidden" }}>
@@ -84,13 +109,19 @@ const DataTable = memo(function DataTable({
           }}
         >
           <Stack direction={"row"}>
-            <Button
-              sx={{
-                widht: "auto",
-              }}
-            >
-              Filter
-            </Button>
+            <FilterMenu
+              columns={columns}
+              operators={[
+                {
+                  id: "contains",
+                  label: "Contains",
+                },
+              ]}
+              filters={filters}
+              handleAddFilter={handleAddFilter}
+              handleFilterChange={handleFilterChange}
+              handleDeleteFilter={handleDeleteFilter}
+            />
             <Menu
               id="filter-menu"
               anchorEl={null}
@@ -114,7 +145,7 @@ const DataTable = memo(function DataTable({
       </Paper>
       {/* Data grid Section */}
       <Paper sx={{ m: 1 }}>
-        <TableContainer sx={{ maxHeight: "80vh" }}>
+        <TableContainer sx={{ maxHeight: "79vh" }}>
           <Table stickyHeader aria-label="sticky table" size={"medium"}>
             {/* Header column */}
             <TableHead>
