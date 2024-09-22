@@ -144,9 +144,11 @@ export default function MoviesTable() {
   };
 
   return (
-    <Box sx={{
-      p: 0,
-    }}>
+    <Box
+      sx={{
+        p: 0,
+      }}
+    >
       <DataTable
         title="Movie"
         columns={columnModels}

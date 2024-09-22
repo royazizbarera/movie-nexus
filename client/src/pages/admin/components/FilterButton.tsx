@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useMemo } from "react";
 import {
   Box,
   Button,
@@ -18,6 +18,7 @@ import Field from "../models/FieldModel";
 export interface Operator {
   id: string;
   label: string;
+  typeFor: string[];
 }
 
 export interface Filter {
@@ -29,71 +30,115 @@ export interface Filter {
 
 interface FilterMenuProps {
   columns: Field[];
-  operators: Operator[];
-  filters: Filter[];
-  handleAddFilter: (filter: Filter) => void;
-  handleFilterChange: (id: number, field: keyof Filter, value: string) => void;
-  handleDeleteFilter: (id: number) => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({
-  columns,
-  operators,
-  filters,
-  handleAddFilter,
-  handleFilterChange,
-  handleDeleteFilter,
-}) => {
+const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedColumn, setSelectedColumn] = useState<string>("");
-  const [selectedOperator, setSelectedOperator] = useState<string>("");
-  const [filterValue, setFilterValue] = useState<string>("");
+  const [selectedLogicalOperator, setSelectedLogicalOperator] =
+    useState<string>("and");
+  const [filters, setFilters] = useState<Filter[]>([]);
+  const [addFilterCondition, setAddFilterCondition] = useState<boolean>(true); // Defaultnya false
+  const [newFilter, setNewFilter] = useState<Filter>({
+    id: 0,
+    column: "",
+    operator: "",
+    value: "",
+  });
 
   const open = Boolean(anchorEl);
 
+  const operators = useMemo(
+    () => [
+      { id: "eq", label: "Equals", typeFor: ["text", "number", "boolean"] },
+      {
+        id: "neq",
+        label: "Not Equals",
+        typeFor: ["text", "number", "boolean"],
+      },
+      { id: "gt", label: "Greater Than", typeFor: ["number"] },
+      { id: "lt", label: "Less Than", typeFor: ["number"] },
+      { id: "gte", label: "Greater Than or Equals", typeFor: ["number"] },
+      { id: "lte", label: "Less Than or Equals", typeFor: ["number"] },
+      { id: "contains", label: "Contains", typeFor: ["text"] },
+      { id: "ncontains", label: "Not Contains", typeFor: ["text"] },
+    ],
+    []
+  );
+
+  // Fungsi untuk menambahkan filter baru
+  const handleAddFilter = () => {
+    if (newFilter.column && newFilter.operator && newFilter.value) {
+      setFilters((prev) => [...prev, { ...newFilter, id: prev.length + 1 }]);
+      setNewFilter({ id: 0, column: "", operator: "", value: "" }); // Reset filter setelah ditambahkan
+      // setAddFilterCondition(false); // Sembunyikan form input filter baru
+    } else if (!addFilterCondition) {
+      handleShowAddFilter();
+    }
+  };
+
+  // Fungsi untuk memunculkan form input filter baru
+  const handleShowAddFilter = () => {
+    setAddFilterCondition(true);
+  };
+  // untu menutup form input filter baru
+  const handleHideAddFilter = () => {
+    setAddFilterCondition(false);
+  };
+  // Fungsi untuk mengubah filter yang sudah ada
+  const handleChangeFilter = (
+    id: number,
+    field: keyof Filter,
+    value: string
+  ) => {
+    setFilters((prev) =>
+      prev.map((filter) =>
+        filter.id === id ? { ...filter, [field]: value } : filter
+      )
+    );
+  };
+
+  // Menghapus filter
+  const handleDeleteFilter = (id: number) => {
+    setFilters(filters.filter((filter) => filter.id !== id));
+  };
+
+  // Membuka menu filter
   const handleOpenFilter = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Menutup menu filter
   const handleCloseFilter = () => {
     setAnchorEl(null);
   };
 
+  // Menonaktifkan tombol Apply jika tidak ada filter valid
+  const isApplyButtonDisabled = () => {
+    // Tombol disabled jika semua filter kosong atau filter yang ada tidak lengkap
+    return (
+      filters.length === 0 && // Tidak ada filter yang valid
+      (!newFilter.column || !newFilter.operator || !newFilter.value) // Filter baru belum lengkap
+    );
+  };
+
+  // Menerapkan filter
   const handleApplyFilter = () => {
-    if (selectedColumn && selectedOperator && filterValue) {
-      handleAddFilter({
-        id: filters.length + 1,
-        column: selectedColumn,
-        operator: selectedOperator,
-        value: filterValue,
-      });
-      setSelectedColumn("");
-      setSelectedOperator("");
-      setFilterValue("");
+    // Jika ada filter yang baru ditambahkan, tambahkan ke dalam list filters
+    if (newFilter.column && newFilter.operator && newFilter.value) {
+      handleAddFilter();
+      setAddFilterCondition(false);
     }
+
+    // Lakukan sesuatu dengan filters yang sudah ada
+    console.log("Filters applied:", filters);
   };
 
   return (
     <>
-      <Button
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleOpenFilter}
-        sx={{ width: "auto" }}
-      >
+      <Button onClick={handleOpenFilter} sx={{ width: "auto" }}>
         Filter
       </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleCloseFilter}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
+      <Menu anchorEl={anchorEl} open={open} onClose={handleCloseFilter}>
         <Box
           sx={{
             display: "flex",
@@ -103,14 +148,50 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
             overflow: "auto",
           }}
         >
+          <FormControl variant="standard" sx={{ minWidth: 120 }}>
+            <InputLabel>Logical Operator</InputLabel>
+            <Select
+              value={selectedLogicalOperator}
+              onChange={(e) => setSelectedLogicalOperator(e.target.value)}
+              label="Logical Operator"
+            >
+              <MenuItem value="and">AND</MenuItem>
+              <MenuItem value="or">OR</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Filter yang sudah ada */}
           {filters.map((filter) => (
-            <Box key={filter.id} sx={{ display: "flex", gap: 2 }}>
-              <FormControl variant="standard" sx={{ minWidth: 120 }}>
+            <Box
+              key={filter.id}
+              sx={{
+                display: "flex",
+                gap: 2,
+                flexWrap: {
+                  xs: "wrap",
+                  sm: "wrap",
+                  md: "nowrap",
+                },
+              }}
+            >
+              <FormControl
+                variant="standard"
+                sx={{
+                  width: {
+                    xs: "100%", // Full width on extra small screens
+                    sm: "45%", // 45% width on small screens
+                    // md: "30%", // 30% width on medium screens and above
+                  },
+                  minWidth: {
+                    md: 90,
+                  },
+                }}
+              >
                 <InputLabel>Columns</InputLabel>
                 <Select
                   value={filter.column}
                   onChange={(e) =>
-                    handleFilterChange(filter.id, "column", e.target.value)
+                    handleChangeFilter(filter.id, "column", e.target.value)
                   }
                   label="Columns"
                 >
@@ -121,12 +202,25 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                   ))}
                 </Select>
               </FormControl>
-              <FormControl variant="standard" sx={{ minWidth: 120 }}>
+
+              <FormControl
+                variant="standard"
+                sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "45%",
+                    // md: "30%",
+                  },
+                  minWidth: {
+                    md: 90,
+                  },
+                }}
+              >
                 <InputLabel>Operator</InputLabel>
                 <Select
                   value={filter.operator}
                   onChange={(e) =>
-                    handleFilterChange(filter.id, "operator", e.target.value)
+                    handleChangeFilter(filter.id, "operator", e.target.value)
                   }
                   label="Operator"
                 >
@@ -137,72 +231,170 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                   ))}
                 </Select>
               </FormControl>
-              <FormControl variant="standard" sx={{ minWidth: 200 }}>
+
+              <FormControl
+                variant="standard"
+                sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "100%",
+                    // md: "30%",
+                  },
+                  minWidth: {
+                    md: 90,
+                  },
+                }}
+              >
                 <TextField
                   size="small"
                   label="Value"
                   value={filter.value}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleFilterChange(filter.id, "value", e.target.value)
+                  onChange={(e) =>
+                    handleChangeFilter(filter.id, "value", e.target.value)
                   }
                   variant="standard"
                 />
               </FormControl>
+
               <IconButton
                 onClick={() => handleDeleteFilter(filter.id)}
-                aria-label="Delete"
+                sx={{
+                  alignSelf: "center",
+                }}
               >
                 <DeleteIcon />
               </IconButton>
             </Box>
           ))}
 
-          {/* New filter */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <FormControl variant="standard" sx={{ minWidth: 120 }}>
-              <InputLabel>Columns</InputLabel>
-              <Select
-                value={selectedColumn}
-                onChange={(e) => setSelectedColumn(e.target.value)}
-                label="Columns"
-              >
-                {columns.map((column) => (
-                  <MenuItem key={column.label} value={column.label}>
-                    {column.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl variant="standard" sx={{ minWidth: 120 }}>
-              <InputLabel>Operator</InputLabel>
-              <Select
-                value={selectedOperator}
-                onChange={(e) => setSelectedOperator(e.target.value)}
-                label="Operator"
-              >
-                {operators.map((operator) => (
-                  <MenuItem key={operator.id} value={operator.id}>
-                    {operator.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl variant="standard" sx={{ minWidth: 200 }}>
-              <TextField
-                size="small"
-                label="Value"
-                value={filterValue}
-                onChange={(e) => setFilterValue(e.target.value)}
-                placeholder="Filter value"
+          {/* Input filter baru hanya jika addFilterCondition true */}
+          {addFilterCondition && (
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                flexWrap: {
+                  xs: "wrap",
+                  sm: "wrap",
+                  md: "nowrap",
+                },
+              }}
+            >
+              <FormControl
                 variant="standard"
-              />
-            </FormControl>
-            <IconButton onClick={handleApplyFilter} aria-label="Add">
+                sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "45%",
+                    // md: "30%",
+                  },
+                  minWidth: {
+                    md: 90,
+                  },
+                }}
+              >
+                <InputLabel>Columns</InputLabel>
+                <Select
+                  value={newFilter.column}
+                  onChange={(e) =>
+                    setNewFilter({ ...newFilter, column: e.target.value })
+                  }
+                  label="Columns"
+                >
+                  {columns.map((column) => (
+                    <MenuItem key={column.label} value={column.label}>
+                      {column.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl
+                variant="standard"
+                sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "45%",
+                    // md: "30%",
+                  },
+                  minWidth: {
+                    md: 90,
+                  },
+                }}
+              >
+                <InputLabel>Operator</InputLabel>
+                <Select
+                  value={newFilter.operator}
+                  onChange={(e) =>
+                    setNewFilter({ ...newFilter, operator: e.target.value })
+                  }
+                  label="Operator"
+                >
+                  {operators.map((operator) => (
+                    <MenuItem key={operator.id} value={operator.id}>
+                      {operator.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl
+                variant="standard"
+                sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "100%",
+                    // md: "30%",
+                  },
+                }}
+              >
+                <TextField
+                  size="small"
+                  label="Value"
+                  value={newFilter.value}
+                  onChange={(e) =>
+                    setNewFilter({ ...newFilter, value: e.target.value })
+                  }
+                  placeholder="Filter value"
+                  variant="standard"
+                />
+              </FormControl>
+            </Box>
+          )}
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+            }}
+          >
+            <IconButton
+              onClick={handleAddFilter}
+              sx={{
+                alignSelf: "center",
+              }}
+            >
               <AddIcon />
             </IconButton>
+            {addFilterCondition && (
+              <IconButton
+                onClick={handleHideAddFilter}
+                sx={{
+                  alignSelf: "center",
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            )}
           </Box>
+
+          <Button
+            variant="contained"
+            onClick={handleApplyFilter}
+            disabled={isApplyButtonDisabled()}
+          >
+            Apply
+          </Button>
         </Box>
       </Menu>
     </>

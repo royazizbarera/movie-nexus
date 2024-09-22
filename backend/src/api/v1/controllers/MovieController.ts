@@ -33,9 +33,21 @@ class MovieController {
     try {
       const page = parseInt(req.query.page as string) || undefined;
       const limit = parseInt(req.query.limit as string) || undefined;
+      // Ambil parameter query dari request
+      const { searchTerm, genres, country, sortBy, sortOrder } = req.query;
+      // Jika genres adalah string, ubah menjadi array dengan split. Jika tidak, atur sebagai array kosong.
+      const genreArray = typeof genres === "string" ? genres.split(",") : [];
+
       const movies = await movieService.getMovies({
         page: page,
         pageSize: limit,
+        params: {
+          searchTerm: searchTerm as string, // pastikan bahwa search adalah string
+          genres: genreArray, // gunakan array genres yang sudah diparsing
+          country: country as string, // pastikan bahwa country adalah string
+          sortBy: sortBy as string, // pastikan bahwa sortBy adalah string
+          sortOrder: sortOrder as "asc" | "desc", // pastikan bahwa sortOrder adalah string
+        },
       });
       return res.json(
         ResponseApi({
@@ -134,42 +146,42 @@ class MovieController {
     }
   }
 
-  async searchMovies(req: Request, res: Response) {
-    try {
-      // Ambil parameter query dari request
-      const { searchTerm, genres, country, sortBy, sortOrder } = req.query;
-      // Jika genres adalah string, ubah menjadi array dengan split. Jika tidak, atur sebagai array kosong.
-      const genreArray = typeof genres === "string" ? genres.split(",") : [];
+  // async searchMovies(req: Request, res: Response) {
+  //   try {
+  //     // Ambil parameter query dari request
+  //     const { searchTerm, genres, country, sortBy, sortOrder } = req.query;
+  //     // Jika genres adalah string, ubah menjadi array dengan split. Jika tidak, atur sebagai array kosong.
+  //     const genreArray = typeof genres === "string" ? genres.split(",") : [];
 
-      // Memanggil controller method untuk melakukan pencarian
-      const movies = await movieService.searchMovies({
-        searchTerm: searchTerm as string, // pastikan bahwa search adalah string
-        genres: genreArray, // gunakan array genres yang sudah diparsing
-        country: country as string, // pastikan bahwa country adalah string
-        sortBy: sortBy as string, // pastikan bahwa sortBy adalah string
-        sortOrder: sortOrder as "asc" | "desc", // pastikan bahwa sortOrder adalah string
-      });
+  //     // Memanggil controller method untuk melakukan pencarian
+  //     const movies = await movieService.searchMovies({
+  //       searchTerm: searchTerm as string, // pastikan bahwa search adalah string
+  //       genres: genreArray, // gunakan array genres yang sudah diparsing
+  //       country: country as string, // pastikan bahwa country adalah string
+  //       sortBy: sortBy as string, // pastikan bahwa sortBy adalah string
+  //       sortOrder: sortOrder as "asc" | "desc", // pastikan bahwa sortOrder adalah string
+  //     });
 
-      return res.json(
-        ResponseApi({
-          code: HttpStatus.OK,
-          message: "Movie searched successfully",
-          data: movies,
-          version: 1.0,
-        })
-      );
-    } catch (error) {
-      // Tangani error dan kirim respons kesalahan
-      return res.status(500).json(
-        ResponseApi({
-          code: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: "Failed to search movies",
-          errors: error,
-          version: 1.0,
-        })
-      );
-    }
-  }
+  //     return res.json(
+  //       ResponseApi({
+  //         code: HttpStatus.OK,
+  //         message: "Movie searched successfully",
+  //         data: movies,
+  //         version: 1.0,
+  //       })
+  //     );
+  //   } catch (error) {
+  //     // Tangani error dan kirim respons kesalahan
+  //     return res.status(500).json(
+  //       ResponseApi({
+  //         code: HttpStatus.INTERNAL_SERVER_ERROR,
+  //         message: "Failed to search movies",
+  //         errors: error,
+  //         version: 1.0,
+  //       })
+  //     );
+  //   }
+  // }
 }
 
 const movieController = new MovieController();

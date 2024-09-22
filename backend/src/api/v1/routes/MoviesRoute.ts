@@ -3,7 +3,7 @@ import movieController from "../controllers/MovieController";
 
 const router = express.Router();
 
-router.get("/search", movieController.searchMovies)
+// router.get("/search", movieController.searchMovies)
 
 router.get("/", movieController.getMovies);
 

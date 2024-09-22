@@ -64,42 +64,44 @@ class MovieService {
       // Transaction to ensure atomic operations
       const newMovie = await prisma.$transaction(async (prisma) => {
         // Create a new movie with associated relations in a transaction
-        
+
         var newMovieId;
-        await prisma.movie.create({
-          data: {
-            title: movieData.title,
-            synopsis: movieData.synopsis,
-            posterUrl: movieData.posterUrl,
-            releaseDate: new Date(movieData.releaseDate),
-            approvalStatus: movieData.approvalStatus,
-            rating: movieData.rating,
-            country: {
-              connect: { code: movieData.countryCode }, // Connect to the related country
+        await prisma.movie
+          .create({
+            data: {
+              title: movieData.title,
+              synopsis: movieData.synopsis,
+              posterUrl: movieData.posterUrl,
+              releaseDate: new Date(movieData.releaseDate),
+              approvalStatus: movieData.approvalStatus,
+              rating: movieData.rating,
+              country: {
+                connect: { code: movieData.countryCode }, // Connect to the related country
+              },
+              director: {
+                connect: { id: movieData.directorId }, // Connect to the related director
+              },
+              genres: {
+                create: movieData.genres.map((genreId: number) => ({
+                  genre: { connect: { id: genreId } }, // Connect each genre by ID
+                })),
+              },
+              actors: {
+                create: movieData.actors.map((actorId: number) => ({
+                  actor: { connect: { id: actorId } }, // Connect each actor by ID
+                })),
+              },
+              awards: {
+                create: movieData.awards.map((awardId: number) => ({
+                  award: { connect: { id: awardId } }, // Connect each award by ID
+                })),
+              },
             },
-            director: {
-              connect: { id: movieData.directorId }, // Connect to the related director
-            },
-            genres: {
-              create: movieData.genres.map((genreId: number) => ({
-                genre: { connect: { id: genreId } }, // Connect each genre by ID
-              })),
-            },
-            actors: {
-              create: movieData.actors.map((actorId: number) => ({
-                actor: { connect: { id: actorId } }, // Connect each actor by ID
-              })),
-            },
-            awards: {
-              create: movieData.awards.map((awardId: number) => ({
-                award: { connect: { id: awardId } }, // Connect each award by ID
-              })),
-            },
-          },
-        }).then((movie) => {
-          newMovieId = movie.id;
-        });
-  
+          })
+          .then((movie) => {
+            newMovieId = movie.id;
+          });
+
         // Fetch the newly created movie with all its relations
         const movieWithRelations = await prisma.movie.findUnique({
           where: {
@@ -107,10 +109,10 @@ class MovieService {
           },
           ...this.joinTable, // Fetch the full movie data with relations
         });
-  
+
         return movieWithRelations;
       });
-  
+
       // Refactor the movie result before returning
       const refactorMovie = this.refactorMovies([newMovie])[0];
       return refactorMovie;
@@ -119,29 +121,29 @@ class MovieService {
       throw new Error("Could not create movie");
     }
   }
-  
 
   // Metode untuk mendapatkan semua movie
-  async getMovies({ page = undefined, pageSize = undefined }: PaginationProps) {
-    // Hitung nilai skip berdasarkan halaman dan limit
-    var skip = undefined;
-    if (page && pageSize) {
-      skip = (page - 1) * pageSize;
-    }
-    try {
-      const movies = await prisma.movie.findMany({
-        ...this.joinTable,
-        skip: skip,
-        take: pageSize,
-      });
-      const refactorMovies = this.refactorMovies(movies);
-      return refactorMovies;
-    } catch (error) {
-      throw new Error("Could not fetch movies");
-    }
-  }
+  // async getMovies({ page = undefined, pageSize = undefined }: PaginationProps) {
+  //   // Hitung nilai skip berdasarkan halaman dan limit
+  //   var skip = undefined;
+  //   if (page && pageSize) {
+  //     skip = (page - 1) * pageSize;
+  //   }
+  //   try {
+  //     const movies = await prisma.movie.findMany({
+  //       ...this.joinTable,
+  //       skip: skip,
+  //       take: pageSize,
+  //     });
+  //     const refactorMovies = this.refactorMovies(movies);
+  //     return refactorMovies;
+  //   } catch (error) {
+  //     throw new Error("Could not fetch movies");
+  //   }
+  // }
 
   // Metode untuk mendapatkan satu movie berdasarkan ID
+
   async getMovieById(id: number) {
     try {
       const movie = await prisma.movie.findUnique({
@@ -161,7 +163,6 @@ class MovieService {
       throw new Error(`Could not fetch movie with ID ${id}`);
     }
   }
-
   // Metode untuk mengupdate data movie
   async updateMovieById(id: number, updatedData: any) {
     try {
@@ -250,8 +251,24 @@ class MovieService {
     }
   }
 
-  async searchMovies(params: SearchParams) {
+  async getMovies({
+    page = undefined,
+    pageSize = undefined,
+    params,
+  }: {
+    page: number | undefined;
+    pageSize: number | undefined;
+    params: SearchParams;
+  }) {
+    // Hitung nilai skip berdasarkan halaman dan limit
+    var skip = undefined;
+    if (page && pageSize) {
+      skip = (page - 1) * pageSize;
+    }
+
+    // Destructure parameter pencarian
     const { searchTerm, genres, country, sortBy, sortOrder } = params;
+
     const whereClause: any = {
       AND: [],
     };
@@ -306,13 +323,12 @@ class MovieService {
             [sortBy]: sortOrder || "asc", // Sorting berdasarkan field
           }
         : undefined,
-      include: {
-        genres: true, // Menyertakan genre
-        country: true, // Menyertakan negara
-      },
+      include: this.joinTable.include,
+      skip: skip,
+      take: pageSize,
     });
-
-    return movies;
+    console.log(movies);
+    return this.refactorMovies(movies);
   }
 }
 

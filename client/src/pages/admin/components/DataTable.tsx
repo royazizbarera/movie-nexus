@@ -74,28 +74,6 @@ const DataTable = memo(function DataTable({
     setOpenAddDialog(false);
   };
 
-  // Filter
-  const [filters, setFilters] = useState<Filter[]>([]);
-  const handleAddFilter = (newFilter: Filter) => {
-    setFilters((prevFilters) => [...prevFilters, newFilter]);
-  };
-
-  const handleFilterChange = (
-    id: number,
-    field: keyof Filter,
-    value: string
-  ) => {
-    setFilters((prevFilters) =>
-      prevFilters.map((filter) =>
-        filter.id === id ? { ...filter, [field]: value } : filter
-      )
-    );
-  };
-
-  const handleDeleteFilter = (id: number) => {
-    setFilters(filters.filter((filter) => filter.id !== id));
-  };
-
   return (
     // Layout
     <Box sx={{ width: "100%", overflow: "hidden" }}>
@@ -109,19 +87,7 @@ const DataTable = memo(function DataTable({
           }}
         >
           <Stack direction={"row"}>
-            <FilterMenu
-              columns={columns}
-              operators={[
-                {
-                  id: "contains",
-                  label: "Contains",
-                },
-              ]}
-              filters={filters}
-              handleAddFilter={handleAddFilter}
-              handleFilterChange={handleFilterChange}
-              handleDeleteFilter={handleDeleteFilter}
-            />
+            <FilterMenu columns={columns} />
             <Menu
               id="filter-menu"
               anchorEl={null}
