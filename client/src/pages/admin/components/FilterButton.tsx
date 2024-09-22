@@ -23,6 +23,7 @@ export interface Operator {
 
 export interface Filter {
   id: number;
+  columnKey: string;
   column: string;
   operator: string;
   value: string;
@@ -30,9 +31,10 @@ export interface Filter {
 
 interface FilterMenuProps {
   columns: Field[];
+  onApply: (filters: Filter[]) => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
+const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedLogicalOperator, setSelectedLogicalOperator] =
     useState<string>("and");
@@ -40,6 +42,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
   const [addFilterCondition, setAddFilterCondition] = useState<boolean>(true); // Defaultnya false
   const [newFilter, setNewFilter] = useState<Filter>({
     id: 0,
+    columnKey: "",
     column: "",
     operator: "",
     value: "",
@@ -60,7 +63,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
       { id: "gte", label: "Greater Than or Equals", typeFor: ["number"] },
       { id: "lte", label: "Less Than or Equals", typeFor: ["number"] },
       { id: "contains", label: "Contains", typeFor: ["text"] },
-      { id: "ncontains", label: "Not Contains", typeFor: ["text"] },
     ],
     []
   );
@@ -69,7 +71,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
   const handleAddFilter = () => {
     if (newFilter.column && newFilter.operator && newFilter.value) {
       setFilters((prev) => [...prev, { ...newFilter, id: prev.length + 1 }]);
-      setNewFilter({ id: 0, column: "", operator: "", value: "" }); // Reset filter setelah ditambahkan
+      setNewFilter({ id: 0, columnKey: "", column: "", operator: "", value: "" }); // Reset filter setelah ditambahkan
       // setAddFilterCondition(false); // Sembunyikan form input filter baru
     } else if (!addFilterCondition) {
       handleShowAddFilter();
@@ -127,8 +129,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
     if (newFilter.column && newFilter.operator && newFilter.value) {
       handleAddFilter();
       setAddFilterCondition(false);
+      onApply(filters);
     }
-
+    onApply(filters);
+    handleCloseFilter();
     // Lakukan sesuatu dengan filters yang sudah ada
     console.log("Filters applied:", filters);
   };
@@ -296,9 +300,16 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
                 <InputLabel>Columns</InputLabel>
                 <Select
                   value={newFilter.column}
-                  onChange={(e) =>
-                    setNewFilter({ ...newFilter, column: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const selectedColumn = columns.find((col) => col.label === e.target.value);
+                    if (selectedColumn) {
+                      setNewFilter({
+                        ...newFilter,
+                        columnKey: selectedColumn.name, // Store columnKey
+                        column: selectedColumn.label,  // Store column label
+                      });
+                    }
+                  }}
                   label="Columns"
                 >
                   {columns.map((column) => (
@@ -391,7 +402,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns }) => {
           <Button
             variant="contained"
             onClick={handleApplyFilter}
-            disabled={isApplyButtonDisabled()}
+            // disabled={isApplyButtonDisabled()}
           >
             Apply
           </Button>

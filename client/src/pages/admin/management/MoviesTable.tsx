@@ -6,6 +6,8 @@ import DataTable from "../components/DataTable";
 
 import axios from "axios";
 import { Box } from "@mui/material";
+import DataTableMovies from "../components/DataTableMovies";
+import { Filter } from "../components/FilterButton";
 
 export default function MoviesTable() {
   const columnModels = useMemo<Field[]>(
@@ -89,39 +91,24 @@ export default function MoviesTable() {
     []
   );
 
-  const [rows, setRows] = useState<any[]>([]);
+  const fetchMovies = async (filters: any) => {
+    try {
+      // const params = filters.reduce((acc: any, filter) => {
+      //   const { columnKey, operator, value } = filter;
+      //   acc.push({ columnKey, operator, value });
+      //   return acc;
+      // }, []);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get<ResponseApiProps>(`${API_URL}/movies`);
-        const data = response.data?.data;
+      const response = await axios.get<ResponseApiProps>(`${API_URL}/movies`, {
+        params: { filters: filters },
+      });
 
-        // Only set rows if data has changed
-        if (JSON.stringify(data) !== JSON.stringify(rows)) {
-          setRows(data);
-        }
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
-    fetchMovies();
-  }, [rows]);
-
-  // useEffect(() => {
-  //   const fetchMovies = async () => {
-  //     // Memanggil API untuk mendapatkan data movie
-  //     await axios
-  //       .get<ResponseApiProps>(`${API_URL}/movies`)
-  //       .then((res) => {
-  //         setRows(res.data?.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching movies:", error);
-  //       });
-  //   };
-  //   fetchMovies();
-  // }, []);
+      return response.data?.data || [];
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      return [];
+    }
+  };
 
   const handleAddData = async (movieData: any) => {
     try {
@@ -133,11 +120,7 @@ export default function MoviesTable() {
 
       // Get the newly added movie from the response
       const newMovie = response.data?.data;
-
-      // Add the new movie to the current state
-      if (newMovie) {
-        setRows((prevRows) => [...prevRows, newMovie]);
-      }
+      return newMovie;
     } catch (error) {
       console.error("Error adding movie:", error);
     }
@@ -149,10 +132,10 @@ export default function MoviesTable() {
         p: 0,
       }}
     >
-      <DataTable
+      <DataTableMovies
         title="Movie"
         columns={columnModels}
-        rows={rows}
+        fetchRows={fetchMovies}
         onAdd={handleAddData}
       />
     </Box>

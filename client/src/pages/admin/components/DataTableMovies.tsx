@@ -24,11 +24,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // System
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
 interface DataTableProps {
   columns: Field[];
-  rows: any[];
+  fetchRows: (param: any) => Promise<any[]>;
   onAdd: (data: any) => void;
   title: string;
   // handleEditRow: (row: any) => void;
@@ -38,14 +38,35 @@ interface DataTableProps {
   // handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const DataTable = memo(function DataTable({
+const DataTableMovies = memo(function DataTable({
   columns,
-  rows,
+  fetchRows,
   onAdd,
   title,
 }: DataTableProps) {
+  const [rows, setRows] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [filters, setFilters] = useState<Filter[]>([]);
+  // Tambahkan handler untuk mengubah filter
+  const handleFilterApply = (appliedFilters: Filter[]) => {
+    setFilters(appliedFilters);
+  };
+  // Fetch data
+
+  // Fetch data on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      const filtersObj = filters.reduce((acc: any, filter) => {
+        const { columnKey, operator, value } = filter;
+        acc.push({ columnKey, operator, value });
+        return acc;
+      }, []);
+      const data = await fetchRows(filtersObj);
+      setRows(data || []);
+    };
+    fetchData();
+  }, [fetchRows, filters]);
 
   const visibleRows = useMemo(
     () => [...rows].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -87,13 +108,7 @@ const DataTable = memo(function DataTable({
           }}
         >
           <Stack direction={"row"}>
-            {/* <FilterMenu columns={columns} /> */}
-            <Menu
-              id="filter-menu"
-              anchorEl={null}
-              open={false}
-              onClose={() => {}}
-            ></Menu>
+            <FilterMenu columns={columns} onApply={handleFilterApply} />
           </Stack>
           <Stack direction={"row"}>
             <Button
@@ -280,4 +295,4 @@ const DataTable = memo(function DataTable({
   );
 });
 
-export default DataTable;
+export default DataTableMovies;

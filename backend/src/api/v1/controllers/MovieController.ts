@@ -34,11 +34,11 @@ class MovieController {
       const page = parseInt(req.query.page as string) || undefined;
       const limit = parseInt(req.query.limit as string) || undefined;
       // Ambil parameter query dari request
-      const { searchTerm, genres, country, sortBy, sortOrder } = req.query;
+      const { searchTerm, genres, country, sortBy, sortOrder, filters } = req.query;
       // Jika genres adalah string, ubah menjadi array dengan split. Jika tidak, atur sebagai array kosong.
       const genreArray = typeof genres === "string" ? genres.split(",") : [];
 
-      const movies = await movieService.getMovies({
+      const movies = await movieService.getMovies2({
         page: page,
         pageSize: limit,
         params: {
@@ -47,6 +47,7 @@ class MovieController {
           country: country as string, // pastikan bahwa country adalah string
           sortBy: sortBy as string, // pastikan bahwa sortBy adalah string
           sortOrder: sortOrder as "asc" | "desc", // pastikan bahwa sortOrder adalah string
+          filters: filters as any[],
         },
       });
       return res.json(

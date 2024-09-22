@@ -4,4 +4,5 @@ export default interface SearchParams {
   country?: string; // Filter berdasarkan negara
   sortBy?: string; // Sorting berdasarkan field
   sortOrder?: "asc" | "desc"; // Urutan sort
+  filters?: any[];
 }
