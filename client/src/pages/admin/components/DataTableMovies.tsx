@@ -25,10 +25,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // System
 import { memo, useEffect, useMemo, useState } from "react";
+import { API_URL } from "../../../config/constants";
+import { ResponseApiProps } from "../../../config/ResponseApi";
+import axios from "axios";
 
 interface DataTableProps {
   columns: Field[];
-  fetchRows: (param: any) => Promise<any[]>;
+  // fetchDataApi: (param: any) => Promise<any>;
+  urlApi: string;
   onAdd: (data: any) => void;
   title: string;
   // handleEditRow: (row: any) => void;
@@ -40,38 +44,55 @@ interface DataTableProps {
 
 const DataTableMovies = memo(function DataTable({
   columns,
-  fetchRows,
+  // fetchDataApi,
   onAdd,
   title,
 }: DataTableProps) {
   const [rows, setRows] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
   const [filters, setFilters] = useState<Filter[]>([]);
   // Tambahkan handler untuk mengubah filter
+  // const handleFilterApply = (appliedFilters: Filter[]) => {
+  //   setFilters(appliedFilters);
+  //   setPage(0);
+  // };
   const handleFilterApply = (appliedFilters: Filter[]) => {
+    // Only reset the page to 0 if filters are newly applied
+    const filtersChanged = JSON.stringify(appliedFilters) !== JSON.stringify(filters);
+    if (filtersChanged) {
+      setPage(0);
+    }
     setFilters(appliedFilters);
   };
+  
   // Fetch data
 
   // Fetch data on mount
   useEffect(() => {
     const fetchData = async () => {
-      const filtersObj = filters.reduce((acc: any, filter) => {
-        const { columnKey, operator, value } = filter;
-        acc.push({ columnKey, operator, value });
-        return acc;
-      }, []);
-      const data = await fetchRows(filtersObj);
-      setRows(data || []);
+      const filtersObj = filters.map(({ columnKey, operator, value }) => ({
+        columnKey,
+        operator,
+        value,
+      }));
+
+      const response = await axios.get<ResponseApiProps>(`${API_URL}/movies`, {
+        params: {
+          filters: filtersObj,
+          page: page + 1, // Adjust for 0-based index
+          pageSize: rowsPerPage,
+        },
+      });
+
+      const data = response.data;
+      setRows(data.data || []);
+      setTotalItems(data.pagination?.totalItems || 0);
     };
     fetchData();
-  }, [fetchRows, filters]);
+  }, [ filters, page, rowsPerPage]);
 
-  const visibleRows = useMemo(
-    () => [...rows].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [rows, page, rowsPerPage]
-  );
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -119,7 +140,7 @@ const DataTableMovies = memo(function DataTable({
               }}
               onClick={handleOpenAddDialog}
             >
-              Add {title}
+              Add {title} 
             </Button>
           </Stack>
         </Stack>
@@ -162,7 +183,7 @@ const DataTableMovies = memo(function DataTable({
             </TableHead>
             {/* Body */}
             <TableBody>
-              {visibleRows.map((row, rowIndex) => {
+              {rows.map((row, rowIndex) => {
                 return (
                   <TableRow
                     hover
@@ -277,7 +298,7 @@ const DataTableMovies = memo(function DataTable({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100, 150, 200]}
           component="div"
-          count={rows.length}
+          count={totalItems}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

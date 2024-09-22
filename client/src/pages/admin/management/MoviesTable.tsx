@@ -91,22 +91,16 @@ export default function MoviesTable() {
     []
   );
 
-  const fetchMovies = async (filters: any) => {
+  const fetchDataApi = async (params: any) => {
     try {
-      // const params = filters.reduce((acc: any, filter) => {
-      //   const { columnKey, operator, value } = filter;
-      //   acc.push({ columnKey, operator, value });
-      //   return acc;
-      // }, []);
-
       const response = await axios.get<ResponseApiProps>(`${API_URL}/movies`, {
-        params: { filters: filters },
+        params: params,
       });
 
-      return response.data?.data || [];
+      return response.data;
     } catch (error) {
       console.error("Error fetching movies:", error);
-      return [];
+      return {};
     }
   };
 
@@ -135,7 +129,8 @@ export default function MoviesTable() {
       <DataTableMovies
         title="Movie"
         columns={columnModels}
-        fetchRows={fetchMovies}
+        // fetchDataApi={fetchDataApi}
+        urlApi={`${API_URL}/movies`}
         onAdd={handleAddData}
       />
     </Box>

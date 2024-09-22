@@ -32,15 +32,16 @@ class MovieController {
   async getMovies(req: Request, res: Response) {
     try {
       const page = parseInt(req.query.page as string) || undefined;
-      const limit = parseInt(req.query.limit as string) || undefined;
+      const pageSize = parseInt(req.query.pageSize as string) || undefined;
       // Ambil parameter query dari request
-      const { searchTerm, genres, country, sortBy, sortOrder, filters } = req.query;
+      const { searchTerm, genres, country, sortBy, sortOrder, filters } =
+        req.query;
       // Jika genres adalah string, ubah menjadi array dengan split. Jika tidak, atur sebagai array kosong.
       const genreArray = typeof genres === "string" ? genres.split(",") : [];
 
       const movies = await movieService.getMovies2({
         page: page,
-        pageSize: limit,
+        pageSize: pageSize,
         params: {
           searchTerm: searchTerm as string, // pastikan bahwa search adalah string
           genres: genreArray, // gunakan array genres yang sudah diparsing
@@ -50,12 +51,19 @@ class MovieController {
           filters: filters as any[],
         },
       });
+      const totalItems = await movieService.countMovies();
       return res.json(
         ResponseApi({
           code: HttpStatus.OK,
           message: "Movies fetched successfully",
           data: movies,
           version: 1.0,
+          pagination: {
+            page: page,
+            pageSize: pageSize,
+            totalItems: totalItems,
+            totalPages: Math.ceil(totalItems / (pageSize || 1)),
+          },
         })
       );
     } catch (error) {

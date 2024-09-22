@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useMemo } from "react";
+import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Field from "../models/FieldModel";
+import { on } from "events";
 
 export interface Operator {
   id: string;
@@ -36,8 +37,6 @@ interface FilterMenuProps {
 
 const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedLogicalOperator, setSelectedLogicalOperator] =
-    useState<string>("and");
   const [filters, setFilters] = useState<Filter[]>([]);
   const [addFilterCondition, setAddFilterCondition] = useState<boolean>(true); // Defaultnya false
   const [newFilter, setNewFilter] = useState<Filter>({
@@ -52,6 +51,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
 
   const operators = useMemo(
     () => [
+      { id: "contains", label: "Contains", typeFor: ["text"] },
       { id: "eq", label: "Equals", typeFor: ["text", "number", "boolean"] },
       {
         id: "neq",
@@ -62,10 +62,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
       { id: "lt", label: "Less Than", typeFor: ["number"] },
       { id: "gte", label: "Greater Than or Equals", typeFor: ["number"] },
       { id: "lte", label: "Less Than or Equals", typeFor: ["number"] },
-      { id: "contains", label: "Contains", typeFor: ["text"] },
     ],
     []
   );
+
+
+  // hook filter
+  useEffect(() => {
+    onApply(filters);
+  }, [filters, onApply]);
 
   // Fungsi untuk menambahkan filter baru
   const handleAddFilter = () => {
@@ -129,7 +134,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
     if (newFilter.column && newFilter.operator && newFilter.value) {
       handleAddFilter();
       setAddFilterCondition(false);
-      onApply(filters);
     }
     onApply(filters);
     handleCloseFilter();
@@ -152,18 +156,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
             overflow: "auto",
           }}
         >
-          <FormControl variant="standard" sx={{ minWidth: 120 }}>
-            <InputLabel>Logical Operator</InputLabel>
-            <Select
-              value={selectedLogicalOperator}
-              onChange={(e) => setSelectedLogicalOperator(e.target.value)}
-              label="Logical Operator"
-            >
-              <MenuItem value="and">AND</MenuItem>
-              <MenuItem value="or">OR</MenuItem>
-            </Select>
-          </FormControl>
-
           {/* Filter yang sudah ada */}
           {filters.map((filter) => (
             <Box
