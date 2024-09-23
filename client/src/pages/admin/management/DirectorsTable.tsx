@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import Field from "../models/FieldModel";
 import { ResponseApiProps } from "../../../config/ResponseApi";
 import { API_URL } from "../../../config/constants";
@@ -18,25 +18,6 @@ export default function DirectorsTable() {
     []
   );
 
-  const [rows, setRows] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get<ResponseApiProps>(`${API_URL}/directors`);
-        const data = response.data?.data;
-
-        // Only set rows if data has changed
-        if (JSON.stringify(data) !== JSON.stringify(rows)) {
-          setRows(data);
-        }
-      } catch (error) {
-        console.error("Error fetching directors:", error);
-      }
-    };
-    fetchMovies();
-  }, [rows]);
-
   const handleAddData = async (movieData: any) => {
     try {
       // Send POST request to the backend to add the new movie
@@ -47,11 +28,7 @@ export default function DirectorsTable() {
 
       // Get the newly added movie from the response
       const newMovie = response.data?.data;
-
-      // Add the new movie to the current state
-      if (newMovie) {
-        setRows((prevRows) => [...prevRows, newMovie]);
-      }
+return newMovie;
     } catch (error) {
       console.error("Error adding movie:", error);
     }
@@ -62,9 +39,10 @@ export default function DirectorsTable() {
       p: 0,
     }}>
       <DataTable
-        title="Director"
+        title="Movie"
         columns={columnModels}
-        rows={rows}
+        // fetchDataApi={fetchDataApi}
+        urlApi={`${API_URL}/directors`}
         onAdd={handleAddData}
       />
     </Box>

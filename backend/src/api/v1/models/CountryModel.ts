@@ -1,5 +1,5 @@
 export default interface CountryModel {
   code: string;
-  label: string;
+  name: string;
   phone: string;
 }

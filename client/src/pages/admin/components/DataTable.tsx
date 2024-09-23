@@ -11,24 +11,26 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Menu,
   Chip,
   TablePagination,
 } from "@mui/material";
 import Field from "../models/FieldModel";
 import AddDataDialog from "./AddMovie";
-import FilterMenu, { Filter } from "./FilterButton";
+import FilterMenu, { Filter } from "./FilterMenu";
 
 // icon
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // System
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useState } from "react";
+import { ResponseApiProps } from "../../../config/ResponseApi";
+import axios from "axios";
 
 interface DataTableProps {
   columns: Field[];
-  rows: any[];
+  // fetchDataApi: (param: any) => Promise<any>;
+  urlApi: string;
   onAdd: (data: any) => void;
   title: string;
   // handleEditRow: (row: any) => void;
@@ -40,17 +42,56 @@ interface DataTableProps {
 
 const DataTable = memo(function DataTable({
   columns,
-  rows,
+  // fetchDataApi,
+  urlApi,
   onAdd,
   title,
 }: DataTableProps) {
+  const [rows, setRows] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [filters, setFilters] = useState<Filter[]>([]);
+  // Tambahkan handler untuk mengubah filter
+  // const handleFilterApply = (appliedFilters: Filter[]) => {
+  //   setFilters(appliedFilters);
+  //   setPage(0);
+  // };
+  const handleFilterApply = (appliedFilters: Filter[]) => {
+    // Only reset the page to 0 if filters are newly applied
+    const filtersChanged =
+      JSON.stringify(appliedFilters) !== JSON.stringify(filters);
+    if (filtersChanged) {
+      setPage(0);
+    }
+    setFilters(appliedFilters);
+  };
 
-  const visibleRows = useMemo(
-    () => [...rows].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [rows, page, rowsPerPage]
-  );
+  // Fetch data
+
+  // Fetch data on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      const filtersObj = filters.map(({ columnKey, operator, value }) => ({
+        columnKey,
+        operator,
+        value,
+      }));
+
+      const response = await axios.get<ResponseApiProps>(`${urlApi}`, {
+        params: {
+          filters: filtersObj,
+          page: page + 1, // Adjust for 0-based index
+          pageSize: rowsPerPage,
+        },
+      });
+
+      const data = response.data;
+      setRows(data.data || []);
+      setTotalItems(data.pagination?.totalItems || 0);
+    };
+    fetchData();
+  }, [filters, page, rowsPerPage, urlApi]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -87,13 +128,7 @@ const DataTable = memo(function DataTable({
           }}
         >
           <Stack direction={"row"}>
-            {/* <FilterMenu columns={columns} /> */}
-            <Menu
-              id="filter-menu"
-              anchorEl={null}
-              open={false}
-              onClose={() => {}}
-            ></Menu>
+            <FilterMenu columns={columns} onApply={handleFilterApply} />
           </Stack>
           <Stack direction={"row"}>
             <Button
@@ -147,7 +182,7 @@ const DataTable = memo(function DataTable({
             </TableHead>
             {/* Body */}
             <TableBody>
-              {visibleRows.map((row, rowIndex) => {
+              {rows.map((row, rowIndex) => {
                 return (
                   <TableRow
                     hover
@@ -218,9 +253,11 @@ const DataTable = memo(function DataTable({
                                 textOverflow: "ellipsis", // Tambahkan "..." jika teks dipotong
                               }}
                             >
-                              {column.options?.find(
+                              {/* {column.options?.find(
                                 (option) => option.value === row[column.name]
-                              )?.label || ""}
+                              )?.label || ""} */}
+                              {row[column.name].name || "null"}
+                              {console.info(row[column.name])}
                             </TableCell>
                           );
                         case "multiselect":
@@ -262,7 +299,7 @@ const DataTable = memo(function DataTable({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100, 150, 200]}
           component="div"
-          count={rows.length}
+          count={totalItems}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

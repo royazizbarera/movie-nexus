@@ -12,7 +12,7 @@ generator client {
 // Country model
 model Country {
   code     String     @id
-  label    String
+  name    String
   phone    String
   actors   Actor[]
   awards   Award[]

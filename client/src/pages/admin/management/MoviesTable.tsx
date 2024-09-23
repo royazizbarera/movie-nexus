@@ -1,13 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import Field from "../models/FieldModel";
 import { ResponseApiProps } from "../../../config/ResponseApi";
 import { API_URL } from "../../../config/constants";
-import DataTable from "../components/DataTable";
 
 import axios from "axios";
 import { Box } from "@mui/material";
-import DataTableMovies from "../components/DataTableMovies";
-import { Filter } from "../components/FilterButton";
+import DataTable from "../components/DataTable";
 
 export default function MoviesTable() {
   const columnModels = useMemo<Field[]>(
@@ -37,25 +35,15 @@ export default function MoviesTable() {
       },
       { name: "rating", label: "Rating", type: "number", isRequired: true },
       {
-        name: "countryCode",
+        name: "country",
         label: "Country",
         type: "select",
-        options: [
-          { value: "US", label: "United States" },
-          { value: "CA", label: "Canada" },
-          { value: "FR", label: "France" },
-        ],
         isRequired: true,
       },
       {
-        name: "directorId",
-        label: "Directors",
+        name: "director",
+        label: "Director",
         type: "select",
-        options: [
-          { value: 1, label: "Tom Hanks" },
-          { value: 2, label: "Brad Pitt" },
-          { value: 3, label: "Natalie Portman" },
-        ],
       },
       {
         name: "actors",
@@ -91,19 +79,6 @@ export default function MoviesTable() {
     []
   );
 
-  const fetchDataApi = async (params: any) => {
-    try {
-      const response = await axios.get<ResponseApiProps>(`${API_URL}/movies`, {
-        params: params,
-      });
-
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching movies:", error);
-      return {};
-    }
-  };
-
   const handleAddData = async (movieData: any) => {
     try {
       // Send POST request to the backend to add the new movie
@@ -126,7 +101,7 @@ export default function MoviesTable() {
         p: 0,
       }}
     >
-      <DataTableMovies
+      <DataTable
         title="Movie"
         columns={columnModels}
         // fetchDataApi={fetchDataApi}
