@@ -24,6 +24,9 @@ import HailIcon from "@mui/icons-material/Hail";
 import PublicIcon from "@mui/icons-material/Public";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 import Logo from "./Logo";
 
 // Constants for Drawer width
@@ -117,6 +120,23 @@ const topNavigation: NavigationItem[] = [
     title: "Genres",
     icon: <AutoAwesomeMotionIcon />,
   },
+  {
+    path: "approvement",
+    title: "Approvements",
+    icon: <TaskAltIcon/>,
+    children: [
+      {
+        path: "movie-approval",
+        title: "Movies Approval",
+        icon: <VideoCallIcon/>,
+      },
+      {
+        path: "comments-approval",
+        title: "Comments Approval",
+        icon: <RateReviewIcon/>,
+      },
+    ]
+  }
 ];
 
 export default function AdminSidebar() {
