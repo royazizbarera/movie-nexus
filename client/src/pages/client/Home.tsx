@@ -1,9 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
-import Header from "../../../../../temp/movie-nexus/client/src/components/layouts/Header";
-import Banner from "../../../../../temp/movie-nexus/client/src/components/layouts/Banner";
-import MovieList from "../../../../../temp/movie-nexus/client/src/components/layouts/MovieList";
-import movies from "../../../../../temp/movie-nexus/client/src/database/DummyMovies";
+import Header from "../../components/layouts/Header";
+import Banner from "../../components/layouts/Banner";
+import MovieList from "../../components/layouts/MovieList";
+import movies from "../../database/DummyMovies";
+
 
 const Home: React.FC = () => {
   return (

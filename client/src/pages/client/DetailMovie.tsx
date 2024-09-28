@@ -1,11 +1,11 @@
 import React from "react";
 import { Box } from "@mui/material";
-import MovieModel from "../../../../../temp/movie-nexus/client/src/model/temp/MovieModel";
-import MovieHeroSection from "../../../../../temp/movie-nexus/client/src/components/layouts/MovieHeroSection";
-import MovieDescriptionSection from "../../../../../temp/movie-nexus/client/src/components/layouts/MovieDescriptionSection";
-import ActorListSection from "../../../../../temp/movie-nexus/client/src/components/layouts/ActorListSection";
-import MovieReviewSection from "../../../../../temp/movie-nexus/client/src/components/layouts/MovieReviewSection";
-import Header from "../../../../../temp/movie-nexus/client/src/components/layouts/Header";
+import MovieModel from "../../models/temp/MovieModel";
+import MovieHeroSection from "../../components/layouts/MovieHeroSection";
+import MovieDescriptionSection from "../../components/layouts/MovieDescriptionSection";
+import ActorListSection from "../../components/layouts/ActorListSection";
+import MovieReviewSection from "../../components/layouts/MovieReviewSection";
+import Header from "../../components/layouts/Header";
 
 // Props detail movie menggunakan MovieModel
 interface DetailMovieProps {

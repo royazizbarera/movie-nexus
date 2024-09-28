@@ -3,6 +3,7 @@ import ActorsDatabase from "./ActorsDatabase";
 
 const MoviesDatabase: MovieModel[] = [
   {
+    id: "1",
     title: "The Amazing Spider-Man",
     description:
       "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
@@ -28,6 +29,7 @@ const MoviesDatabase: MovieModel[] = [
     ],
   },
   {
+    id: "2",
     title: "La La Land",
     year: 2016,
     rating: 8.1,
@@ -51,6 +53,7 @@ const MoviesDatabase: MovieModel[] = [
     ],
   },
   {
+    id: "3",
     title: "Hacksaw Ridge",
     year: 2016,
     rating: 7,
@@ -74,6 +77,7 @@ const MoviesDatabase: MovieModel[] = [
     ],
   },
   {
+    id: "4",
     title: "The Amazing Spider-Man",
     description:
       "After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.",
