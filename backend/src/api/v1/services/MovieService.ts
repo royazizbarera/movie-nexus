@@ -327,7 +327,6 @@ class MovieService {
       skip: skip,
       take: pageSize,
     });
-    console.log(movies);
     return this.refactorMovies(movies);
   }
 

@@ -15,7 +15,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import Field from "../models/FieldModel";
-import AddDataDialog from "./AddMovie";
+import AddDataDialog from "./AddDataDialog";
 import FilterMenu, { Filter } from "./FilterMenu";
 
 // icon

@@ -13,6 +13,7 @@ import CountriesTable from "../pages/admin/management/CountriesTable";
 import AwardsTable from "../pages/admin/management/AwardsTable";
 import ActorsTable from "../pages/admin/management/ActorsTable";
 import DirectorsTable from "../pages/admin/management/DirectorsTable";
+import LoginPages from "../pages/admin/LoginPages";
 
 export default function AdminRoutes() {
   return (
@@ -29,6 +30,7 @@ export default function AdminRoutes() {
         <Route path="directors" element={<DirectorsTable />} />
         <Route path="countries" element={<CountriesTable />} />
         <Route path="awards" element={<AwardsTable/>} />
+        <Route path="login" element={<LoginPages/>} />
       </Route>
     </Routes>
   );
