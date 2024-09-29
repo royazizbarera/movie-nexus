@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation  } from "react-router-dom";
 
 // mui
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
@@ -27,6 +27,8 @@ import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import RateReviewIcon from '@mui/icons-material/RateReview';
+// import HomeIcon from '@mui/icons-material/Home';
+
 import Logo from "./Logo";
 
 // Constants for Drawer width
@@ -94,7 +96,12 @@ interface NavigationItem {
 }
 
 // Navigation structure
-const topNavigation: NavigationItem[] = [
+const navigationItem: NavigationItem[] = [
+  // {
+  //   path: "home",
+  //   title: "Home",
+  //   icon: <HomeIcon />,
+  // },
   {
     path: "actors",
     title: "Actors",
@@ -141,9 +148,10 @@ const topNavigation: NavigationItem[] = [
 
 export default function AdminSidebar() {
   const theme = useTheme();
+  const location = useLocation(); // Get the current URL path
   const [open, setOpen] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("Actors");
-  const [openMoviesMenu, setOpenMoviesMenu] = React.useState(false); // State to manage Movies submenu
+  const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+  const [openSubMenu, setOpenSubMenu] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -157,10 +165,22 @@ export default function AdminSidebar() {
     setSelectedItem(item);
   };
 
-  const handleMoviesClick = () => {
-    setOpenMoviesMenu(!openMoviesMenu); // Toggle open/close state for Movies submenu
+  const handleSubClick = () => {
+    setOpenSubMenu(!openSubMenu); // Toggle open/close state for Movies submenu
   };
 
+  React.useEffect(() => {
+    const currentPath = location.pathname.split("/")[2]; // Get the base path from URL
+    const activeItem = navigationItem.find(
+      (navItem) => navItem.path === currentPath
+    );
+    if (activeItem) {
+      setSelectedItem(activeItem.title);
+    } else {
+      setSelectedItem(null); // If no match, set it to null or default
+    }
+  }, [location.pathname]); // Re-run the effect whenever the pathname changes
+  
   return (
     <Box>
       <Drawer
@@ -189,14 +209,14 @@ export default function AdminSidebar() {
         </DrawerHeader>
         <Divider />
         <List>
-          {topNavigation.map((item, index) => (
+          {navigationItem.map((item, index) => (
             <React.Fragment key={item.title}>
               {item.children ? (
                 <>
                   {/* Parent ListItem for Movies */}
                   <ListItem disablePadding sx={{ display: "block" }}>
                     <ListItemButton
-                      onClick={handleMoviesClick} // Handle click to expand/collapse submenu
+                      onClick={handleSubClick} // Handle click to expand/collapse submenu
                       sx={[
                         { minHeight: 48, px: 2.5 },
                         open
@@ -219,12 +239,11 @@ export default function AdminSidebar() {
                         primary={item.title}
                         sx={[open ? { opacity: 1 } : { opacity: 0 }]}
                       />
-                      {openMoviesMenu ? <ExpandLess /> : <ExpandMore />}
+                      {openSubMenu ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                   </ListItem>
 
-                  {/* Submenu Items for Movies */}
-                  <Collapse in={openMoviesMenu} timeout="auto" unmountOnExit>
+                  <Collapse in={openSubMenu} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {item.children.map((subItem) => (
                         <ListItemButton

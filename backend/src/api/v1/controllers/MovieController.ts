@@ -51,7 +51,7 @@ class MovieController {
           filters: filters as any[],
         },
       });
-      const totalItems = await movieService.countMovies();
+      const totalItems = await movieService.totalMovies();
       return res.json(
         ResponseApi({
           code: HttpStatus.OK,
@@ -154,6 +154,29 @@ class MovieController {
       );
     }
   }
+
+  totals = async (req: Request, res: Response) => {
+    try {
+      const total = await movieService.totalMovies();
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movie deleted successfully",
+          data: total,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to count movies",
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  };
 
   // async searchMovies(req: Request, res: Response) {
   //   try {

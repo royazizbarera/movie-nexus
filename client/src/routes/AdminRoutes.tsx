@@ -14,6 +14,7 @@ import AwardsTable from "../pages/admin/management/AwardsTable";
 import ActorsTable from "../pages/admin/management/ActorsTable";
 import DirectorsTable from "../pages/admin/management/DirectorsTable";
 import LoginPages from "../pages/admin/LoginPages";
+import Dashboard from "../pages/admin/management/Dashboard";
 
 export default function AdminRoutes() {
   return (
@@ -23,7 +24,8 @@ export default function AdminRoutes() {
 
       {/* Admin Pages */}
       <Route path="/" element={<AdminPages />}>
-        <Route path="/" element={<MoviesTable />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="movies" element={<MoviesTable />} />
         <Route path="genres" element={<GenresTable />} />
         <Route path="actors" element={<ActorsTable />} />

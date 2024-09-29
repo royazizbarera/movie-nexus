@@ -50,7 +50,7 @@ class MovieService {
       .sort((a, b) => a.id - b.id);
   }
 
-  async countMovies() {
+  async totalMovies() {
     try {
       return await prisma.movie.count();
     } catch (error) {

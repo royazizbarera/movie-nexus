@@ -7,13 +7,14 @@ const router = express.Router();
 
 router.get("/", movieController.getMovies);
 
+router.get("/totals", movieController.totals)
+
 router.get("/:id", movieController.getMovieById);
 
 router.put("/:id", movieController.updateMovieById);
 
 router.delete("/:id", movieController.deleteMovieById);
 
-// add a new route to create a movie
 router.post("/", movieController.createMovie);
 
 export default router;
