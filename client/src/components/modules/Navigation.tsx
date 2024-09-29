@@ -64,9 +64,9 @@ const Navigation: React.FC = () => {
 
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
                 <NavLink label="Beranda" to="/" />
-                <NavLink label="Film" to="/movies" />
-                <NavLink label="Baru & Populer" to="/new-popular" />
-                <NavLink label="Daftar Saya" to="/my-list" />
+                <NavLink label="Film" to="/" />
+                <NavLink label="Baru & Populer" to="/" />
+                <NavLink label="Daftar Saya" to="/" />
             </Box>
         </Box>
     );

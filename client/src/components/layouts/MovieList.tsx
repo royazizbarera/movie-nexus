@@ -1,4 +1,3 @@
-import React, { useRef, useState, useEffect } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import MovieCard from '../modules/MovieCard';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
