@@ -88,3 +88,10 @@ Go to backend directory for run the Back End
 **Detail Page** \
 <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExemx4YzdoZHRvZ2x2NWwycmJwZnV5MXdvdjlwOWR2OWE4dDQzNXJiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/y4Wbo44pXjSl4V3X68/giphy.gif" alt="Detail Page" width="800"/>
 
+
+
+
+## Database
+```bash
+  npx prisma migrate dev --name init  
+```

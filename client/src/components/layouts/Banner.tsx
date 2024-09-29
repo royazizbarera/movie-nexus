@@ -17,6 +17,7 @@ const Banner: React.FC = () => {
     const handleMuteToggle = () => {
         setMuted(!muted);
     };
+    
 
     const handlePlayPauseToggle = () => {
         if (videoRef.current) {

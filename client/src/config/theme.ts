@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import Color from 'color';
-import { on } from 'events';
+
+import logo from "../assets/logo.svg";
 
 // Example primary color
 const primaryColor = '#6200ee'; // A deep purple often used in M3
@@ -67,6 +68,15 @@ declare module '@mui/material/styles' {
 
 // Create the MUI theme
 const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 600,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   palette: {
     primary: {
       light: Color(primaryColor).lighten(0.5).hex(),
