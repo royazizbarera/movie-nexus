@@ -35,7 +35,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({
             onClick={onClick}
             sx={{
                 position: 'absolute',
-                bottom: { md: '23%' },
+                bottom: { md: '27%' },
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 color: 'white',
                 borderRadius: '50%',

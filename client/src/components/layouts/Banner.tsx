@@ -84,7 +84,7 @@ const Banner: React.FC = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '100vw',
+                width: '100%',
                 height: '41rem',
                 overflow: 'hidden',
                 top: 0,
@@ -103,10 +103,10 @@ const Banner: React.FC = () => {
                         position: 'absolute',
                         top: 0,
                         left: 0,
-                        width: '120%',
+                        width: '154%',
                         height: '100%',
                         objectFit: 'cover',
-                        transform: 'translateX(-8%)',
+                        transform: 'translateX(-17.5%)',
                     }}
                 />
             ) : (
