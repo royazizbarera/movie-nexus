@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,7 +14,6 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Field from "../models/FieldModel";
-import { on } from "events";
 
 export interface Operator {
   id: string;
@@ -66,7 +65,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
     []
   );
 
-
   // hook filter
   useEffect(() => {
     onApply(filters);
@@ -76,7 +74,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
   const handleAddFilter = () => {
     if (newFilter.column && newFilter.operator && newFilter.value) {
       setFilters((prev) => [...prev, { ...newFilter, id: prev.length + 1 }]);
-      setNewFilter({ id: 0, columnKey: "", column: "", operator: "", value: "" }); // Reset filter setelah ditambahkan
+      setNewFilter({
+        id: 0,
+        columnKey: "",
+        column: "",
+        operator: "",
+        value: "",
+      }); // Reset filter setelah ditambahkan
       // setAddFilterCondition(false); // Sembunyikan form input filter baru
     } else if (!addFilterCondition) {
       handleShowAddFilter();
@@ -120,13 +124,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
   };
 
   // Menonaktifkan tombol Apply jika tidak ada filter valid
-  const isApplyButtonDisabled = () => {
-    // Tombol disabled jika semua filter kosong atau filter yang ada tidak lengkap
-    return (
-      filters.length === 0 && // Tidak ada filter yang valid
-      (!newFilter.column || !newFilter.operator || !newFilter.value) // Filter baru belum lengkap
-    );
-  };
+  // const isApplyButtonDisabled = () => {
+  //   // Tombol disabled jika semua filter kosong atau filter yang ada tidak lengkap
+  //   return (
+  //     filters.length === 0 && // Tidak ada filter yang valid
+  //     (!newFilter.column || !newFilter.operator || !newFilter.value) // Filter baru belum lengkap
+  //   );
+  // };
 
   // Menerapkan filter
   const handleApplyFilter = () => {
@@ -293,12 +297,14 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ columns, onApply }) => {
                 <Select
                   value={newFilter.column}
                   onChange={(e) => {
-                    const selectedColumn = columns.find((col) => col.label === e.target.value);
+                    const selectedColumn = columns.find(
+                      (col) => col.label === e.target.value
+                    );
                     if (selectedColumn) {
                       setNewFilter({
                         ...newFilter,
                         columnKey: selectedColumn.name, // Store columnKey
-                        column: selectedColumn.label,  // Store column label
+                        column: selectedColumn.label, // Store column label
                       });
                     }
                   }}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {AppBar, Toolbar, Box, useTheme} from '@mui/material';
+import {AppBar, Toolbar, Box } from '@mui/material';
 import Logo from '../elements/Logo';
 import Navigation from '../modules/Navigation';
 import SearchBar from '../elements/SearchBar';
@@ -8,7 +8,6 @@ import ProfileMenu from '../widgets/ProfileMenu';
 const Header: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
-    const theme = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
