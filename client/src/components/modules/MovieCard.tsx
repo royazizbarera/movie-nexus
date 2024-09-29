@@ -8,14 +8,20 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ posterUrl, title }) => {
     return (
-        <Box sx={{ display: 'inline-block', position: 'relative', marginRight: 2 }}>
+        <Box
+            sx={{
+                display: 'inline-block',
+                position: 'relative',
+                width: { xs: '120px', sm: '140px', md: '160px' },  // Ukuran width responsif
+            }}
+        >
             <CardMedia
                 component="img"
                 image={posterUrl}
                 alt={title}
                 sx={{
-                    width: { xs: '120px', md: '160px' },
-                    height: { xs: '180px', md: '240px' },
+                    width: '100%',
+                    height: { xs: '180px', sm: '210px', md: '240px' },  // Ukuran height responsif
                     borderRadius: '8px',
                     objectFit: 'cover',
                 }}
@@ -32,6 +38,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ posterUrl, title }) => {
                     padding: '8px',
                     textAlign: 'center',
                     borderRadius: '0 0 8px 8px',
+                    fontSize: { xs: '0.75rem', sm: '0.85rem', md: '1rem' },  // Ukuran font responsif
                     boxSizing: 'border-box',
                 }}
             >
