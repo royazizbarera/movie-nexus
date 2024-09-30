@@ -1,8 +1,9 @@
 import { Box, Button, Chip, Typography, useTheme } from "@mui/material";
-import MovieModel from "../../models/temp/MovieModel";
+import MovieModel from "../../models/MovieModel";
 import { MAIN_PADING } from "../../config/constants";
 import AddIcon from "@mui/icons-material/Add";
 import AdditionalInfo from "./AdditionalInfoMovie";
+import React from "react";
 
 interface MovieDescriptionSectionProps {
   movie: MovieModel;
@@ -30,7 +31,7 @@ const MovieDescriptionSection: React.FC<MovieDescriptionSectionProps> = ({
             {movie.genres.map((genre, index) => (
               <Chip
                 key={index}
-                label={genre}
+                label={genre.name}
                 variant="outlined"
                 sx={{
                   color: theme.palette.background.paper, // Ensure background contrast
@@ -48,7 +49,7 @@ const MovieDescriptionSection: React.FC<MovieDescriptionSectionProps> = ({
 
           {/* Description */}
           <Typography variant="body1" marginTop={"2rem"} gutterBottom>
-            {movie.description || "No description available."}
+            {movie.synopsis || "No description available."}
           </Typography>
 
           {/* Additional Info */}
@@ -59,8 +60,7 @@ const MovieDescriptionSection: React.FC<MovieDescriptionSectionProps> = ({
             gap={2}
             mt={2}
           >
-            <AdditionalInfo title="Director" info={[movie.director]} />
-            <AdditionalInfo title="Writers" info={movie.writers} />
+            <AdditionalInfo title="Director" info={[movie.director.name]} />
           </Box>
         </Box>
 

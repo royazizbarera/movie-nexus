@@ -3,6 +3,8 @@ export default interface MovieModel {
   title: string;
   synopsis: string;
   posterUrl: string;
+  backdropUrl: string;
+  videoUrl: string;
   releaseDate: Date;
   approvalStatus: boolean;
   countryCode: string;

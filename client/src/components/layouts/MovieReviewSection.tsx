@@ -3,6 +3,7 @@ import { MAIN_PADING } from "../../config/constants";
 import CustomLabel from "../widgets/CustomLabel";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import React from "react";
 
 interface ReviewSectionProps {
   reviews?: {

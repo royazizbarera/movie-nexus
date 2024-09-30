@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../../../../../temp/movie-nexus/client/src/components/layouts/Header";
+import Header from "../../components/layouts/Header";
 
 const TVShows: React.FC = () => {
   return (

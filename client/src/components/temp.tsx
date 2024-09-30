@@ -3,7 +3,7 @@ import { Box, Typography, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import MovieModel from "../models/temp/MovieModel";
+import MovieModel from "../models/MovieModel";
 
 /* Title, Poster, and Trailer with Glassmorphism Background */
 interface MovieHeroSectionProps {
@@ -50,7 +50,7 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
               {movie.title}
             </Typography>
             <Typography variant="subtitle1">
-              {movie.year} ・ {movie.rating} ・ {movie.duration}
+              {new Date(movie.releaseDate).getFullYear()} ・ {movie.rating}
             </Typography>
           </Box>
         </Box>
@@ -94,7 +94,7 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
                   objectFit: "cover", // Menyesuaikan video agar mengisi area dengan baik
                 }}
               >
-                <source src={movie.trailerUrl} type="video/mp4" />
+                <source src={movie.videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </Box>
@@ -113,7 +113,6 @@ const MovieHeroSection: React.FC<MovieHeroSectionProps> = ({ movie }) => {
           <Box display="flex" alignItems="center" gap={1}>
             <StarIcon sx={{ color: "#f5c518" }} />
             <Typography variant="h6">{movie.rating}/10</Typography>
-            <Typography variant="body2">{movie.votes}</Typography>
           </Box>
           {/* Your Rating */}
           <Box display="flex" alignItems="center" gap={1}>

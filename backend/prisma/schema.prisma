@@ -7,13 +7,13 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 // Country model
 model Country {
   code     String     @id
-  name    String
-  phone    String
+  name     String
   actors   Actor[]
   awards   Award[]
   movies   Movie[]
@@ -42,6 +42,7 @@ model Actor {
   id          Int           @id @default(autoincrement())
   name        String
   birthDate   DateTime
+  photoUrl    String
   country     Country       @relation(fields: [countryCode], references: [code])
   countryCode String
   movies      MovieActors[]
@@ -51,6 +52,7 @@ model Director {
   id          Int      @id @default(autoincrement())
   name        String
   birthDate   DateTime
+  photoUrl    String
   country     Country  @relation(fields: [countryCode], references: [code])
   countryCode String
   movies      Movie[]
@@ -62,6 +64,8 @@ model Movie {
   title          String
   synopsis       String
   posterUrl      String
+  backdropUrl    String
+  videoUrl       String
   releaseDate    DateTime
   approvalStatus Boolean
   rating         Float
