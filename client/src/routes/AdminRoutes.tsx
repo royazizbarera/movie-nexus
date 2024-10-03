@@ -14,6 +14,8 @@ import AwardsTable from "../pages/admin/management/AwardsTable";
 import ActorsTable from "../pages/admin/management/ActorsTable";
 import DirectorsTable from "../pages/admin/management/DirectorsTable";
 import LoginPages from "../pages/admin/LoginPages";
+import ProtectedRoute from "./ProtectedRoutes";
+import SignInPage from "../pages/client/SignInPage";
 
 export default function AdminRoutes() {
   return (
@@ -22,16 +24,23 @@ export default function AdminRoutes() {
       {/* <Route path="admin-sign" element={<AdminSignin />} /> */}
 
       {/* Admin Pages */}
-      <Route path="/" element={<AdminPages />}>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminPages />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/" element={<MoviesTable />} />
         <Route path="movies" element={<MoviesTable />} />
         <Route path="genres" element={<GenresTable />} />
         <Route path="actors" element={<ActorsTable />} />
         <Route path="directors" element={<DirectorsTable />} />
         <Route path="countries" element={<CountriesTable />} />
-        <Route path="awards" element={<AwardsTable/>} />
-        <Route path="login" element={<LoginPages/>} />
+        <Route path="awards" element={<AwardsTable />} />
       </Route>
+      <Route path="sign-in" element={<SignInPage />} />
     </Routes>
   );
 }

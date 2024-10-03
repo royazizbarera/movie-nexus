@@ -18,6 +18,8 @@ import { styled } from '@mui/material/styles';
 // import AppTheme from './theme/AppTheme';
 // import ColorModeSelect from './theme/ColorModeSelect';
 import GoogleIcon from '@mui/icons-material/Google';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/useAuth';
 // import Logo from '../../assets/logo.png';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -59,22 +61,31 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignInPage(props: { disableCustomTheme?: boolean }) {
+  const { loginUser } = useAuth();
+  
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-
+  
   const handleLogin = () => {
     window.open("http://localhost:3001/auth/google", "_self");
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+  
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  
+    const formValues = {
+      email: data.get("email"),
+      password: data.get("password"),
+    };
+  
+    loginUser(
+      formValues.email as string,
+      formValues.password as string
+    );
   };
 
   const validateInputs = () => {

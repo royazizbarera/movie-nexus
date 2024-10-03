@@ -8,7 +8,6 @@ import ProfileMenu from '../widgets/ProfileMenu';
 const Header: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
-    const theme = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {

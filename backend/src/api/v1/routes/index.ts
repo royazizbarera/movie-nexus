@@ -9,6 +9,7 @@ import countriesRouter from "./CountriesRoute";
 import genresRouter from "./GenresRoute";
 import moviesRouter from "./MoviesRoute";
 import authRouter from "./AuthRoute";
+import usersRouter from "./UsersRoute";
 
 // Use router
 routers.use("/actors", actorsRouter);
@@ -17,5 +18,6 @@ routers.use("/countries", countriesRouter);
 routers.use("/genres", genresRouter);
 routers.use("/movies", moviesRouter);
 routers.use("/auth", authRouter);
+routers.use("/user", usersRouter);
 
 export default routers;

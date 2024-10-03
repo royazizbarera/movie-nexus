@@ -170,7 +170,7 @@ export default function AdminSidebar() {
           backgroundColor: "black",
           color: "white",
         }}
-      >
+      ><img src="" alt="" srcSet="" />
         <DrawerHeader>
           {open && <Logo />}
           <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
