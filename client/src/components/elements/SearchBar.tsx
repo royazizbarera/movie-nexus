@@ -1,13 +1,31 @@
-import React, { useState, useRef,  useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { InputBase, IconButton, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import {useNavigate} from "react-router-dom";
+
 
 const SearchBar: React.FC = () => {
     const [expanded, setExpanded] = useState(false);
+    const [searchTerm, setSearchTerm] = useState(''); // State untuk menyimpan input pencarian
     const searchBarRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const handleSearchClick = () => {
+        if (expanded) {
+            navigate(`/movie/search/${searchTerm}`);
+        }
+
         setExpanded(!expanded);
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value); // Update state dengan nilai input
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleSearchClick();
+        }
     };
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,7 +51,7 @@ const SearchBar: React.FC = () => {
             <Box
                 ref={searchBarRef}
                 sx={{
-                    display: {xs: 'none', md: 'flex'},
+                    display: { xs: 'none', md: 'flex' },
                     alignItems: 'center',
                     backgroundColor: expanded ? '#1C1C1C' : 'transparent',
                     borderRadius: 1,
@@ -46,10 +64,13 @@ const SearchBar: React.FC = () => {
                 }}
             >
                 <IconButton onClick={handleSearchClick} sx={{ color: 'white', padding: 0, transition: 'transform 0.3s ease', fontSize: '1.75rem' }}>
-                    <SearchIcon sx={{ fontSize: 'inherit' }}/>
+                    <SearchIcon sx={{ fontSize: 'inherit' }} />
                 </IconButton>
                 <InputBase
-                    placeholder="Judul, orang, genre"
+                    placeholder="Judul atau sinopsis"
+                    value={searchTerm} // Set nilai dari InputBase
+                    onChange={handleInputChange} // Menangani perubahan input
+                    onKeyDown={handleKeyDown}
                     sx={{
                         ml: 1,
                         flex: 1,
@@ -63,7 +84,7 @@ const SearchBar: React.FC = () => {
                 />
             </Box>
             <Box sx={{
-                display: {xs: 'flex', md: 'none'},
+                display: { xs: 'flex', md: 'none' },
                 alignItems: 'center',
                 backgroundColor: '#1C1C1C',
                 borderRadius: 1,

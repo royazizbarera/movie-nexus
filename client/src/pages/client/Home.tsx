@@ -3,10 +3,11 @@ import {Box} from "@mui/material";
 import Header from "../../components/layouts/Header";
 import Banner from "../../components/layouts/Banner";
 import MovieList from "../../components/layouts/MovieList";
+import Footer from "../../components/layouts/Footer";
 
 import {API_URL} from "../../config/constants";
 
-const url = API_URL + "/movies?page=5";
+const url = API_URL + "/movies?page=5&pageSize=20";
 
 const fetchMovies = async () => {
     try {
@@ -44,16 +45,17 @@ const Home: React.FC = () => {
 
             <Box
                 sx={{
-                    position: {md: "absolute", xs: "relative"},
-                    top: {md: "31rem", xs: "3rem"},
+                    position: "relative",
+                    top: {md: "-6rem", xs: "3rem"},
                     maxWidth: "100%",
                     zIndex: 2,
                 }}
             >
                 <MovieList title={"Popular"} movies={movies}/>
-                <MovieList title={"Film"} movies={movies}/>
-                <MovieList title={"Acara TV"} movies={movies}/>
+                <MovieList title={"Terbaru"} movies={movies}/>
+                <MovieList title={"Cantik"} movies={movies}/>
             </Box>
+            <Footer/>
         </Box>
     );
 };

@@ -31,31 +31,32 @@ class MovieController {
 
     async getMovies(req: Request, res: Response) {
         try {
-            const page = parseInt(req.query.page as string) || 1;
-            let pageSize = parseInt(req.query.pageSize as string) || 10;
+            const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+            const pageSize = Math.min(parseInt(req.query.pageSize as string) || 20, 20); // Max 20 untuk pageSize
 
-            pageSize = Math.min(pageSize, 10);
+            const searchTerm = req.query.searchTerm as string || "";
+            const genreArray = typeof req.query.genres === "string" ? req.query.genres.split(",") : [];
+            const country = req.query.country as string || "";
+            const sortBy = req.query.sortBy as string || "title";
+            const sortOrder = (req.query.sortOrder as string)?.toLowerCase() === "desc" ? "desc" : "asc";
+            const filters = Array.isArray(req.query.filters) ? req.query.filters : [];
 
-            // Ambil parameter query dari request
-            const {searchTerm, genres, country, sortBy, sortOrder, filters} = req.query;
 
-            // Jika genres adalah string, ubah menjadi array dengan split. Jika tidak, atur sebagai array kosong.
-            const genreArray = typeof genres === "string" ? genres.split(",") : [];
-
-            const movies = await movieService.getMovies2({
-                page: page,
-                pageSize: pageSize,
-                params: {
-                    searchTerm: searchTerm as string, // pastikan bahwa search adalah string
-                    genres: genreArray, // gunakan array genres yang sudah diparsing
-                    country: country as string, // pastikan bahwa country adalah string
-                    sortBy: sortBy as string, // pastikan bahwa sortBy adalah string
-                    sortOrder: sortOrder as "asc" | "desc", // pastikan bahwa sortOrder adalah string
-                    filters: filters as any[],
-                },
-            });
-
-            const totalItems = await movieService.countMovies();
+            const [movies, totalItems] = await Promise.all([
+                movieService.getMovies2({
+                    page,
+                    pageSize,
+                    params: {
+                        searchTerm,
+                        genres: genreArray,
+                        country,
+                        sortBy,
+                        sortOrder,
+                        filters,
+                    },
+                }),
+                movieService.countMovies(),
+            ]);
 
             return res.json(
                 ResponseApi({
@@ -64,24 +65,26 @@ class MovieController {
                     data: movies,
                     version: 1.0,
                     pagination: {
-                        page: page,
-                        pageSize: pageSize,
-                        totalItems: totalItems,
-                        totalPages: Math.ceil(totalItems / (pageSize || 1)),
+                        page,
+                        pageSize,
+                        totalItems,
+                        totalPages: Math.ceil(totalItems / pageSize),
                     },
                 })
             );
         } catch (error) {
+            console.error("Error fetching movies:", error);
             return res.json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
-                    message: String(error),
-                    errors: error,
+                    message: "Failed to fetch movies",
+                    errors: error instanceof Error ? error.message : String(error),
                     version: 1.0,
                 })
             );
         }
     }
+
 
     async getMovieById(req: Request, res: Response) {
         try {

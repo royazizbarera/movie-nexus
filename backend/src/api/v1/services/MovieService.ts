@@ -1,7 +1,5 @@
-import {title} from "process";
 import prisma from "../config/client";
 import SearchParams from "../helpers/SearchParams";
-import {PaginationProps} from "../config/ResponseApi";
 
 class MovieService {
     // Join table untuk digunakan di berbagai metode
@@ -65,7 +63,7 @@ class MovieService {
             const newMovie = await prisma.$transaction(async (prisma) => {
                 // Create a new movie with associated relations in a transaction
 
-                var newMovieId;
+                let newMovieId;
                 await prisma.movie
                     .create({
                         data: {
@@ -105,19 +103,16 @@ class MovieService {
                     });
 
                 // Fetch the newly created movie with all its relations
-                const movieWithRelations = await prisma.movie.findUnique({
+                return prisma.movie.findUnique({
                     where: {
                         id: newMovieId,
                     },
                     ...this.joinTable, // Fetch the full movie data with relations
                 });
-
-                return movieWithRelations;
             });
 
             // Refactor the movie result before returning
-            const refactorMovie = this.refactorMovies([newMovie])[0];
-            return refactorMovie;
+            return this.refactorMovies([newMovie])[0];
         } catch (error) {
             console.error(error); // Log the error for debugging
             throw new Error("Could not create movie");
@@ -159,8 +154,7 @@ class MovieService {
                 throw new Error(`Movie with ID ${id} not found`);
             }
 
-            const refactorMovie = this.refactorMovies([movie])[0];
-            return refactorMovie;
+            return this.refactorMovies([movie])[0];
         } catch (error) {
             throw new Error(`Could not fetch movie with ID ${id}`);
         }
@@ -210,8 +204,7 @@ class MovieService {
             });
 
             // Refactor hasilnya sebelum dikirimkan ke client
-            const refactorMovie = this.refactorMovies([updatedMovie])[0];
-            return refactorMovie;
+            return this.refactorMovies([updatedMovie])[0];
         } catch (error) {
             throw new Error(`Could not update movie with ID ${id}`);
         }
@@ -236,13 +229,11 @@ class MovieService {
                 });
 
                 // Hapus movie setelah semua relasi dihapus
-                const movie = await prisma.movie.delete({
+                return prisma.movie.delete({
                     where: {
                         id: id,
                     },
                 });
-
-                return movie;
             });
 
             return {
@@ -263,20 +254,17 @@ class MovieService {
         pageSize: number | undefined;
         params: SearchParams;
     }) {
-        // Hitung nilai skip berdasarkan halaman dan limit
-        var skip = undefined;
+        let skip = undefined;
         if (page && pageSize) {
             skip = (page - 1) * pageSize;
         }
 
-        // Destructure parameter pencarian
         const {searchTerm, genres, country, sortBy, sortOrder} = params;
 
         const whereClause: any = {
             AND: [],
         };
 
-        // Kondisi untuk searchTerm (pencarian di title atau synopsis)
         if (searchTerm) {
             whereClause.AND.push({
                 OR: [
@@ -286,7 +274,6 @@ class MovieService {
             });
         }
 
-        // Kondisi untuk genres filter (lebih dari satu genre)
         if (genres && genres.length > 0) {
             whereClause.AND.push({
                 genres: {
@@ -302,7 +289,6 @@ class MovieService {
             });
         }
 
-        // Kondisi untuk filter berdasarkan country
         if (country) {
             whereClause.AND.push({
                 country: {
@@ -314,12 +300,10 @@ class MovieService {
             });
         }
 
-        // Jika tidak ada kondisi yang ditambahkan, hapus AND agar query tidak error
         if (whereClause.AND.length === 0) {
             delete whereClause.AND;
         }
 
-        // Membuat query prisma untuk pencarian
         const movies = await prisma.movie.findMany({
             where: whereClause,
             orderBy: sortBy
@@ -336,7 +320,7 @@ class MovieService {
 
     async getMovies2({
                          page = 1,
-                         pageSize = 10,
+                         pageSize = 20,
                          params,
                      }: {
         page: number | undefined;
@@ -344,20 +328,9 @@ class MovieService {
         params: SearchParams;
     }) {
         let skip = (page - 1) * pageSize;
-
         const { filters, searchTerm, sortBy, sortOrder, genres } = params;
 
         const whereClause: any = {};
-
-        // Kondisi untuk searchTerm (pencarian di title atau synopsis)
-        if (searchTerm) {
-            whereClause.OR = [
-                { title: { search: searchTerm, mode: "insensitive" } },
-                { synopsis: { search: searchTerm, mode: "insensitive" } },
-            ];
-
-            pageSize = 100
-        }
 
         if (genres) {
             genres.forEach((genre: string) => {
@@ -376,10 +349,9 @@ class MovieService {
                         },
                     },
                 });
-            })
+            });
         }
 
-        // Kondisi untuk filters
         if (filters && filters.length > 0) {
             filters.forEach((filter: any) => {
                 const { columnKey, operator, value } = filter;
@@ -426,28 +398,54 @@ class MovieService {
             });
         }
 
-        // Hapus kondisi AND jika tidak ada filter yang diterapkan
         if (whereClause.AND && whereClause.AND.length === 0) {
             delete whereClause.AND;
         }
 
         try {
-            const movies = await prisma.movie.findMany({
-                where: whereClause,
-                orderBy: sortBy
-                    ? { [sortBy]: sortOrder || "asc" }
-                    : undefined,
-                include: this.joinTable.include,
-                skip: skip,
-                take: pageSize,
-            });
+            let movies;
 
-            return this.refactorMovies(movies);
+            if (searchTerm || searchTerm != '') {
+                const searchQuery = `
+                SELECT *
+                FROM "Movie"
+                WHERE SIMILARITY("title", $1) > 0.1 OR SIMILARITY("synopsis", $1) > 0.1
+                ORDER BY SIMILARITY("title", $1) DESC
+                LIMIT $2 OFFSET $3;
+            `;
+                movies = await prisma.$queryRawUnsafe(searchQuery, searchTerm, pageSize, skip) as any[];
+
+                const movieIds = movies.map(movie => movie.id);
+
+                movies = await prisma.movie.findMany({
+                    where: {
+                        id: {
+                            in: movieIds,
+                        },
+                        ...whereClause,
+                    },
+                    include: this.joinTable.include,
+                    skip: skip,
+                    take: pageSize,
+                });
+            } else {
+                movies = await prisma.movie.findMany({
+                    where: whereClause,
+                    orderBy: sortBy
+                        ? { [sortBy]: sortOrder || "asc" }
+                        : undefined,
+                    include: this.joinTable.include,
+                    skip: skip,
+                    take: pageSize,
+                });
+            }
+            return movies
         } catch (error) {
             console.error("Failed to fetch movies: ", error);
             throw new Error("Error fetching movies");
         }
     }
+
 }
 
 const movieService = new MovieService();

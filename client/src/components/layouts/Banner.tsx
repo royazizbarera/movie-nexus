@@ -89,6 +89,7 @@ const Banner: React.FC = () => {
     const resetVideoState = () => {
         setIsPlaying(false);
         setIsVideoEnded(true);
+        setMuted(true);
         postMessageToIframe('pauseVideo'); // Pause video before switching
     };
 
@@ -158,12 +159,13 @@ const Banner: React.FC = () => {
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: '154%',
-                    height: '90%',
+                    width: '100%',
+                    height: '100%',
                     objectFit: 'cover',
-                    transform: 'translateX(-17.5%)',
                     border: 'none',
-                    zIndex: -1
+                    zIndex: -1,
+                    transform: 'scale(1.3)',
+                    transformOrigin: 'center center',
                 }}
             />
 

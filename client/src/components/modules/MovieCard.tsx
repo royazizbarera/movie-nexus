@@ -1,6 +1,6 @@
 import React from 'react';
-import {Box, Typography, CardMedia} from '@mui/material';
-import {Link} from "react-router-dom";
+import { Box, Typography, CardMedia } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 interface MovieCardProps {
     id: number;
@@ -10,21 +10,26 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ id, posterUrl, title }) => {
     return (
-        <Link to={"/movie/" + id}>
+        <Link to={"/movie/" + id} aria-label={`View details for ${title}`}>
             <Box
                 sx={{
                     display: 'inline-block',
                     position: 'relative',
-                    width: { xs: '120px', sm: '140px', md: '160px' },  // Ukuran width responsif
+                    width: { xs: '7.5rem', sm: '8.75rem', md: '10rem' },
+                    transition: 'transform 0.3s ease',  // Hover animation
+                    '&:hover': {
+                        transform: 'scale(1.05)',
+                    },
                 }}
             >
                 <CardMedia
                     component="img"
                     image={posterUrl}
                     alt={title}
+                    loading="lazy"  // Lazy loading for performance
                     sx={{
                         width: '100%',
-                        height: { xs: '180px', sm: '210px', md: '240px' },  // Ukuran height responsif
+                        height: { xs: '11.25rem', sm: '13.125rem', md: '15rem' },
                         borderRadius: '8px',
                         objectFit: 'cover',
                     }}
@@ -41,7 +46,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ id, posterUrl, title }) => {
                         padding: '8px',
                         textAlign: 'center',
                         borderRadius: '0 0 8px 8px',
-                        fontSize: { xs: '0.75rem', sm: '0.85rem', md: '1rem' },  // Ukuran font responsif
+                        fontSize: { xs: '0.75rem', sm: '0.85rem', md: '1rem' },
                         boxSizing: 'border-box',
                     }}
                 >
