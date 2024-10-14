@@ -31,31 +31,6 @@ const styleSelect = {
   },
 };
 
-const filters = [
-  {
-    name: "genre",
-    placeholder: "Genre",
-    options: ["Action", "Drama", "Comedy", "Thriller"],
-  },
-  {
-    name: "actor",
-    placeholder: "Actor",
-    options: ["Actor 1", "Actor 2", "Actor 3"],
-  },
-  { name: "year", placeholder: "Year", options: ["2021", "2020", "2019"] },
-  {
-    name: "award",
-    placeholder: "Award",
-    options: ["Oscar", "Golden Globe", "BAFTA"],
-  },
-  {
-    name: "director",
-    placeholder: "Director",
-    options: ["Director 1", "Director 2"],
-  },
-  { name: "country", placeholder: "Country", options: ["USA", "UK", "France"] },
-];
-
 export default function Movies() {
   const [selectedFilters, setSelectedFilters] = useState<{
     [key: string]: string;
@@ -69,6 +44,51 @@ export default function Movies() {
   // paginasi
   const [page, setPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const [genre, setGenre] = useState<string>("");
+  const [genres, setGenres] = useState<string[]>([]);
+
+  const filters = [
+    {
+      name: "genre",
+      placeholder: "Genre",
+      options: genres,
+    },
+    {
+      name: "actor",
+      placeholder: "Actor",
+      options: ["Actor 1", "Actor 2", "Actor 3"],
+    },
+    { name: "year", placeholder: "Year", options: ["2021", "2020", "2019"] },
+    {
+      name: "award",
+      placeholder: "Award",
+      options: ["Oscar", "Golden Globe", "BAFTA"],
+    },
+    {
+      name: "director",
+      placeholder: "Director",
+      options: ["Director 1", "Director 2"],
+    },
+    {
+      name: "country",
+      placeholder: "Country",
+      options: ["USA", "UK", "France"],
+    },
+  ];
+
+  useEffect(() => {
+    movieController
+      .getGenres()
+      .then((res) => {
+        const genreNames = res.data.map((genre: { id: number; name: string }) => genre.name);
+      
+        setGenres(genreNames); // Asumsikan res.data adalah array genre
+      })
+      .catch((err) => {
+        console.error("Error fetching genres:", err);
+      });
+  }, []);
+  
 
   // fetch using controller
   useEffect(() => {
@@ -76,6 +96,7 @@ export default function Movies() {
       .getMovies({
         searchTerm: searchQuery,
         page: page,
+        genre: genre,
       })
       .then((res) => {
         console.log("film", res.data);
@@ -86,7 +107,7 @@ export default function Movies() {
       .catch((err) => {
         console.log(err);
       });
-  }, [page, searchQuery]);
+  }, [genre, page, searchQuery]);
 
   const handleFilterChange = (name: string, value: string) => {
     console.info(name, value);
@@ -94,6 +115,9 @@ export default function Movies() {
       ...prevFilters,
       [name]: value,
     }));
+    if (name === "genre") {
+      setGenre(value);
+    }
   };
 
   const handleApplyFilter = () => {
@@ -106,6 +130,7 @@ export default function Movies() {
     const searchParam = searchQuery ? `${searchQuery}` : "";
     // setParamString(`${queryString}${searchParam}`);
     setSearchQuery(searchQuery);
+    setGenre(selectedFilters["genre"]);
     // Redirect ke URL dengan query parameter
     navigate(`/movies?${queryString}${searchParam}`);
   };
