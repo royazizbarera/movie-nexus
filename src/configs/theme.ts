@@ -63,7 +63,7 @@ const theme = extendTheme({
         star: star,
       },
     },
-  },
+  }
 });
 
 export default theme;

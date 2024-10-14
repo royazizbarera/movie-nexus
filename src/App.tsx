@@ -1,23 +1,42 @@
-import React from "react";
-import { CssBaseline, CssVarsProvider } from "@mui/joy";
+import React, { useEffect } from "react";
+import { Box, CircularProgress, CssBaseline, CssVarsProvider } from "@mui/joy";
 import theme from "./configs/theme";
 import { BrowserRouter } from "react-router-dom";
 import RoutesApp from "./routers/RoutesApp";
 // import "@fontsource/quicksand";
 import "@fontsource/roboto";
 import ScrollToTop from "./views/components/ScrollToTop";
-import { UserProvider } from "./contexts/useAuth";
+import { useAuthStore } from "./contexts/authStore";
+import MainLayout from "./views/layouts/MainLayout";
 
 function App() {
+  const { checkAuth, isCheckingAuth } = useAuthStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  if (isCheckingAuth)
+    return (
+      <CssVarsProvider theme={theme} defaultMode="dark">
+        <CssBaseline />
+        <MainLayout>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            <CircularProgress variant="plain" color="primary" />
+          </Box>
+        </MainLayout>
+      </CssVarsProvider>
+    );
   return (
     <BrowserRouter>
-      <UserProvider>
-        <CssVarsProvider theme={theme}>
-          <CssBaseline />
-          <ScrollToTop />
-          <RoutesApp />
-        </CssVarsProvider>
-      </UserProvider>
+      <CssVarsProvider theme={theme}>
+        <CssBaseline />
+        <ScrollToTop />
+        <RoutesApp />
+      </CssVarsProvider>
     </BrowserRouter>
   );
 }

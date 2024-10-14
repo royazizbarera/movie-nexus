@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import DetailMovie from "../views/pages/DetailMovie";
 import Home from "../views/pages/Home";
-import Movies from "../views/pages/Movies";
+import Movies from "../views/pages/MoviesPage";
 import UserProfilePage from "../views/pages/UserProfilePage";
 import SignInPage from "../views/pages/SignInPage";
 import SignUpPage from "../views/pages/SignUpPage";
 import ProtectedRoute from "./ProtectedRoutes";
+import VerifyEmailPage from "../views/pages/VerifyEmailPage";
 
 export default function ClientRoutes() {
   return (
@@ -14,14 +15,43 @@ export default function ClientRoutes() {
       <Route path="/movies" element={<Movies />} />
       <Route path="/movie/:id" element={<DetailMovie />} />
 
-      <Route path="/sign-in" element={<SignInPage />} />
-      <Route path="/sign-up" element={<SignUpPage />} />
+      <Route
+        path="/sign-in"
+        element={
+          <ProtectedRoute
+            isAuthenticatedState={false}
+            element={<SignInPage />}
+          />
+        }
+      />
+      
+      <Route
+        path="/sign-up"
+        element={
+          <ProtectedRoute
+            isAuthenticatedState={false}
+            element={<SignUpPage />}
+          />
+        }
+      />
 
       {/* User */}
       <Route
         path="/user-profile"
         element={<ProtectedRoute role="writer" element={<UserProfilePage />} />}
       />
+      {/* verify-email */}
+      <Route
+        path="/verify-email"
+        element={<ProtectedRoute role="writer" element={<VerifyEmailPage />} />}
+      />
+
+      {/* Unauthorized */}
+      <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
+      {/* Admin */}
+      {/* <Route 
+        path="/admin" 
+        element={<ProtectedRoute role="admin" element={<AdminPage />} />}
       {/* <Route 
         path="/info" 
         element={<ProtectedRoute role="writer" element={<InfoPage />} />} 

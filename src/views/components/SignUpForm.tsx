@@ -7,23 +7,22 @@ import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
 import { Avatar, Divider } from "@mui/joy";
 import { useState } from "react";
-import { useAuth } from "../../contexts/useAuth";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../contexts/authStore";
 
 export default function SignUpForm() {
-  const { registerUser } = useAuth();
+  const { signUpWithEmailAndPassword, error, isLoading } = useAuthStore();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorSignUp, setErrorSignUp] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailPasswordSignUp = async () => {
     try {
-      await registerUser(username, email, password);
-      setErrorSignUp("");
+      await signUpWithEmailAndPassword(username, email, password);
+      navigate("/verify-email");
     } catch (error: any) {
-      setErrorSignUp(
-        error.message || "Terjadi kesalahan saat SignUp. Coba lagi nanti."
-      );
+      console.error(error);
     }
   };
 
@@ -43,14 +42,12 @@ export default function SignUpForm() {
       }}
       variant="outlined"
     >
-      <div>
-        <Typography level="h4" component="h1">
-          <b>Sign up!</b>
-        </Typography>
-      </div>
-      {errorSignUp && (
+      <Typography level="h4" component="h1">
+        <b>Sign up!</b>
+      </Typography>
+      {error && (
         <Typography color="danger" sx={{ fontSize: "sm", mb: 2 }}>
-          {errorSignUp}
+          {error}
         </Typography>
       )}
       <FormControl>
@@ -86,12 +83,15 @@ export default function SignUpForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormControl>
+      {/* Button with loading state */}
       <Button
         onClick={handleEmailPasswordSignUp}
-        sx={{ mt: 1 /* margin top */ }}
+        loading={isLoading}
+        disabled={isLoading}
       >
         Sign up
       </Button>
+      <Divider />
       <Typography
         endDecorator={<Link href="/sign-in">Login</Link>}
         sx={{ fontSize: "sm", alignSelf: "center" }}
@@ -116,7 +116,6 @@ export default function SignUpForm() {
             }}
           />
         }
-        
       >
         Sign up with Google
       </Button>

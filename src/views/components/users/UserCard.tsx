@@ -7,7 +7,8 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 
-export default function UserCard() {
+export default function UserCard({ user }: { user: any }) {
+  console.log(user);
   return (
     <Box
       sx={{
@@ -51,15 +52,15 @@ export default function UserCard() {
         </AspectRatio>
         <CardContent>
           <Typography sx={{ fontSize: "xl", fontWeight: "lg" }}>
-            Roy Aziz Barera
+            {user.username}
           </Typography>
-          <Typography
+          {/* <Typography
             level="body-sm"
             textColor="text.tertiary"
             sx={{ fontWeight: "lg" }}
           >
             Software Engineer
-          </Typography>
+          </Typography> */}
           <Sheet
             sx={{
               bgcolor: "background.level1",
@@ -105,7 +106,7 @@ export default function UserCard() {
           display: "flex",
           gap: 1.5,
           "& > button": { flex: 1 },
-          pt: "1rem"
+          pt: "1rem",
         }}
       >
         <Button variant="outlined" color="neutral">

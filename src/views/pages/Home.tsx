@@ -1,11 +1,9 @@
 import { Box, Grid, Typography } from "@mui/joy";
 import MovieCard from "../components/MovieCard";
-import LoginForm from "../components/LoginForm";
 import MainLayout from "../layouts/MainLayout";
 import { useEffect, useState } from "react";
 import movieController from "../../controllers/movieController";
 import AppAppBar from "../components/AppAppBar";
-import SignUpForm from "../components/SignUpForm";
 
 export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
@@ -13,7 +11,7 @@ export default function Home() {
   // fetch using controller
   useEffect(() => {
     movieController
-      .getMovies("")
+      .getMovies({})
       .then((res) => {
         setMovies(res.data);
       })
@@ -27,19 +25,7 @@ export default function Home() {
       <AppAppBar />
       <MainLayout giveSpace pt={14}>
         {/* Hero Movie Video */}
-        {/* Konten di bawah AppBar dengan padding */}
-        <Box
-          sx={{
-            padding: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <LoginForm />
-          <SignUpForm />
-        </Box>
+
         {/* Test grid movie */}
         <Box>
           <Typography level="h1" pb={2}>

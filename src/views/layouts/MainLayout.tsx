@@ -5,15 +5,19 @@ export default function MainLayout({
   children,
   appBar = false,
   giveSpace = false,
+  givePadding = false,
   mb = 4, 
   pt, // 14 rata rata penggunaan dengan app bar
+  sx,
 }: {
   children?: React.ReactNode;
   appBar?: boolean;
   giveSpace?: boolean;
+  givePadding?: boolean;
   props?: any;
   mb?: number;
   pt?: number;
+  sx?: any;
 }) {
   return (
     <>
@@ -31,7 +35,7 @@ export default function MainLayout({
               xl: "unset",
             },
           }),
-          ...(!giveSpace && {
+          ...((!giveSpace && !givePadding) && {
             padding: {
               xs: 0,
               sm: 0,
@@ -53,6 +57,7 @@ export default function MainLayout({
           flexDirection: "column",
           pt: pt || 0,
           mb: mb,
+          ...sx,
         }}
       >
         {appBar && <Box sx={{ pb: 8 }} />}

@@ -60,24 +60,33 @@ export default function Movies() {
   const [selectedFilters, setSelectedFilters] = useState<{
     [key: string]: string;
   }>({});
-  const [paramString, setParamString] = useState<string>("");
+  // const [paramString, setParamString] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
   // movies
   const [movies, setMovies] = useState<any[]>([]);
+  // paginasi
+  const [page, setPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
 
   // fetch using controller
   useEffect(() => {
     movieController
-      .getMovies(paramString)
+      .getMovies({
+        searchTerm: searchQuery,
+        page: page,
+      })
       .then((res) => {
+        console.log("film", res.data);
         setMovies(res.data);
+        setTotalPage(res.pagination.totalPages);
+        setPage(res.pagination.page);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [paramString]);
+  }, [page, searchQuery]);
 
   const handleFilterChange = (name: string, value: string) => {
     console.info(name, value);
@@ -94,10 +103,19 @@ export default function Movies() {
       .join("&");
 
     // Tambahkan search query jika ada
-    const searchParam = searchQuery ? `&search=${searchQuery}` : "";
-    setParamString(`${queryString}${searchParam}`);
+    const searchParam = searchQuery ? `${searchQuery}` : "";
+    // setParamString(`${queryString}${searchParam}`);
+    setSearchQuery(searchQuery);
     // Redirect ke URL dengan query parameter
     navigate(`/movies?${queryString}${searchParam}`);
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) setPage((prevPage) => prevPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPage) setPage((prevPage) => prevPage + 1);
   };
 
   return (
@@ -224,6 +242,8 @@ export default function Movies() {
             size="sm"
             variant="outlined"
             color="neutral"
+            disabled={page === 1}
+            onClick={handlePreviousPage}
             startDecorator={<KeyboardArrowLeft />}
             sx={{ display: { xs: "none", md: "flex" } }}
           >
@@ -238,20 +258,23 @@ export default function Movies() {
               },
             }}
           />
-          {["1", "2", "3", "…", "8", "9", "10"].map((page) => (
+          {[...Array(totalPage)].map((_, index) => (
             <IconButton
-              key={page}
+              key={index}
               size="sm"
-              variant={Number(page) ? "outlined" : "plain"}
+              variant={page === index + 1 ? "solid" : "outlined"}
               color="neutral"
+              onClick={() => setPage(index + 1)}
             >
-              {page}
+              {index + 1}
             </IconButton>
           ))}
           <Button
             size="sm"
             variant="outlined"
             color="neutral"
+            disabled={page === 1}
+            onClick={handlePreviousPage}
             startDecorator={<KeyboardArrowLeft />}
             sx={{ display: { xs: "flex", md: "none" } }}
           >
@@ -306,6 +329,8 @@ export default function Movies() {
             size="sm"
             variant="outlined"
             color="neutral"
+            disabled={page === totalPage}
+            onClick={handleNextPage}
             endDecorator={<KeyboardArrowRight />}
           >
             Next

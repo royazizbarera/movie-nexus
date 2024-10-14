@@ -6,6 +6,12 @@
   npm start
 ```
 
+## Deploy
+Temporary Deploy
+```bash
+ngrok http --url=completely-safe-moth.ngrok-free.app 3002
+```
+
 
 ## Install
 Font

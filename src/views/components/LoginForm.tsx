@@ -7,19 +7,19 @@ import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
 import { Avatar, Divider } from "@mui/joy";
 import { useState } from "react";
-import { useAuth } from "../../contexts/useAuth";
+import { useAuthStore } from "../../contexts/authStore";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-  const { loginUser } = useAuth();
+  const { signInWithEmailAndPassword, user, isLoading, error } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorLogin, setErrorLogin] = useState("");
-  const [loading, setLoading] = useState(false); // Tambahkan loading state
+  const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     const currentUrl = window.location.href; // Dapatkan URL halaman saat ini
     window.open(
-      `http://localhost:3001/api/v1/auth/google?redirectUrl=${encodeURIComponent(
+      `http://localhost:3005/api/v1/auth/google?redirectUrl=${encodeURIComponent(
         currentUrl
       )}`,
       "_self"
@@ -27,17 +27,11 @@ export default function LoginForm() {
   };
 
   const handleEmailPasswordLogin = async () => {
-    setLoading(true); // Mulai loading
+    console.log(user);
     try {
-      await loginUser(email, password);
-      setErrorLogin("");
-      setLoading(false); // Selesai loading setelah login
-    } catch (error: any) {
-      setErrorLogin(
-        error.message || "Terjadi kesalahan saat login. Coba lagi nanti."
-      );
-      setLoading(false); // Selesai loading jika gagal
-    }
+      await signInWithEmailAndPassword(email, password);
+      navigate("/", { replace: true });
+    } catch (error: any) {}
   };
 
   return (
@@ -63,9 +57,9 @@ export default function LoginForm() {
         <Typography level="body-sm">Login to continue.</Typography>
       </div>
 
-      {errorLogin && (
+      {error && (
         <Typography color="danger" sx={{ fontSize: "sm", mb: 2 }}>
-          {errorLogin}
+          {error}
         </Typography>
       )}
 
@@ -93,9 +87,9 @@ export default function LoginForm() {
       <Button
         onClick={handleEmailPasswordLogin}
         sx={{ mt: 1 }}
-        disabled={loading} // Disable button ketika loading
+        disabled={isLoading} // Disable button ketika isLoading
       >
-        {loading ? "Logging in..." : "Login"} {/* Indikasi loading */}
+        {isLoading ? "Logging in..." : "Login"} {/* Indikasi isLoading */}
       </Button>
 
       <Typography

@@ -6,19 +6,18 @@ import {
   Grid,
   Typography,
   List,
-  Avatar,
-  ListItem,
-  ListItemDecorator,
-  ListItemContent,
-  ListDivider,
+  // Avatar,
+  // ListItem,
+  // ListItemDecorator,
+  // ListItemContent,
+  // ListDivider,
 } from "@mui/joy";
 import ContentLayout from "../layouts/ContentLayout";
 
 // icon
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import AddCommentIcon from '@mui/icons-material/AddComment';
-
+import AddCommentIcon from "@mui/icons-material/AddComment";
 
 import MainLayout from "../layouts/MainLayout";
 import MovieCard from "../components/MovieCard";
@@ -26,7 +25,9 @@ import ActorCard from "../components/ActorCard";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import movieController from "../../controllers/movieController";
-import getTrailerMovie from "../../helpers/getTrailerMovie";
+// import getTrailerMovie from "../../helpers/getTrailerMovie";
+import { extractYouTubeVideoId } from "../../helpers/extractYouTubeVideoId";
+import AppAppBar from "../components/AppAppBar";
 
 export default function DetailMovie() {
   const { id } = useParams();
@@ -35,32 +36,54 @@ export default function DetailMovie() {
   const [actors, setActors] = useState<any[]>([]);
   const [director, setDirector] = useState<any>({});
   // const [reviews, setReviews] = useState<any[]>([]);
-  const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const [movies, setMovies] = useState<any[]>([]);
+
+  // fetch using controller
+  useEffect(() => {
+    movieController
+      .getMovies({})
+      .then((res) => {
+        setMovies(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     // Ambil detail movie
-    movieController.getMovieById(id!).then((data) => {
-      setMovie(data.data);
-      setGenres(data.data.genres);
-      setDirector(data.data.director);
-      setActors(data.data.actors);
-      // setReviews(data.data.reviews);
-    });
-
-    // Ambil trailer dari TMDB
-    getTrailerMovie("957452").then((response) => {
-      const youtubeTrailer = response.results.find(
-        (video: any) => video.site === "YouTube" && video.type === "Trailer"
-      );
-      if (youtubeTrailer) {
-        setTrailerKey(youtubeTrailer.key);
-      }
-    });
+    try {
+      movieController.getMovieById(id!).then((data) => {
+        setMovie(data.data);
+        setGenres(data.data.genres);
+        setDirector(data.data.director);
+        setActors(data.data.actors);
+        // setReviews(data.data.reviews);
+      });
+      
+    } catch (error) {
+      
+    }
   }, [id]);
 
   return (
     <>
-      <MainLayout appBar>
+      <AppAppBar />
+      <MainLayout
+        // pt={14}
+        givePadding
+        sx={{
+          backgroundColor: "background.paper",
+          // pt: 10,
+          px: {
+            xs: 0,
+            sm: 0,
+            md: 0,
+            lg: 0,
+            xl: 0,
+          },
+        }}
+      >
         {/* Poster Trailer */}
         <ContentLayout>
           <Box
@@ -71,7 +94,10 @@ export default function DetailMovie() {
               backdropFilter: "blur(10px)", // Blur untuk efek glass
               boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Bayangan halus
               paddingBottom: { xs: 2, md: 4 },
-              paddingTop: 1,
+              paddingTop: {
+                xs: 12,
+                md: 14,
+              },
               position: "relative",
               overflow: "hidden",
               "&:before": {
@@ -175,17 +201,20 @@ export default function DetailMovie() {
 
                   {/* Trailer */}
                   <Grid xs={12} md={9}>
-                    {trailerKey ? (
+                    {movie.videoUrl ? (
                       <iframe
                         width="100%"
                         height="100%"
-                        src={`https://www.youtube.com/embed/${trailerKey}`}
+                        src={`https://www.youtube.com/embed/${extractYouTubeVideoId(
+                          movie.videoUrl
+                        )}?autoplay=1&mute=0&controls=1`}
                         title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                         allowFullScreen
                         style={{
                           borderRadius: "8px",
                           objectFit: "cover",
+                          border: "none",
                         }}
                       />
                     ) : (
@@ -345,7 +374,7 @@ export default function DetailMovie() {
             {/* Add Reviews */}
             <Button
               variant="solid"
-              startDecorator={<AddCommentIcon/>}
+              startDecorator={<AddCommentIcon />}
               sx={{
                 mb: 2,
               }}
@@ -359,22 +388,20 @@ export default function DetailMovie() {
               sx={{ "--ListItemDecorator-size": "56px" }}
             >
               {/* List item */}
-
-              {Array.from({ length: 10 }).map((_, index) => (
+              {/* Belum ada Review */}
+              <Typography level="body-md">No reviews available.</Typography>
+              {/* {Array.from({ length: 10 }).map((_, index) => (
                 <>
                   <ListItem
                     sx={{
                       alignItems: "flex-start",
                     }}
                   >
-                    {/* PP User */}
                     <ListItemDecorator>
                       <Avatar src="/static/images/avatar/1.jpg" />
                     </ListItemDecorator>
                     <ListItemContent>
-                      {/* Username */}
                       <Typography level="title-sm">Imanudin</Typography>
-                      {/* Reviews */}
                       <Typography level="body-sm">
                         Madep kiee! Madep kiee! Madep kiee! Madep kiee! Madep
                         kiee! Madep kiee! Madep kiee! Madep kiee! Madep kiee!
@@ -383,7 +410,6 @@ export default function DetailMovie() {
                         Madep kiee! Madep kiee! Madep kiee! Madep kiee! Madep
                         kiee! Madep kiee! Madep kiee! Madep kiee! Madep kiee!
                       </Typography>
-                      {/* Rating */}
                       <Box
                         display="flex"
                         alignItems="center"
@@ -397,7 +423,7 @@ export default function DetailMovie() {
                   </ListItem>
                   <ListDivider inset={"startContent"} />
                 </>
-              ))}
+              ))} */}
             </List>
           </Box>
 
@@ -405,17 +431,31 @@ export default function DetailMovie() {
           {/* Recomendation */}
           <Grid
             container
-            spacing={{
-              xs: 1,
-              sm: 1,
-              md: 2,
-              lg: 2,
-              xl: 2,
-            }}
+            spacing={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2 }}
             sx={{ flexGrow: 1, justifyContent: "left" }}
           >
-            {Array.from({ length: 10 }).map((_, index) => (
-              <MovieCard />
+            {movies.map((movie: any, index: number) => (
+              <Grid
+                key={index}
+                xs={6}
+                sm={4}
+                md={3}
+                lg={2}
+                xl={2}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <MovieCard
+                  key={index}
+                  id={movie.id}
+                  title={movie.title}
+                  posterUrl={movie.posterUrl}
+                  rating={movie.rating}
+                  year={movie.releaseDate}
+                />
+              </Grid>
             ))}
           </Grid>
         </ContentLayout>

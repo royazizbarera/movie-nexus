@@ -27,8 +27,7 @@ import ModeToggle from "./ModeTogle";
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
-import { useAuth } from "../../contexts/useAuth";
-import { MoreVert } from "@mui/icons-material";
+import { useAuthStore } from "../../contexts/authStore";
 
 const appBarContent = [
   { label: "Home", href: "/" },
@@ -179,11 +178,11 @@ export default function AppAppBar() {
   const [openSignUp, setOpenSignUp] = React.useState<boolean>(false);
 
   // Use the auth context to get user information
-  const { user, isLoggedIn, logoutUser } = useAuth();
+  const { user, isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleLogoutUser = () => {
-    logoutUser();
+  const handlelogout = () => {
+    logout();
   };
 
   const goToProfilePage = () => {
@@ -252,7 +251,7 @@ export default function AppAppBar() {
               alignItems: "center",
             }}
           >
-            {isLoggedIn() ? (
+            {isAuthenticated ? (
               // If user is logged in, show profile and logout button
               <>
                 <Dropdown>
@@ -275,7 +274,7 @@ export default function AppAppBar() {
                   <Menu>
                     <MenuItem onClick={goToProfilePage}>Profile</MenuItem>
                     <MenuItem>Watch List</MenuItem>
-                    <MenuItem onClick={handleLogoutUser}>Logout</MenuItem>
+                    <MenuItem onClick={handlelogout}>Logout</MenuItem>
                   </Menu>
                 </Dropdown>
 
@@ -286,19 +285,11 @@ export default function AppAppBar() {
               <>
                 <Button
                   onClick={() => setOpenSignIn(true)}
-                  variant="soft"
-                  color="neutral"
-                  sx={{ marginRight: 1 }}
-                >
-                  Login
-                </Button>
-                <Button
-                  onClick={() => setOpenSignUp(true)}
                   variant="solid"
                   color="primary"
                   sx={{ marginRight: 1 }}
                 >
-                  Sign Up
+                  Login
                 </Button>
                 <ModeToggle />
               </>
@@ -355,7 +346,7 @@ export default function AppAppBar() {
                     padding: 2,
                   }}
                 >
-                  {isLoggedIn() ? (
+                  {isAuthenticated ? (
                     <>
                       <Avatar
                         alt={user?.username || "User"}
@@ -369,7 +360,7 @@ export default function AppAppBar() {
                         variant="outlined"
                         color="neutral"
                         sx={{ marginRight: 1 }}
-                        onClick={logoutUser}
+                        onClick={logout}
                       >
                         Logout
                       </Button>

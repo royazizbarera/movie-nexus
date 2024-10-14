@@ -1,46 +1,71 @@
 import axios from "axios";
 import {
-  BASE_API_URL,
+  BASE_AUTH_URL,
   CUSTOM_STATUS_CODES,
   HEADERS,
 } from "../configs/constants";
 
+axios.defaults.withCredentials = true;
+
 class AuthController {
-  signInWithEmailAndPassword = async (email: string, password: string) => {
+  // apply singleton pattern
+  private static instance: AuthController;
+
+  // private constructor to prevent creating new instance
+  private constructor() {}
+
+  // static method to get the instance
+  static getInstance(): AuthController {
+    if (!AuthController.instance) {
+      AuthController.instance = new AuthController();
+    }
+
+    return AuthController.instance;
+  }
+
+  public async signInWithEmailAndPassword(email: string, password: string) {
     try {
-      const resposne = await axios.post(
-        `${BASE_API_URL}/user/sign-in-email`,
-        {
-          email,
-          password,
-        },
-        {
-          headers: HEADERS,
-        }
-      );
-
-      const data = resposne.data;
-
-      console.info(data);
-      if (data.code === CUSTOM_STATUS_CODES.OK) {
-        localStorage.setItem("token", data.data.token);
-        return data.data;
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (error) {
+      await axios
+        .post(
+          `${BASE_AUTH_URL}/sign-in-email`,
+          {
+            email,
+            password,
+          },
+          {
+            headers: HEADERS,
+          }
+        )
+        .then((response) => {
+          const data = response.data;
+          if (data.code === CUSTOM_STATUS_CODES.OK) {
+            return data.data;
+          } else {
+            throw new Error(data.message);
+          }
+        })
+        .catch((error) => {
+          const errorResponse = error.response;
+          if (errorResponse) {
+            throw new Error(errorResponse.data.message);
+          } else {
+            throw new Error(error.message);
+          }
+        });
+    } catch (error: any) {
+      console.log(error.message || "Sign in is failed.");
       throw error;
     }
-  };
+  }
 
-  signUpWithEmailAndPassword = async (
+  public async signUpWithEmailAndPassword(
     username: string,
     email: string,
     password: string
-  ) => {
+  ) {
     try {
       const resposne = await axios.post(
-        `${BASE_API_URL}/user/sign-up-email`,
+        `${BASE_AUTH_URL}/sign-up-email`,
         {
           username,
           email,
@@ -54,7 +79,6 @@ class AuthController {
       const data = resposne.data;
 
       if (data.code === CUSTOM_STATUS_CODES.CREATED) {
-        localStorage.setItem("token", data.data.token);
         return data.data;
       } else {
         throw new Error(data.message);
@@ -62,9 +86,95 @@ class AuthController {
     } catch (error) {
       throw error;
     }
-  };
+  }
+
+  public async isVerified(token: string) {
+    try {
+      const resposne = await axios.post(
+        `${BASE_AUTH_URL}/is-verified`,
+        {
+          token,
+        },
+        {
+          headers: HEADERS,
+        }
+      );
+
+      const data = resposne.data;
+
+      if (data.code === CUSTOM_STATUS_CODES.OK) {
+        return data.data;
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // verify email
+  public async verifyEmail(verificationCode: string) {
+    try {
+      const resposne = await axios.post(
+        `${BASE_AUTH_URL}/verify-email`,
+        {
+          verificationCode,
+        },
+        {
+          headers: HEADERS,
+        }
+      );
+
+      const data = resposne.data;
+
+      if (data.code === CUSTOM_STATUS_CODES.OK) {
+        return data.data;
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // check auth
+  public async checkAuth() {
+    try {
+      const resposne = await axios.post(`${BASE_AUTH_URL}/check-auth`, {
+        headers: HEADERS,
+      });
+
+      const data = resposne.data;
+
+      if (data.code === CUSTOM_STATUS_CODES.OK) {
+        return data.data;
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // logout
+  public async logout() {
+    try {
+      const resposne = await axios.post(`${BASE_AUTH_URL}/logout`, {
+        headers: HEADERS,
+      });
+
+      const data = resposne.data;
+
+      if (data.code === CUSTOM_STATUS_CODES.OK) {
+        return data.data;
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-const authController = new AuthController();
-
+const authController = AuthController.getInstance();
 export default authController;

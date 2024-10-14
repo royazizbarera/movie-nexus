@@ -1,19 +1,19 @@
-import { Box, Typography, Grid } from "@mui/joy";
+import { Box, Typography, Grid, Button, Stack } from "@mui/joy";
 import MovieCard from "../components/MovieCard";
 import AppAppBar from "../components/AppAppBar";
 import UserCard from "../components/users/UserCard";
 import MainLayout from "../layouts/MainLayout";
 import movieController from "../../controllers/movieController";
 import { useEffect, useState } from "react";
-
-
+import { useAuthStore } from "../../contexts/authStore";
 
 export default function UserProfilePage() {
   const [movies, setMovies] = useState<any[]>([]);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     movieController
-      .getMovies("")
+      .getMovies({})
       .then((res) => {
         setMovies(res.data);
       })
@@ -29,18 +29,44 @@ export default function UserProfilePage() {
         <Grid
           container
           spacing={2}
-          direction={"row"}
+          direction={"column"}
           sx={{
             flexGrow: 1,
             justifyContent: "center",
             pb: 4,
           }}
         >
+          <Typography level="h1" pb={2}>
+            User Profile
+          </Typography>
+          {!user.isVerified && (
+            <Grid
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              sx={{
+                flexGrow: 1,
+              }}
+            >
+              <Stack direction={"row"}>
+                <Typography
+                  level="title-lg"
+                  mb={2}
+                  sx={{
+                    backgroundColor: "red",
+                    mr: 2,
+                  }}
+                >
+                  Please Verivication Your Email First
+                </Typography>
+                <Button size="sm">Verification</Button>
+              </Stack>
+            </Grid>
+          )}
           <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Typography level="h1" pb={2}>
-              User Profile
-            </Typography>
-            <UserCard />
+            <UserCard user={user}/>
           </Grid>
 
           {/* Favorite Film Section */}
