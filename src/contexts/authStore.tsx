@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import authController from "../controllers/authController";
+import { UserModel } from "../models/UserModel";
 
 interface AuthStore {
-  user: any;
+  user: UserModel | null;
   isAuthenticated: boolean;
   error: string | any;
   message: string | any;
@@ -76,9 +77,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signInWithEmailAndPassword: async (email: string, password: string) => {
     set({ isLoading: true });
     try {
-      const user = await authController.signInWithEmailAndPassword(email, password);
-      set({ user: user, isAuthenticated: true, isLoading: false });
-
+      const user = await authController.signInWithEmailAndPassword(
+        email,
+        password
+      );
+      set({ user: user!, isAuthenticated: true, isLoading: false });
     } catch (error: any) {
       const errorThrow = error.message || "Sign in is failed.";
       set({ error: errorThrow, isLoading: false });

@@ -4,6 +4,7 @@ import {
   CUSTOM_STATUS_CODES,
   HEADERS,
 } from "../configs/constants";
+import { UserModel } from "../models/UserModel";
 
 axios.defaults.withCredentials = true;
 
@@ -23,7 +24,10 @@ class AuthController {
     return AuthController.instance;
   }
 
-  public async signInWithEmailAndPassword(email: string, password: string) {
+  public async signInWithEmailAndPassword(
+    email: string,
+    password: string
+  ): Promise<UserModel | void> {
     try {
       await axios
         .post(
@@ -39,7 +43,7 @@ class AuthController {
         .then((response) => {
           const data = response.data;
           if (data.code === CUSTOM_STATUS_CODES.OK) {
-            return data.data;
+            return data.data as UserModel;
           } else {
             throw new Error(data.message);
           }
@@ -79,7 +83,8 @@ class AuthController {
       const data = resposne.data;
 
       if (data.code === CUSTOM_STATUS_CODES.CREATED) {
-        return data.data;
+        const user = data.data;
+        return user;
       } else {
         throw new Error(data.message);
       }

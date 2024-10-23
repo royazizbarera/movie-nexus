@@ -47,6 +47,13 @@ const star = {
 };
 
 const theme = extendTheme({
+  components: {
+    JoySkeleton: {
+      defaultProps: {
+        animation: 'wave',
+      },
+    },
+  },
   fontFamily: {
     body: "Quicksand",
   },

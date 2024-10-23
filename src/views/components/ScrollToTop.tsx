@@ -10,3 +10,10 @@ export default function ScrollToTop() {
 
   return null;
 }
+
+export function ScrollToTopHere() {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Reset scroll ke atas
+  }, []); // Terpanggil setiap kali rute berubah
+  return null;
+}

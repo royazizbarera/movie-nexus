@@ -1,33 +1,45 @@
 import axios from "axios";
 
 import { BASE_API_URL } from "../configs/constants";
+import { useAuthStore } from "../contexts/authStore";
 
 axios.defaults.withCredentials = true;
 
 class MovieController {
-  getMovies = async ({
-    searchTerm = "",
-    page = 1,
-    genre = "",
+
+
+  private isAdmin() {
+    const { user } = useAuthStore.getState();
+    return user?.role === "admin";
+  }
+
+
+  public async getMovies({
+    searchTerm,
+    page,
+    genre,
   }: {
     searchTerm?: string;
     page?: number;
     genre?: string;
-  }) => {
+  }) {
     try {
-      const response = await axios.get(`${BASE_API_URL}/movies`, {
-        params: {
-          searchTerm: searchTerm,
-          page: page,
-          genre: genre,
-        },
-      });
+      // Buat object params hanya dengan nilai-nilai yang ada
+      const params = {
+        ...(searchTerm && { searchTerm }), // Hanya tambahkan jika ada searchTerm
+        ...(page && { page }), // Hanya tambahkan jika ada page
+        ...(genre && { genre }), // Hanya tambahkan jika ada genre
+      };
+
+      const response = await axios.get(`${BASE_API_URL}/movies`, { params });
+
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching movies:", error);
+      throw error; // Opsional, jika ingin meneruskan error ke luar fungsi
     }
-  };
+  }
 
   getMovieById = async (id: string) => {
     try {

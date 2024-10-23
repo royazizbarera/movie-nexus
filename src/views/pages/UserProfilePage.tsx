@@ -39,7 +39,7 @@ export default function UserProfilePage() {
           <Typography level="h1" pb={2}>
             User Profile
           </Typography>
-          {!user.isVerified && (
+          {!user!.isVerified && (
             <Grid
               xs={12}
               sm={12}

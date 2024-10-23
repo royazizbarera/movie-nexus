@@ -15,7 +15,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 //
 import movieController from "../../controllers/movieController";
@@ -31,7 +31,8 @@ const styleSelect = {
   },
 };
 
-export default function Movies() {
+export default function MoviesPage() {
+  const [queryParameters] = useSearchParams();
   const [selectedFilters, setSelectedFilters] = useState<{
     [key: string]: string;
   }>({});

@@ -1,18 +1,20 @@
 import { Route, Routes } from "react-router-dom";
 import DetailMovie from "../views/pages/DetailMovie";
 import Home from "../views/pages/Home";
-import Movies from "../views/pages/MoviesPage";
+import MoviesPage from "../views/pages/MoviesPage";
 import UserProfilePage from "../views/pages/UserProfilePage";
 import SignInPage from "../views/pages/SignInPage";
 import SignUpPage from "../views/pages/SignUpPage";
 import ProtectedRoute from "./ProtectedRoutes";
 import VerifyEmailPage from "../views/pages/VerifyEmailPage";
+import MoviesPageDua from "../views/pages/MoviesPageDua";
 
 export default function ClientRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/movies" element={<Movies />} />
+      <Route path="/movies" element={<MoviesPage />} />
+      <Route path="/movies-dua" element={<MoviesPageDua />} />
       <Route path="/movie/:id" element={<DetailMovie />} />
 
       <Route
@@ -24,7 +26,7 @@ export default function ClientRoutes() {
           />
         }
       />
-      
+
       <Route
         path="/sign-up"
         element={
@@ -38,7 +40,12 @@ export default function ClientRoutes() {
       {/* User */}
       <Route
         path="/user-profile"
-        element={<ProtectedRoute role="writer" element={<UserProfilePage />} />}
+        element={
+          <ProtectedRoute
+            role={["admin", "writer"]}
+            element={<UserProfilePage />}
+          />
+        }
       />
       {/* verify-email */}
       <Route

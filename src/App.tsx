@@ -16,7 +16,7 @@ function App() {
   }, [checkAuth]);
   if (isCheckingAuth)
     return (
-      <CssVarsProvider theme={theme} defaultMode="dark">
+      <CssVarsProvider theme={theme} defaultMode="dark" disableTransitionOnChange>
         <CssBaseline />
         <MainLayout>
           <Box

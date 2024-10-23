@@ -6,6 +6,7 @@ export default function MainLayout({
   appBar = false,
   giveSpace = false,
   givePadding = false,
+  disablePX = false,
   mb = 4, 
   pt, // 14 rata rata penggunaan dengan app bar
   sx,
@@ -14,6 +15,7 @@ export default function MainLayout({
   appBar?: boolean;
   giveSpace?: boolean;
   givePadding?: boolean;
+  disablePX?: boolean;
   props?: any;
   mb?: number;
   pt?: number;
@@ -26,6 +28,16 @@ export default function MainLayout({
         component="main"
         maxWidth="lg"
         sx={{
+          // overflow: "hidden",
+          ...(disablePX && {
+            px: {
+              xs: 0,
+              sm: 0,
+              md: 0,
+              lg: 0,
+              xl: 0,
+            },
+          }),
           ...(!giveSpace && {
             gap: {
               xs: "unset",

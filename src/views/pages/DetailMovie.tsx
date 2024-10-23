@@ -26,8 +26,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import movieController from "../../controllers/movieController";
 // import getTrailerMovie from "../../helpers/getTrailerMovie";
-import { extractYouTubeVideoId } from "../../helpers/extractYouTubeVideoId";
 import AppAppBar from "../components/AppAppBar";
+import BackgroundTrailer from "../components/movies/BackgroundTrailer";
+import VideoTrailer from "../components/movies/VideoTrailer";
 
 export default function DetailMovie() {
   const { id } = useParams();
@@ -60,60 +61,49 @@ export default function DetailMovie() {
         setActors(data.data.actors);
         // setReviews(data.data.reviews);
       });
-      
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [id]);
 
   return (
     <>
       <AppAppBar />
-      <MainLayout
-        // pt={14}
-        givePadding
-        sx={{
-          backgroundColor: "background.paper",
-          // pt: 10,
-          px: {
-            xs: 0,
-            sm: 0,
-            md: 0,
-            lg: 0,
-            xl: 0,
-          },
-        }}
-      >
+      <MainLayout>
         {/* Poster Trailer */}
         <ContentLayout>
-          <Box
-            sx={{
-              backgroundImage: `url(${movie.posterUrl})`, // Menggunakan prop posterUrl sebagai background
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backdropFilter: "blur(10px)", // Blur untuk efek glass
-              boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Bayangan halus
-              paddingBottom: { xs: 2, md: 4 },
-              paddingTop: {
-                xs: 12,
-                md: 14,
-              },
-              position: "relative",
-              overflow: "hidden",
-              "&:before": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-                backgroundColor: "rgba(0, 0, 0, 0.5)", // Overlay hitam semi-transparan untuk membuat teks lebih jelas
-                backdropFilter: "blur(10px)",
-              },
-            }}
-          >
+          <BackgroundTrailer backgroundUrl={movie.posterUrl}>
             <ContentLayout giveSpace>
               <Box position="relative" zIndex={1}>
+                <Grid
+                  container
+                  spacing={2}
+                  alignItems="stretch"
+                  direction={{ xs: "column", md: "row" }}
+                  pb={2}
+                >
+                  <Grid xs={12} md={3}>
+                    <Box
+                      component="img"
+                      src={movie.posterUrl} // URL gambar poster dari prop
+                      alt={`${movie.title} Poster`}
+                      width="100%"
+                      height="100%" // Menetapkan tinggi penuh agar sejajar dengan trailer
+                      borderRadius="8px"
+                      sx={{
+                        objectFit: "cover",
+                        aspectRatio: "3/4", // Misalnya, 2:3 untuk poster film di layar besar dan 3:4 di layar kecil
+                      }}
+                    />
+                  </Grid>
+
+                  {/* Trailer */}
+                  <Grid xs={12} md={9}>
+                    {movie.videoUrl ? (
+                      <VideoTrailer videoUrl={movie.videoUrl} />
+                    ) : (
+                      <Typography>No trailer available</Typography>
+                    )}
+                  </Grid>
+                </Grid>
                 {/* Title and Info with Ratings */}
                 <Box
                   display="flex"
@@ -177,79 +167,9 @@ export default function DetailMovie() {
                     </Box>
                   </Box>
                 </Box>
-                <Grid
-                  container
-                  spacing={2}
-                  alignItems="stretch"
-                  direction={{ xs: "column", md: "row" }}
-                >
-                  {/* Poster Image */}
-                  <Grid xs={12} md={3}>
-                    <Box
-                      component="img"
-                      src={movie.posterUrl} // URL gambar poster dari prop
-                      alt={`${movie.title} Poster`}
-                      width="100%"
-                      height="100%" // Menetapkan tinggi penuh agar sejajar dengan trailer
-                      borderRadius="8px"
-                      sx={{
-                        objectFit: "cover",
-                        aspectRatio: { xs: "3/4", md: "2/3" }, // Misalnya, 2:3 untuk poster film di layar besar dan 3:4 di layar kecil
-                      }}
-                    />
-                  </Grid>
-
-                  {/* Trailer */}
-                  <Grid xs={12} md={9}>
-                    {movie.videoUrl ? (
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src={`https://www.youtube.com/embed/${extractYouTubeVideoId(
-                          movie.videoUrl
-                        )}?autoplay=1&mute=0&controls=1`}
-                        title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                        allowFullScreen
-                        style={{
-                          borderRadius: "8px",
-                          objectFit: "cover",
-                          border: "none",
-                        }}
-                      />
-                    ) : (
-                      <Typography>No trailer available</Typography>
-                    )}
-                    {/* <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height="100%" // Menetapkan tinggi penuh agar sejajar dengan poster
-                      borderRadius="8px"
-                      overflow="hidden"
-                      bgcolor="#333"
-                    >
-                      <video
-                        width="100%"
-                        height="100%"
-                        autoPlay
-                        controls
-                        playsInline
-                        muted={false}
-                        style={{
-                          borderRadius: "8px",
-                          objectFit: "cover", // Menyesuaikan video agar mengisi area dengan baik
-                        }}
-                      >
-                        <source src={"https://www.youtube.com/embed/YoHD9XEInc0?si=fliYOznzfpKhmWpk"} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </Box> */}
-                  </Grid>
-                </Grid>
               </Box>
             </ContentLayout>
-          </Box>
+          </BackgroundTrailer>
         </ContentLayout>
         {/* Movie Description */}
         <ContentLayout giveSpace>
@@ -312,41 +232,6 @@ export default function DetailMovie() {
                 }}
               />
             </Box>
-            {/* Writters */}
-            {/* <Box>
-              <Box display={"flex"} gap={2}>
-                <Typography level="title-lg">Writers</Typography>
-                <Box component="span" color={"primary.solidBg"}>
-                  {info.map((item, index) => (
-                    <Typography
-                      level="body-lg"
-                      sx={{
-                        display: "inline",
-                        color: "primary.solidBg",
-                      }}
-                    >
-                      {item}
-                      <Typography
-                        level="body-lg"
-                        sx={{
-                          display: "inline",
-                          color: "text.primary",
-                        }}
-                      >
-                        {index < info.length - 1 && " • "}
-                      </Typography>
-                    </Typography>
-                  ))}
-                </Box>
-              </Box>
-              <Divider
-                orientation="horizontal"
-                sx={{
-                  bgcolor: "primary.solidBg",
-                  marginTop: 1,
-                }}
-              />
-            </Box> */}
 
             {/* Actor */}
             <Typography level="title-lg">Actors</Typography>

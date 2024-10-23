@@ -4,7 +4,7 @@ import { useAuthStore } from "../contexts/authStore";
 
 type ProtectedRouteProps = {
   element: React.ReactNode;
-  role?: "admin" | "writer"; // Role yang dibutuhkan untuk mengakses halaman
+  role?: "admin" | "writer" | ["admin", "writer"]; // Role yang dibutuhkan untuk mengakses halaman
   isAuthenticatedState?: boolean;
 };
 
@@ -28,10 +28,19 @@ const ProtectedRoute = ({
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
-  // Jika role diatur, lakukan pengecekan role
-  if (role) {
-    if (user.role !== role) {
-      return <Navigate to="/sign-in" replace />;
+  // Cek role nya 1 atau 2
+  // kalo 1 cek role nya sama dengan role yang di butuhkan
+  if ( role === "admin" || role === "writer") {
+    if (user!.role !== role) {
+      return <Navigate to="/unauthorized" replace />;
+    } else {
+      return <>{element}</>;
+    }
+  } else if (role && role.includes("admin") && role.includes("writer")) {
+    if (user!.role !== "admin" && user!.role !== "writer") {
+      return <Navigate to="/unauthorized" replace/>
+    } else {
+      return <>{element}</>;
     }
   }
 
