@@ -8,6 +8,7 @@ import passport from "passport";
 import { generateToken } from "../helpers/handleToken";
 import { setTokenCookies } from "../helpers/setTokenCookies";
 import { User } from "@prisma/client";
+import { FRONTEND_URL } from "../config/constants/url";
 
 const router = express.Router();
 
@@ -19,15 +20,14 @@ router.get(
   "/google/redirect",
   passport.authenticate("google", {
     session: false,
-    // successRedirect: "http://localhost:3002",
-    failureRedirect: "http://localhost:3002/sign-in",
+    failureRedirect: `${FRONTEND_URL}/sign-in`,
   }),
   (req, res) => {
     // Pada titik ini, req.user sudah diisi oleh Passport
     const user: User = req.user as User;
     if (!user) {
       console.log("User not found");
-      return res.redirect("http://localhost:3002/sign-in");
+      return res.redirect(`${FRONTEND_URL}/sign-in`);
     }
 
     // Anda dapat mengakses user di sini
@@ -35,7 +35,7 @@ router.get(
     const token = generateToken(user.id, user.email);
     setTokenCookies(res, token);
 
-    res.redirect("http://localhost:3002");
+    res.redirect(FRONTEND_URL);
   }
   // authController.passportRedirect,
   // authController.passportCallback

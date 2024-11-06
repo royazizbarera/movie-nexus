@@ -7,6 +7,7 @@ import { generateToken } from "../helpers/handleToken";
 import { setTokenCookies } from "../helpers/setTokenCookies";
 import MailService from "../services/MailService";
 import { User } from "@prisma/client";
+import { FRONTEND_URL } from "../config/constants/url";
 
 class AuthController {
   private static instance: AuthController;
@@ -42,10 +43,10 @@ class AuthController {
         if (err || !user) {
           console.error(err);
           console.error(user);
-          return res.status(401).json({ message: "Authentication failed" });
+          return res.status(401).json({ message: "Authentication failed." });
         }
         const session = req.session as any;
-        const redirectUrl = session.redirectUrl || "http://localhost:3002"; // Default ke Home di client
+        const redirectUrl = session.redirectUrl || FRONTEND_URL; // Default ke Home di client
         delete session.redirectUrl; // Hapus redirectUrl setelah digunakan
         console.log("user", user);
         // Buat token JWT dan setel cookie
