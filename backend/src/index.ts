@@ -17,6 +17,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport, { use } from "passport";
 import "./api/v1/config/auth";
+import testDummy from "./api/v1/helpers/testDummy";
 
 // INITIALIZE SERVER
 dotenv.config();
@@ -31,15 +32,14 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    // origin: function (origin, callback) {
-    //   // Check if the incoming request origin is in the allowedOrigins array
-    //   if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-    //     callback(null, true);
-    //   } else {
-    //     callback(new Error("Not allowed by CORS"));
-    //   }
-    // },
-    origin: "*",
+    origin: function (origin, callback) {
+      // Check if the incoming request origin is in the allowedOrigins array
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true, // Izinkan pengiriman cookie lintas domain
     methods: ["GET", "POST", "PUT", "DELETE"], // Izinkan metode HTTP yang digunakan
   })
@@ -80,6 +80,14 @@ app.route("/api/v1/insertDummyData").get(async (req, res) => {
   }
 });
 
+app.get("/insert-genre", async (req, res) => {
+  try {
+    await testDummy(); // Tunggu sampai proses insert selesai
+    res.status(200).send("Dummy data inserted successfully!"); // Kirim respons sukses ke klien
+  } catch (error) {
+    res.status(500).send(error); // Kirim respons error jika terjadi kesalahan
+  }
+}); 
 // hello world
 app.get("/", (req, res) => {
   res.send("Hello World!");
