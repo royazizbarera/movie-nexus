@@ -211,20 +211,18 @@ export default function MoviesPage() {
       <AppAppBar />
       <MainLayout giveSpace pt={14}>
         {/* Button add movie if role writer or admin */}
-        {
-          user?.role === "admin" || user?.role === "writer" ? (
-            <Button
-              variant="soft"
-              color="primary"
-              sx={{ mb: 4 }}
-              onClick={() => {
-                handleOpenAddModal();
-              }}
-            >
-              Add Movie
-            </Button>
-          ) : null
-        }
+        {user?.role === "admin" || user?.role === "writer" ? (
+          <Button
+            variant="soft"
+            color="primary"
+            sx={{ mb: 4 }}
+            onClick={() => {
+              handleOpenAddModal();
+            }}
+          >
+            Add Movie
+          </Button>
+        ) : null}
         {/* Toolbar Filtering */}
         <Box sx={{ mb: 4, display: "flex", flexDirection: "column" }}>
           {/* Filter Dropdowns */}
@@ -311,6 +309,7 @@ export default function MoviesPage() {
           >
             {movies.map((movie: any, index: number) => (
               <Grid
+                key={index}
                 xs={6}
                 sm={4}
                 md={3}

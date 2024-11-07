@@ -55,6 +55,7 @@ const columns: Column<MovieModelTable>[] = [
     key: "approvalStatus",
     label: "Approval Status",
     type: "boolean",
+    required: true,
   },
   {
     key: "addedBy",
@@ -62,23 +63,34 @@ const columns: Column<MovieModelTable>[] = [
     type: "string_autocomplete",
     readonly: true,
   },
-  { key: "title", label: "Title", type: "string" },
-  { key: "synopsis", label: "Synopsis", type: "string" },
-  { key: "posterUrl", label: "Poster", type: "string" },
-  { key: "backdropUrl", label: "Backdrop", type: "string" },
-  { key: "videoUrl", label: "Video", type: "string" },
-  { key: "releaseDate", label: "Release Date", type: "date" },
-  { key: "rating", label: "Rating", type: "number", readonly: true },
-  { key: "country", label: "Country", type: "string_autocomplete" },
+  { key: "title", label: "Title", type: "string", readonly: true },
+  { key: "synopsis", label: "Synopsis", type: "string", readonly: true },
+  { key: "posterUrl", label: "Poster", type: "string", readonly: true },
+  { key: "backdropUrl", label: "Backdrop", type: "string", readonly: true },
+  { key: "videoUrl", label: "Video", type: "string", readonly: true },
+  { key: "releaseDate", label: "Release Date", type: "date", readonly: true },
+  {
+    key: "rating",
+    label: "Rating",
+    type: "number",
+    readonly: true,
+  },
+  {
+    key: "country",
+    label: "Country",
+    type: "string_autocomplete",
+    readonly: true,
+  },
   {
     key: "director",
     label: "Director",
     type: "string_autocomplete",
+    readonly: true,
   },
-  { key: "genres", label: "Genres", type: "string[]" },
-  { key: "actors", label: "Actors", type: "string[]" },
-  { key: "awards", label: "Awards", type: "string[]" },
-  { key: "reviews", label: "Reviews", type: "string[]" },
+  { key: "genres", label: "Genres", type: "string[]", readonly: true },
+  { key: "actors", label: "Actors", type: "string[]", readonly: true },
+  { key: "awards", label: "Awards", type: "string[]", readonly: true },
+  { key: "reviews", label: "Reviews", type: "string[]", readonly: true },
 ];
 
 export default function AdminMovieApprovalPage() {
@@ -119,7 +131,6 @@ export default function AdminMovieApprovalPage() {
   );
 
   const [users, setUsers] = React.useState<string[]>([]);
-  const [realUsers, setRealUsers] = React.useState<UserModel[]>([]);
 
   const handleOpenDetailItem = () => {
     setOpenDetailItem(true);
@@ -131,14 +142,18 @@ export default function AdminMovieApprovalPage() {
 
   const fetchMovies = async (movieParamsModel?: MovieParamsModel) => {
     try {
-      const response = await movieController.getUnapprovedMovies(movieParamsModel);
+      const responseUsers = await userController.getUsers();
+      const dataUsers = responseUsers.data;
+      const response = await movieController.getUnapprovedMovies(
+        movieParamsModel
+      );
       const { data: movies, pagination } = response;
       setRealMovies(movies);
       setMovies(
         movies.map((movie) => {
           return convertMovieModelToTable({
             ...movie,
-            addedBy: realUsers.find((u) => u.id === movie.userId)!,
+            addedBy: dataUsers.find((u) => u.id === movie.userId) || null,
           });
         })
       );
@@ -221,7 +236,6 @@ export default function AdminMovieApprovalPage() {
     try {
       const response = await userController.getUsers();
       const data = response.data;
-      setRealUsers(data);
       setUsers(
         data.map((user: UserModel) => {
           return user.username;
@@ -243,7 +257,7 @@ export default function AdminMovieApprovalPage() {
 
   React.useEffect(() => {
     fetchMovies(movieParams); // Pass current page to fetchMovies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieParams]);
 
   // TODO: ADD Movie
@@ -407,6 +421,7 @@ export default function AdminMovieApprovalPage() {
           </Box>
           <GenericTable<MovieModelTable>
             title="Movies Approval"
+            actionInFront
             data={movies}
             columns={columns}
             options={{
@@ -433,7 +448,7 @@ export default function AdminMovieApprovalPage() {
               sortOrder: SORT_ORDER_DROPDOWN,
               pageSize: PAGE_SIZE_DROPDOWN,
             }}
-            onAdd={handleAddMovie}
+            // onAdd={handleAddMovie}
             onEdit={handleEditMovie}
             onDelete={handleDeleteMovie}
             onPageChange={handlePageChange}

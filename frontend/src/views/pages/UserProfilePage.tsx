@@ -13,14 +13,14 @@ export default function UserProfilePage() {
 
   useEffect(() => {
     movieController
-      .getMovies({})
+      .getMoviesByUser(user!.username || "")
       .then((res) => {
         setMovies(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -66,7 +66,7 @@ export default function UserProfilePage() {
             </Grid>
           )}
           <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-            <UserCard user={user}/>
+            <UserCard user={user} />
           </Grid>
 
           {/* Favorite Film Section */}

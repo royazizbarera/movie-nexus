@@ -16,6 +16,11 @@ class MovieController extends BaseController {
     return this.get<MovieModel[]>("/", params);
   }
 
+  // get movie by username
+  public async getMoviesByUser(username: string) {
+    return this.get<MovieModel[]>(`/added-by/${username}`);
+  }
+
   // get unapproved movies
   public async getUnapprovedMovies(
     movieFilterParamsModel?: MovieParamsModel | undefined
@@ -52,6 +57,11 @@ class MovieController extends BaseController {
   public async deleteMovie(id: number) {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
+  }
+
+  // Menghitung total film yang belum disetujui
+  public async totalUnapprovedMovies() {
+    return this.get<number>("/total-unapproved-movies");
   }
 }
 

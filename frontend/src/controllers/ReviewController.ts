@@ -47,6 +47,11 @@ class ReviewController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
   }
+
+  // Menghitung total film yang belum disetujui
+  public async totalUnapprovedReviews() {
+    return this.get<number>("/total-unapproved-reviews");
+  }
 }
 
 const reviewController = new ReviewController();

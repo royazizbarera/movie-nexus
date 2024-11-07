@@ -41,7 +41,13 @@ const columns: any[] = [
     readonly: true,
     width: 70,
   },
-  { key: "name", label: "Genre", type: "string", width: "100%" },
+  {
+    key: "name",
+    label: "Genre",
+    type: "string",
+    width: "100%",
+    required: true,
+  },
 ];
 
 export default function AdminGenrePage() {
@@ -92,7 +98,7 @@ export default function AdminGenrePage() {
       }
     } catch (error) {
       console.error("Error adding genre:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -116,7 +122,7 @@ export default function AdminGenrePage() {
       return true;
     } catch (error) {
       console.error("Error updating genre:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -135,7 +141,7 @@ export default function AdminGenrePage() {
       }
     } catch (error) {
       console.error("Error deleting genre:", error);
-      return false;
+      throw String(error);
     }
   };
 

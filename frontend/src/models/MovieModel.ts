@@ -65,6 +65,7 @@ export interface MovieParamsModel {
   director?: string;
   sortBy?: string;
   sortOrder?: string;
+  addedBy?: string;
   // rating?: number;
   // releaseDate?: string;
   // limit?: number;

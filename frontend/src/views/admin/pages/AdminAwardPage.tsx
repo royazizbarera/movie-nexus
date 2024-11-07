@@ -36,9 +36,14 @@ const columns: any[] = [
     readonly: true,
     width: 70,
   },
-  { key: "name", label: "Name", type: "string" },
-  { key: "year", label: "Year", type: "date" },
-  { key: "country", label: "Country", type: "string_autocomplete" },
+  { key: "name", label: "Name", type: "string", required: true },
+  { key: "year", label: "Year", type: "date", required: true },
+  {
+    key: "country",
+    label: "Country",
+    type: "string_autocomplete",
+    required: true,
+  },
 ];
 
 export default function AdminAwardPage() {
@@ -101,13 +106,13 @@ export default function AdminAwardPage() {
       const response = await awardController.addAward(parsedAward);
       console.info("add award: ", newAward);
       fetchAwards(awardParams);
-      if(response.code !== 201) {
+      if (response.code !== 201) {
         return false;
       }
       return true;
     } catch (error) {
       console.error("Error adding award:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -119,18 +124,22 @@ export default function AdminAwardPage() {
         name: updatedAward.name,
         year: new Date(updatedAward.year),
         countryCode:
-          realCountries.find((c) => c.name === updatedAward.country)?.code || "",
+          realCountries.find((c) => c.name === updatedAward.country)?.code ||
+          "",
       };
-      const response = await awardController.updateAward(updatedAward.id, parsedAward);
+      const response = await awardController.updateAward(
+        updatedAward.id,
+        parsedAward
+      );
       fetchAwards(awardParams);
-      if(response.code !== 200) {
+      if (response.code !== 200) {
         return false;
       }
       console.info("update award: ", updatedAward);
       return true;
     } catch (error) {
       console.error("Error updating award:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -139,7 +148,7 @@ export default function AdminAwardPage() {
     try {
       const response = await awardController.deleteAward(award.id);
       fetchAwards(awardParams);
-      if(response.code !== 200) {
+      if (response.code !== 200) {
         return false;
       }
       console.log("Award deleted successfully:", response.message);
@@ -147,7 +156,7 @@ export default function AdminAwardPage() {
       return true;
     } catch (error) {
       console.error("Error deleting award:", error);
-      return false;
+      throw String(error);
     }
   };
 

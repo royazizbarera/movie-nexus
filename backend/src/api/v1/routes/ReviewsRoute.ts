@@ -20,6 +20,9 @@ router.get("/", ReviewController.getReviews);
  */
 router.get("/unapproved", verifyAdmin, ReviewController.getUnapprovedReviews);
 
+
+router.get("/total-unapproved-reviews", ReviewController.totalUnapprovedReviews);
+
 /**
  * @route GET /reviews/:id
  * @description Get a single review by ID

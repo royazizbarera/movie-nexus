@@ -56,20 +56,28 @@ const columns: Column<MovieModelTable>[] = [
     readonly: true,
     width: 70,
   },
-  { key: "title", label: "Title", type: "string" },
-  { key: "synopsis", label: "Synopsis", type: "string" },
-  { key: "posterUrl", label: "Poster", type: "string" },
-  { key: "backdropUrl", label: "Backdrop", type: "string" },
-  { key: "videoUrl", label: "Video", type: "string" },
-  { key: "releaseDate", label: "Release Date", type: "date" },
-  { key: "country", label: "Country", type: "string_autocomplete" },
+  { key: "title", label: "Title", type: "string", required: true },
+  { key: "synopsis", label: "Synopsis", type: "string", required: true },
+  { key: "posterUrl", label: "Poster", type: "string", required: true },
+  { key: "backdropUrl", label: "Backdrop", type: "string", required: true },
+  { key: "videoUrl", label: "Video", type: "string", required: true },
+  { key: "releaseDate", label: "Release Date", type: "date", required: true },
+
+  { key: "rating", label: "Rating", type: "number", readonly: true },
+  {
+    key: "country",
+    label: "Country",
+    type: "string_autocomplete",
+    required: true,
+  },
   {
     key: "director",
     label: "Director",
     type: "string_autocomplete",
+    required: true,
   },
-  { key: "genres", label: "Genres", type: "string[]" },
-  { key: "actors", label: "Actors", type: "string[]" },
+  { key: "genres", label: "Genres", type: "string[]", required: true },
+  { key: "actors", label: "Actors", type: "string[]", required: true },
   { key: "awards", label: "Awards", type: "string[]" },
 ];
 
@@ -94,6 +102,54 @@ export default function CreateMovieWritter({
   const [boolSelectValues, setBoolSelectValues] = React.useState<{
     [key: string]: boolean;
   }>({});
+
+  // Tambahkan state error untuk menyimpan status error dari input yang required
+  const [errorFields, setErrorFields] = React.useState<{
+    [key: string]: string;
+  }>({});
+
+  const renderErrorField = (key: string) => {
+    return errorFields[key] ? (
+      <Typography level="body-md" color="danger">
+        {errorFields[key]}
+      </Typography>
+    ) : null;
+  };
+
+  // Perbaiki penggunaan validation functions
+  const validateRequiredFields = (formData: { [key: string]: any }) => {
+    const newErrorFields: { [key: string]: string } = {};
+
+    columns.forEach((col) => {
+      if (
+        col.type === "string[]" ||
+        col.type === "number[]" ||
+        col.type === "boolean"
+      ) {
+        return;
+      }
+      if (col.required && !formData[col.key as string]) {
+        newErrorFields[col.key as string] = `${col.label} is required`;
+      }
+    });
+
+    Object.keys(multiSelectValues).forEach((key) => {
+      const column = columns.find((col) => col.key === key);
+      if (column?.required && multiSelectValues[key]?.length === 0) {
+        newErrorFields[key as string] = `${column.label} is required`;
+      }
+    });
+
+    Object.keys(boolSelectValues).forEach((key) => {
+      const column = columns.find((col) => col.key === key);
+      if (column?.required && boolSelectValues[key] === undefined) {
+        newErrorFields[key as string] = `${column.label} is required`;
+      }
+    });
+    console.warn("newErrorFields: ", newErrorFields);
+    setErrorFields(newErrorFields);
+    return Object.keys(newErrorFields).length === 0;
+  };
 
   const [country, setCountry] = React.useState<CountryModel[]>([]);
   const [director, setDirector] = React.useState<DirectorModel[]>([]);
@@ -199,9 +255,9 @@ export default function CreateMovieWritter({
         return false;
       }
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding movie:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -213,6 +269,19 @@ export default function CreateMovieWritter({
     // Mengambil data dari form menggunakan FormData
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries()); // Konversi FormData ke objek
+    console.warn(validateRequiredFields(formJson));
+    if (!validateRequiredFields(formJson)) {
+      handleOpenSnackbar({
+        ...defaultSnackbarState,
+        open: true,
+        title: "Please fill in all required fields",
+        key: "required_fields",
+        color: "warning",
+        variant: "solid",
+        autoHideDuration: 5000,
+      });
+      return;
+    }
 
     // Gabungkan data multi-select dengan formJson
     const finalData = {
@@ -227,7 +296,7 @@ export default function CreateMovieWritter({
       console.info("Adding new item", finalData);
       try {
         const success = await onAdd(finalData as MovieModelTable);
-        success
+        success === true
           ? handleOpenSnackbar({
               ...defaultSnackbarState,
               open: true,
@@ -246,19 +315,25 @@ export default function CreateMovieWritter({
               variant: "solid",
               autoHideDuration: 5000,
             });
+        setNewItem({} as MovieModelTable);
+        setMultiSelectValues({
+          genres: [],
+          actors: [],
+          awards: [],
+        });
+        setBoolSelectValues({});
+        handleCloseAddModal();
       } catch (error) {
         console.error("Failed to add data", error);
         handleOpenSnackbar({
           ...defaultSnackbarState,
           open: true,
-          title: "Failed to add item",
+          title: String(error),
           key: "failed_add_item",
           color: "danger",
           variant: "solid",
           autoHideDuration: 5000,
         });
-      } finally {
-        setNewItem({} as MovieModelTable);
       }
     }
   };
@@ -410,9 +485,7 @@ export default function CreateMovieWritter({
               onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 handleFormAddSubmit(event);
-                event.currentTarget.reset();
               }}
-              onReset={() => setNewItem({} as MovieModelTable)} // Tombol reset untuk menghapus input
             >
               <Stack spacing={2}>
                 {columns.map((col) =>
@@ -424,6 +497,7 @@ export default function CreateMovieWritter({
                         col,
                         options[col.key as string] || []
                       )}
+                      {renderErrorField(col.key as string)}
                     </FormControl>
                   )
                 )}

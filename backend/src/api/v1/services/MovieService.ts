@@ -72,7 +72,7 @@ class MovieService {
    * @returns {Promise<number>} A promise that resolves to the total count of movies.
    * @throws {Error} Throws an error if the count operation fails.
    */
-  async countMovies(whereClause: object, movieIds?: any): Promise<number> {
+  async countMovies(whereClause?: object, movieIds?: any): Promise<number> {
     try {
       if (movieIds) {
         return prisma.movie.count({
@@ -129,7 +129,18 @@ class MovieService {
 
       const userId = user.id;
 
-      if (!title || !synopsis || !posterUrl || !releaseDate || !backdropUrl || !videoUrl || !countryCode || !directorId || !genres || !actors) {
+      if (
+        !title ||
+        !synopsis ||
+        !posterUrl ||
+        !releaseDate ||
+        !backdropUrl ||
+        !videoUrl ||
+        !countryCode ||
+        !directorId ||
+        !genres ||
+        !actors
+      ) {
         throw new Error("Missing required fields");
       }
 
@@ -164,7 +175,7 @@ class MovieService {
             },
           },
         });
-
+        console.info("Movie created successfully", movie.title);
         return prisma.movie.findUnique({
           where: { id: movie.id },
           include: this.joinTable.include,
@@ -173,8 +184,7 @@ class MovieService {
 
       return this.refactorMovies([newMovie])[0];
     } catch (error) {
-      console.error(error);
-      throw new Error("Could not create movie");
+      throw new Error(String(error));
     }
   }
 
@@ -226,10 +236,10 @@ class MovieService {
         ...(updatedData.directorId
           ? { director: { connect: { id: updatedData.directorId } } }
           : {}),
-        ...(updatedData.backdropUrl)
-            ? { backdropUrl: updatedData.backdropUrl }
-            : {},
-        ...(updatedData.videoUrl) ? { videoUrl: updatedData.videoUrl } : {},
+        ...(updatedData.backdropUrl
+          ? { backdropUrl: updatedData.backdropUrl }
+          : {}),
+        ...(updatedData.videoUrl ? { videoUrl: updatedData.videoUrl } : {}),
       };
 
       // Update movie main fields first
@@ -359,7 +369,8 @@ class MovieService {
       year,
       award,
       director,
-      approvalStatus
+      approvalStatus,
+      addedBy,
     } = params;
     const whereClause: any = { AND: [] };
 
@@ -369,6 +380,7 @@ class MovieService {
     if (year) addMovieYearFilter(whereClause, year);
     if (award) addAwardFilter(whereClause, award);
     if (director) addDirectorFilter(whereClause, director);
+    if (addedBy) whereClause.AND.push({ addedBy: { username: addedBy } });
 
     // nambahin if approvalStatus != undefined
     if (approvalStatus !== undefined) {
@@ -423,6 +435,21 @@ class MovieService {
       }
 
       return [this.refactorMovies(movies), totalItems];
+    } catch (error) {
+      console.error("Failed to fetch movies: ", error);
+      throw new Error("Error fetching movies");
+    }
+  }
+
+  // get movies by username
+  async getMoviesByUser(username: string): Promise<any[]> {
+    try {
+      const movies = await prisma.movie.findMany({
+        where: { addedBy: { username } },
+        include: this.joinTable.include,
+      });
+
+      return this.refactorMovies(movies);
     } catch (error) {
       console.error("Failed to fetch movies: ", error);
       throw new Error("Error fetching movies");

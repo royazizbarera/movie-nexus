@@ -13,4 +13,5 @@ export default interface SearchParams {
     userId?: number;
     approvalStatus?: boolean;
     movieId?: number;
+    addedBy?: string;
 }

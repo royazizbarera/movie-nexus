@@ -36,10 +36,15 @@ const columns: Column<ActorModelTable>[] = [
     readonly: true,
     width: 70,
   },
-  { key: "name", label: "Name", type: "string" },
-  { key: "birthDate", label: "Birth Date", type: "date" },
+  { key: "name", label: "Name", type: "string", required: true },
+  { key: "birthDate", label: "Birth Date", type: "date", required: true },
   { key: "photoUrl", label: "Photo Url", type: "string" },
-  { key: "country", label: "Country", type: "string_autocomplete" },
+  {
+    key: "country",
+    label: "Country",
+    type: "string_autocomplete",
+    required: true,
+  },
 ];
 
 export default function AdminActorPage() {
@@ -103,16 +108,15 @@ export default function AdminActorPage() {
       const response = await actorController.addActor(parsedActor);
       console.info("add actor: ", parsedActor);
       fetchActors(actorParams);
-      if(response.code !== 201) {
+      if (response.code !== 201) {
         return false;
       }
       return true;
     } catch (error) {
       console.error("Error adding actor:", error);
-      return false;
+      throw String(error);
     }
   };
-
 
   // TODO (DONE): Implement edit actor
   const handleEditActor = async (updatedActor: ActorModelTable) => {
@@ -123,7 +127,8 @@ export default function AdminActorPage() {
         birthDate: new Date(updatedActor.birthDate).toISOString(),
         photoUrl: updatedActor.photoUrl,
         countryCode:
-          realCountries.find((c) => c.name === updatedActor.country)?.code || "",
+          realCountries.find((c) => c.name === updatedActor.country)?.code ||
+          "",
       };
       const response = await actorController.updateActor(
         updatedActor.id,
@@ -137,7 +142,7 @@ export default function AdminActorPage() {
       return true;
     } catch (error) {
       console.error("Error updating actor:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -154,7 +159,7 @@ export default function AdminActorPage() {
       return true;
     } catch (error) {
       console.error("Error deleting actor:", error);
-      return false;
+      throw String(error);
     }
   };
 

@@ -21,8 +21,15 @@ class MovieController {
           version: 1.0,
         })
       );
-    } catch (error) {
-      return this.handleError(res, error, "Failed to create movie");
+    } catch (error: any) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || error,
+          errors: error.message || error,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -175,9 +182,16 @@ class MovieController {
           version: 1.0,
         })
       );
-    } catch (error) {
-      return this.handleError(res, error, "Failed to update movie");
-    }
+    } catch (error: any) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+          ResponseApi({
+            code: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: "Failed to update movie",
+            errors: error.message || error,
+            version: 1.0,
+          })
+        );
+      }
   }
 
   /**
@@ -204,6 +218,31 @@ class MovieController {
     }
   }
 
+  async totalMovies(req: Request, res: Response): Promise<Response> {
+    try {
+      const total = await movieService.countMovies({
+        AND: [{ approvalStatus: false }],
+      });
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movies fetched successfully",
+          data: total,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
   /**
    * Handles errors by sending a standardized JSON response.
    * @param res - Express Response object.
@@ -225,6 +264,32 @@ class MovieController {
         version: 1.0,
       })
     );
+  }
+
+  // getMoviesByUser using movieService/getMoviesByUser
+  async getMoviesByUser(req: Request, res: Response): Promise<Response> {
+    try {
+      console.info("Fetching movies by user", req.params.username);
+      const movies = await movieService.getMoviesByUser(req.params.username);
+
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movies fetched successfully",
+          data: movies,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
+    }
   }
 }
 

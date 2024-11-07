@@ -33,8 +33,15 @@ const columns: any[] = [
     label: "Code",
     type: "string",
     width: 70,
+    required: true,
   },
-  { key: "name", label: "Country", type: "string", width: "100%" },
+  {
+    key: "name",
+    label: "Country",
+    type: "string",
+    width: "100%",
+    required: true,
+  },
 ];
 
 export default function AdminCountryPage() {
@@ -84,7 +91,7 @@ export default function AdminCountryPage() {
       return true;
     } catch (error) {
       console.error("Error adding country:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -96,14 +103,14 @@ export default function AdminCountryPage() {
         convertCountryTableToModel(updatedCountry)
       );
       fetchCountries(countryParams);
-      if(response.code !== 200) {
+      if (response.code !== 200) {
         return false;
       }
       console.info("update country: ", updatedCountry);
       return true;
     } catch (error) {
       console.error("Error updating country:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -112,13 +119,13 @@ export default function AdminCountryPage() {
     try {
       const response = await countryController.deleteCountry(country.code);
       fetchCountries(countryParams);
-      if(response.code !== 200) return false;
+      if (response.code !== 200) return false;
       console.log("Country deleted successfully:", response.message);
       console.info("delete country with code: ", country.code);
       return true;
     } catch (error) {
       console.error("Error deleting country:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -180,7 +187,6 @@ export default function AdminCountryPage() {
             }}
             onFilterChange={handleFilterChange}
             applySearch
-            realtimeSearch
             placeholderSearch="Search country..."
             onSearchApply={(searchTerm) =>
               handleFilterChange("searchTerm", searchTerm)

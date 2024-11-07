@@ -50,12 +50,12 @@ const columns: any[] = [
     readonly: true,
     width: 70,
   },
-  { key: "username", label: "Username", type: "string" },
-  { key: "email", label: "Email", type: "string" },
-  { key: "password", label: "Password", type: "string" },
+  { key: "username", label: "Username", type: "string", required: true },
+  { key: "email", label: "Email", type: "string", required: true },
+  { key: "password", label: "Password", type: "string", required: true },
   { key: "photoProfile", label: "Photo Profile", type: "string" },
   { key: "provider", label: "Provider", type: "string" },
-  { key: "role", label: "Role", type: "string" },
+  { key: "role", label: "Role", type: "string", required: true },
   { key: "isVerified", label: "Is Verified", type: "boolean" },
   {
     key: "verificationCode",
@@ -120,6 +120,9 @@ export default function AdminUserPage() {
     fetchUsers(userParams); // Pass current userParams to fetchUsers
   }, [userParams]);
 
+  // TODO: ADD user
+
+  // TODO: UPDATE user
   const handleEditUser = async (updatedUser: UserModelTable) => {
     try {
       // Kirim data yang telah diubah ke endpoint tertentu
@@ -131,6 +134,7 @@ export default function AdminUserPage() {
     }
   };
 
+  // TODO: DELETE user
   const handleDeleteUser = async (user: UserModelTable) => {
     try {
       const response = await userController.deleteUser(user.id);
