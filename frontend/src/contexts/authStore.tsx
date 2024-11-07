@@ -17,11 +17,28 @@ interface AuthStore {
   ) => Promise<void>;
 
   verifyEmail: (verificationCode: string) => Promise<void>;
+  resendVerificationEmail: () => Promise<void>;
   signInWithEmailAndPassword: (
     email: string,
     password: string
   ) => Promise<void>;
 
+  // TODO: Update password
+  updatePassword: ({
+    newPassword,
+    email,
+    verificationCode,
+  }: {
+    newPassword: string;
+    email: string;
+    verificationCode: string;
+  }) => Promise<void>;
+
+  // TODO: Forgot password
+  forgotPassword: (email: string) => Promise<void>;
+
+  // TODO: Verification reset password code
+  verificationResetPasswordCode: (verificationCode: string) => Promise<void>;
   // check auth
   checkAuth: () => Promise<void>;
 
@@ -67,8 +84,25 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const user = await authController.verifyEmail(verificationCode);
       set({ user: user, isAuthenticated: true, isLoading: false });
     } catch (error: any) {
-      const errorThrow = error.message || "Verify email is failed.";
+      const errorThrow = error.message || error || "Verify email is failed.";
       set({ error: errorThrow, isLoading: false });
+      throw errorThrow;
+    }
+  },
+
+  // TODO (DONE): Implement the resend verification email method
+  resendVerificationEmail: async () => {
+    set({ resendLoading: true });
+    try {
+      await authController.resendVerificationEmail();
+      set({
+        message: "Verification email has been sent.",
+        resendLoading: false,
+      });
+    } catch (error: any) {
+      const errorThrow =
+        error.message || error || "Resend verification email is failed.";
+      set({ error: errorThrow, resendLoading: false });
       throw errorThrow;
     }
   },
@@ -86,6 +120,67 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const errorThrow = error.message || "Sign in is failed.";
       set({ error: errorThrow, isLoading: false });
       // set({ error: error, isLoading: false });
+      throw errorThrow;
+    }
+  },
+
+  // TODO (DONE): Implement the update password method
+  updatePassword: async ({
+    newPassword,
+    email,
+    verificationCode,
+  }: {
+    newPassword: string;
+    email: string;
+    verificationCode: string;
+  }) => {
+    set({ isLoading: true });
+    try {
+      await authController.updatePassword({
+        newPassword: newPassword,
+        email: email,
+        verificationCode: verificationCode,
+      });
+      set({
+        message: "Password has been updated.",
+        isLoading: false,
+      });
+    } catch (error: any) {
+      const errorThrow = error || error.message || "Update password is failed.";
+      set({ error: errorThrow, isLoading: false });
+      throw errorThrow;
+    }
+  },
+
+  // TODO: Implement the forgot password method
+  forgotPassword: async (email: string) => {
+    set({ isLoading: true });
+    try {
+      await authController.forgotPassword(email);
+      set({
+        message: "Password reset email has been sent.",
+        isLoading: false,
+      });
+    } catch (error: any) {
+      const errorThrow = error.message || error || "Forgot password is failed.";
+      set({ error: errorThrow, isLoading: false });
+      throw errorThrow;
+    }
+  },
+
+  // TODO: Implement the verification reset password code method
+  verificationResetPasswordCode: async (verificationCode: string) => {
+    set({ isLoading: true });
+    try {
+      await authController.verificationResetPasswordCode(verificationCode);
+      set({
+        message: "Verification code is valid.",
+        isLoading: false,
+      });
+    } catch (error: any) {
+      const errorThrow =
+        error.message || error || "Verification reset password code is failed.";
+      set({ error: errorThrow, isLoading: false });
       throw errorThrow;
     }
   },

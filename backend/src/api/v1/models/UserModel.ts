@@ -9,4 +9,7 @@ export default interface UserModel {
     isVerified: boolean;
     verificationCode: string | null;
     verificationRequestDate: Date | null;
+    verificationResetPasswordCode?: string | null;
+    verificationResetPasswordCodeExpired?: Date | null;
+    verificationResetPasswordRequestDate?: Date | null;
 }

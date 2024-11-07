@@ -199,7 +199,7 @@ class AuthController {
         ResponseApi({
           code: HttpStatus.OK,
           message: "Verification code sent successfully",
-          data: user,
+          data: null,
           version: 1.0,
         })
       );
@@ -281,6 +281,94 @@ class AuthController {
         ResponseApi({
           code: HttpStatus.BAD_REQUEST,
           message: String(error),
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  public async forgotPassword(req: Request, res: Response) {
+    const { email } = req.body;
+
+    try {
+      const user = await authService.forgotPassword(email);
+
+      // kirim kode reset password ke email
+      await MailService.sendResetPasswordCode(
+        user.email,
+        user.verificationResetPasswordCode!
+      );
+
+      return res.status(HttpStatus.OK).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Password reset email has been sent.",
+          version: 1.0,
+        })
+      );
+    } catch (error: any) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: String(error.message || error),
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  public async resetPassword(req: Request, res: Response) {
+    const { email, verificationCode, newPassword } = req.body;
+
+    try {
+      const user = await authService.resetPassword(
+        email,
+        verificationCode,
+        newPassword
+      );
+
+      return res.status(HttpStatus.OK).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Password has been reset.",
+          data: user,
+          version: 1.0,
+        })
+      );
+    } catch (error: any) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: String(error.message || error),
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  // verificationResetPasswordCode
+  public async verificationResetPasswordCode(req: Request, res: Response) {
+    const { code } = req.body;
+
+    try {
+      const user = await authService.verificationResetPasswordCode(code);
+
+      return res.status(HttpStatus.OK).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Verification code is valid.",
+          data: user,
+          version: 1.0,
+        })
+      );
+    } catch (error: any) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: String(error.message || error),
           errors: error,
           version: 1.0,
         })

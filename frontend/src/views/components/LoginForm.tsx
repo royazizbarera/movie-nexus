@@ -8,18 +8,21 @@ import Link from "@mui/joy/Link";
 import { Avatar, Divider } from "@mui/joy";
 import { useState } from "react";
 import { useAuthStore } from "../../contexts/authStore";
-import { useNavigate } from "react-router-dom";
+import { BASE_AUTH_URL } from "../../configs/constants";
 
-export default function LoginForm() {
+interface LoginFormProps {
+  onSuccessfulLogin?: () => void;
+}
+
+export default function LoginForm({ onSuccessfulLogin }: LoginFormProps) {
   const { signInWithEmailAndPassword, user, isLoading, error } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     const currentUrl = window.location.href; // Dapatkan URL halaman saat ini
     window.open(
-      `http://localhost:3005/api/v1/auth/google?redirectUrl=${encodeURIComponent(
+      `${BASE_AUTH_URL}/google?redirectUrl=${encodeURIComponent(
         currentUrl
       )}`,
       "_self"
@@ -30,7 +33,8 @@ export default function LoginForm() {
     console.log(user);
     try {
       await signInWithEmailAndPassword(email, password);
-      navigate("/", { replace: true });
+      onSuccessfulLogin && onSuccessfulLogin();
+      window.location.reload();
     } catch (error: any) {}
   };
 

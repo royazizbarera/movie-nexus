@@ -1,4 +1,4 @@
-import { mailVerivicationOptions } from "../config/constants/mail";
+import { mailResetPasswordOptions, mailVerivicationOptions } from "../config/constants/mail";
 import transport from "../config/smtp";
 
 class MailService {
@@ -18,6 +18,14 @@ class MailService {
   sendVerificationCode = async (to: string, code: string) => {
     try {
       await transport.sendMail(mailVerivicationOptions(to, code));
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  sendResetPasswordCode = async (to: string, code: string) => {
+    try {
+      await transport.sendMail(mailResetPasswordOptions(to, code));
     } catch (error) {
       throw error;
     }

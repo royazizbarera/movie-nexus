@@ -43,7 +43,7 @@ class AuthService {
       if (existingUser) {
         throw new Error("User with this email already exists");
       }
-      console.info(username, " Mencoba mendaftar.")
+      console.info(username, " Mencoba mendaftar.");
       // hash password
       const hashedPassword = await bcrypt.hash(password, 10);
       const verificationCode = generateVerificationCode();
@@ -63,7 +63,7 @@ class AuthService {
       });
 
       const userResponse = { ...newUser, password: undefined };
-      console.info(username, " Berhasil tercatat di database.")
+      console.info(username, " Berhasil tercatat di database.");
       return userResponse;
     } catch (error: any) {
       throw new Error(error || "Failed to create user");
@@ -143,7 +143,7 @@ class AuthService {
       });
 
       if (!user) {
-        throw new Error("Invalid verification code");
+        throw new Error("Invalid verification code.");
       }
 
       if (user.verificationCodeExpired! < new Date()) {
@@ -257,7 +257,6 @@ class AuthService {
     }
   }
 
-
   // TODO: Sign in with Google
   public async signInWithGoogle(email: string, username: string) {
     try {
@@ -279,8 +278,6 @@ class AuthService {
           },
         });
 
-
-
         const userResponse = { ...newUser, password: undefined };
 
         return userResponse;
@@ -296,6 +293,125 @@ class AuthService {
       return userResponse;
     } catch (error: any) {
       throw new Error(error || "Failed to sign in with Google");
+    }
+  }
+
+  public async forgotPassword(email: string) {
+    try {
+      if (!email) {
+        throw String("Email is required");
+      }
+      const user = await prisma.user.findFirst({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const verificationCode = generateVerificationCode();
+
+      const newUser = await prisma.user.update({
+        where: {
+          email: email,
+        },
+        data: {
+          verificationResetPasswordCode: verificationCode,
+          verificationResetPasswordCodeExpired: new Date(
+            new Date().getTime() + 24 * 60 * 60 * 1000
+          ), // 24 jam dari sekarang
+        },
+      });
+
+      // hilangkan password
+      const userResponse = { ...newUser, password: undefined };
+
+      return userResponse;
+    } catch (error: any) {
+      throw new Error(error || "Failed to send verification code");
+    }
+  }
+
+  public async resetPassword(
+    email: string,
+    verificationCode: string,
+    password: string
+  ) {
+    try {
+      if (!email || !verificationCode || !password) {
+        throw String("All fields are required");
+      }
+
+      const user = await prisma.user.findFirst({
+        where: {
+          email: email,
+          verificationResetPasswordCode: verificationCode,
+          verificationResetPasswordCodeExpired: {
+            gte: new Date(),
+          },
+        },
+      });
+
+      if (!user) {
+        throw new Error("Invalid verification code.");
+      }
+
+      if (user.verificationResetPasswordCodeExpired! < new Date()) {
+        throw new Error("Verification code expired");
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          password: hashedPassword,
+          verificationResetPasswordCode: null,
+          verificationResetPasswordCodeExpired: null,
+        },
+      });
+
+      // hilangkan password
+      const userResponse = {
+        ...updatedUser,
+        password: undefined,
+        verificationResetPasswordCode: undefined,
+        verificationCode: undefined,
+      };
+
+      return userResponse;
+    } catch (error: any) {
+      throw new Error(error || "Failed to reset password");
+    }
+  }
+
+  // verificationResetPasswordCode
+  public async verificationResetPasswordCode(code: string) {
+    try {
+      const user = await prisma.user.findFirst({
+        where: {
+          verificationResetPasswordCode: code,
+          verificationResetPasswordCodeExpired: {
+            gte: new Date(),
+          },
+        },
+      });
+
+      if (!user) {
+        throw new Error("Invalid verification code.");
+      }
+
+      if (user.verificationResetPasswordCodeExpired! < new Date()) {
+        throw new Error("Verification code expired");
+      }
+
+      return true;
+    } catch (error: any) {
+      throw new Error(error || "Failed to verify reset password code");
     }
   }
 }

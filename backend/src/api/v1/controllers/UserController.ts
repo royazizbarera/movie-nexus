@@ -122,6 +122,30 @@ class UserController {
             );
         }
     }
+
+    async deleteUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const {userId} = req.params;
+            await userService.deleteUser(parseInt(userId, 10));
+
+            return res.json(
+                ResponseApi({
+                    code: HttpStatus.OK,
+                    message: "User deleted successfully",
+                    version: 1.0,
+                })
+            );
+        } catch (error) {
+            console.error("Error deleting user: ", error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+                ResponseApi({
+                    code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    message: "Failed to delete user",
+                    errors: error instanceof Error ? error.message : String(error),
+                })
+            );
+        }
+    }
 }
 
 const userController = new UserController();

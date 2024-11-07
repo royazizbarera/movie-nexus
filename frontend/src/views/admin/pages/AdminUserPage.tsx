@@ -138,15 +138,13 @@ export default function AdminUserPage() {
   const handleDeleteUser = async (user: UserModelTable) => {
     try {
       const response = await userController.deleteUser(user.id);
-      setUsers((prevUsers) => prevUsers.filter((m) => m.id !== user.id));
-      setPagination((prevPagination) => ({
-        ...prevPagination,
-        totalItems: prevPagination.totalItems - 1,
-      }));
+      fetchUsers(userParams); // Fetch users again after delete
       console.log("User deleted successfully:", response.message);
       console.info("delete user with id: ", user.id);
+      return true;
     } catch (error) {
       console.error("Error deleting user:", error);
+      throw String(error);
     }
   };
 

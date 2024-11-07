@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
 // Definisikan tipe umum untuk struktur respons API dengan code numerik
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   message: string;
   code: number; // Mengganti status menjadi code numerik
   data: T;

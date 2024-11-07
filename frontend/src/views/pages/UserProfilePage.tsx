@@ -6,10 +6,12 @@ import MainLayout from "../layouts/MainLayout";
 import movieController from "../../controllers/MovieController";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../contexts/authStore";
+import { useNavigate } from "react-router-dom";
 
 export default function UserProfilePage() {
   const [movies, setMovies] = useState<any[]>([]);
   const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     movieController
@@ -21,6 +23,11 @@ export default function UserProfilePage() {
         console.log(err);
       });
   }, [user]);
+
+  const handleClickVerification = () => {
+    
+    navigate("/verify-email");
+  };
 
   return (
     <>
@@ -61,7 +68,9 @@ export default function UserProfilePage() {
                 >
                   Please Verivication Your Email First
                 </Typography>
-                <Button size="sm">Verification</Button>
+                <Button size="sm" onClick={handleClickVerification}>
+                  Verification
+                </Button>
               </Stack>
             </Grid>
           )}

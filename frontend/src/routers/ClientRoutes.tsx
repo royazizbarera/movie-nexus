@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoutes";
 import VerifyEmailPage from "../views/pages/VerifyEmailPage";
 import ActorsPage from "../views/pages/ActorsPage";
 import DetailActor from "../views/pages/DetailActor";
+import ResetPasswordPage from "../views/pages/ResetPasswordPage";
 
 export default function ClientRoutes() {
   return (
@@ -52,8 +53,17 @@ export default function ClientRoutes() {
       {/* verify-email */}
       <Route
         path="/verify-email"
-        element={<ProtectedRoute role="writer" element={<VerifyEmailPage />} />}
+        element={
+          <ProtectedRoute
+            role="writer"
+            isVerifiedState={false}
+            element={<VerifyEmailPage />}
+          />
+        }
       />
+
+      {/* Reset Password */}
+      <Route path="/forgot-password" element={<ResetPasswordPage />} />
 
       {/* Unauthorized */}
       <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />

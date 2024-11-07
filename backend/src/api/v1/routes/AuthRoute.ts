@@ -54,6 +54,13 @@ router.post(
   verifyToken,
   authController.resendVerificationCode
 );
+router.post("/forgot-password", authController.forgotPassword);
+// verificationResetPasswordCode
+router.post(
+  "/verification-reset-password-code",
+  authController.verificationResetPasswordCode
+);
+router.put("/update-password", authController.resetPassword);
 router.delete("/delete-user", verifyToken, authController.deleteUser);
 router.post("/logout", authController.logout);
 router.post("/check-auth", verifyToken, authController.checkAuth);

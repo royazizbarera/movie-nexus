@@ -11,7 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../contexts/authStore";
 
 export default function SignUpForm() {
-  const { signUpWithEmailAndPassword, error, isLoading } = useAuthStore();
+  const {
+    signUpWithEmailAndPassword,
+    error,
+    isLoading,
+  } = useAuthStore();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
