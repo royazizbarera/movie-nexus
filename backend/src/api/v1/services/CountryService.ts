@@ -21,7 +21,6 @@ class CountryService {
             }
             return prisma.country.count({ where: whereClause });
         } catch (error) {
-            console.error("Error counting countries:", error);
             throw new Error("Could not count countries");
         }
     }

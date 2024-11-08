@@ -9,7 +9,5 @@ export const setTokenCookies = (res: Response, token: string) => {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days in milliseconds
       path: "/", // Ensure cookie is available site-wide
     });
-  } catch (error) {
-    console.error("Failed to set token cookie:", error);
-  }
+  } catch (error) {}
 };

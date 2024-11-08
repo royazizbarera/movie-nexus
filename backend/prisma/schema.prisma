@@ -137,20 +137,23 @@ model Review {
 
 /// Represents a user with various attributes and relationships with reviews and movies.
 model User {
-  id                      Int       @id @default(autoincrement())
-  username                String
-  email                   String    @unique
-  password                String?
-  photoProfile            String?
-  provider                String?   @default("email")
-  role                    String?   @default("writer")
-  isVerified              Boolean   @default(false)
-  verificationCode        String?
-  verificationCodeExpired DateTime? @default(dbgenerated("now() + interval '1 day'"))
-  verificationRequestDate DateTime? @default(now())
-  isSuspended             Boolean   @default(false)
-  reviews                 Review[]
-  movies                  Movie[]
+  id                                   Int       @id @default(autoincrement())
+  username                             String
+  email                                String    @unique
+  password                             String?
+  photoProfile                         String?
+  provider                             String?   @default("email")
+  role                                 String?   @default("writer")
+  isVerified                           Boolean   @default(false)
+  verificationCode                     String?
+  verificationCodeExpired              DateTime? @default(dbgenerated("now() + interval '1 day'"))
+  verificationRequestDate              DateTime? @default(now())
+  verificationResetPasswordCode        String?
+  verificationResetPasswordCodeExpired DateTime? @default(dbgenerated("now() + interval '1 day'"))
+  verificationResetPasswordRequestDate DateTime? @default(now())
+  isSuspended                          Boolean   @default(false)
+  reviews                              Review[]
+  movies                               Movie[]
 
   @@index([username])
 }

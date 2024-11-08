@@ -1,7 +1,7 @@
 import UserModel from "../models/UserModel";
-import userData from "../databases/datas/users.json";
+import { users_ts } from "./datas_ts/users_ts";
 
-export const users: UserModel[] = userData.map((user) => ({
+export const users: UserModel[] = users_ts.map((user) => ({
     id: user.id,
     email: user.email,
     username: user.username,

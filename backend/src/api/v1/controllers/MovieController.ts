@@ -2,6 +2,7 @@ import movieService from "../services/MovieService";
 import ResponseApi from "../config/ResponseApi";
 import HttpStatus from "../config/constants/HttpStatus";
 import { Response, Request } from "express";
+import { stat } from "fs";
 
 class MovieController {
   /**
@@ -21,8 +22,15 @@ class MovieController {
           version: 1.0,
         })
       );
-    } catch (error) {
-      return this.handleError(res, error, "Failed to create movie");
+    } catch (error: any) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || error,
+          errors: error.message || error,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -72,8 +80,15 @@ class MovieController {
           },
         })
       );
-    } catch (error) {
-      return this.handleError(res, error, "Failed to fetch movies");
+    } catch (error: any) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          errors: error.message || error,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -126,7 +141,14 @@ class MovieController {
         })
       );
     } catch (error) {
-      return this.handleError(res, error, "Failed to fetch movies");
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -149,7 +171,14 @@ class MovieController {
         })
       );
     } catch (error) {
-      return this.handleError(res, error, "Failed to fetch movie");
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movie",
+          data: null,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -175,8 +204,15 @@ class MovieController {
           version: 1.0,
         })
       );
-    } catch (error) {
-      return this.handleError(res, error, "Failed to update movie");
+    } catch (error: any) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to update movie",
+          errors: error.message || error,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -200,7 +236,39 @@ class MovieController {
         })
       );
     } catch (error) {
-      return this.handleError(res, error, "Failed to delete movie");
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to delete movie",
+          data: null,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  async totalMovies(req: Request, res: Response): Promise<Response> {
+    try {
+      const total = await movieService.countMovies({
+        AND: [{ approvalStatus: false }],
+      });
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movies fetched successfully",
+          data: total,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -225,6 +293,31 @@ class MovieController {
         version: 1.0,
       })
     );
+  }
+
+  // getMoviesByUser using movieService/getMoviesByUser
+  async getMoviesByUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const movies = await movieService.getMoviesByUser(req.params.username);
+
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movies fetched successfully",
+          data: movies,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
+    }
   }
 }
 

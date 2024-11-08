@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LocalStorageKey } from "../../configs/LocalStorage";
 import {
   Card,
   Typography,
@@ -14,10 +13,15 @@ import {
 import { useAuthStore } from "../../contexts/authStore";
 
 const VerificationCodeForm: React.FC = () => {
-  const { verifyEmail, isLoading, error, resendLoading } = useAuthStore();
+  const {
+    verifyEmail,
+    isLoading,
+    error,
+    resendLoading,
+    resendVerificationEmail,
+  } = useAuthStore();
 
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
-  const [success, setSuccess] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -43,12 +47,6 @@ const VerificationCodeForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem(LocalStorageKey.TOKEN);
-
-      if (!token) {
-        throw new Error("Token not found");
-      }
-
       await verifyEmail(code.join(""));
       navigate("/user-profile");
     } catch (error: unknown) {}
@@ -60,16 +58,7 @@ const VerificationCodeForm: React.FC = () => {
     event.preventDefault();
 
     try {
-      const token = localStorage.getItem(LocalStorageKey.TOKEN);
-
-      if (!token) {
-        throw new Error("Token not found");
-      }
-
-      setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-      }, 2000);
+      await resendVerificationEmail();
     } catch (error: unknown) {}
   };
 
@@ -115,11 +104,6 @@ const VerificationCodeForm: React.FC = () => {
         </Alert>
       )}
 
-      {success && (
-        <Alert color="success" invertedColors sx={{ mb: 2 }}>
-          Code verified successfully! Redirecting...
-        </Alert>
-      )}
 
       <Button
         onClick={handleSubmit}

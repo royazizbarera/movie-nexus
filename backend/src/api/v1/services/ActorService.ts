@@ -28,7 +28,6 @@ class ActorService {
             }
             return prisma.actor.count({ where: whereClause });
         } catch (error) {
-            console.error("Error counting actors:", error);
             throw new Error("Could not count actors");
         }
     }
@@ -152,7 +151,6 @@ class ActorService {
                 });
             });
         } catch (error) {
-            console.error(error);
             throw new Error("Could not create actor");
         }
     }
@@ -179,7 +177,6 @@ class ActorService {
                 ...this.joinTable,
             });
         } catch (error) {
-            console.error(`Error updating actor with ID ${id}:`, error);
             throw new Error(`Could not update actor with ID ${id}`);
         }
     }
@@ -202,7 +199,6 @@ class ActorService {
                 deletedActor,
             };
         } catch (error) {
-            console.error(`Error deleting actor with ID ${id}:`, error);
             throw new Error(`Could not delete actor with ID ${id}`);
         }
     }

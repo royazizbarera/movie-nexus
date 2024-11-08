@@ -44,7 +44,6 @@ class GenreController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching genres: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -99,7 +98,6 @@ class GenreController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching genre: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -134,7 +132,6 @@ class GenreController {
                 })
             );
         } catch (error) {
-            console.error("Error creating genre: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,

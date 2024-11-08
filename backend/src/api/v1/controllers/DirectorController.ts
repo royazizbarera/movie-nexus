@@ -52,7 +52,6 @@ class DirectorController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching directors: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -107,7 +106,6 @@ class DirectorController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching director: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -142,7 +140,6 @@ class DirectorController {
                 })
             );
         } catch (error) {
-            console.error("Error creating director: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -178,7 +175,6 @@ class DirectorController {
                 })
             );
         } catch (error) {
-            console.error("Error updating director: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -213,7 +209,6 @@ class DirectorController {
                 })
             );
         } catch (error) {
-            console.error("Error deleting director: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,

@@ -50,7 +50,6 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching users: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -81,7 +80,6 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error suspending user: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -112,11 +110,33 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error unsuspending user: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
                     message: "Failed to unsuspend user",
+                    errors: error instanceof Error ? error.message : String(error),
+                })
+            );
+        }
+    }
+
+    async deleteUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const {userId} = req.params;
+            await userService.deleteUser(parseInt(userId, 10));
+
+            return res.json(
+                ResponseApi({
+                    code: HttpStatus.OK,
+                    message: "User deleted successfully",
+                    version: 1.0,
+                })
+            );
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+                ResponseApi({
+                    code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    message: "Failed to delete user",
                     errors: error instanceof Error ? error.message : String(error),
                 })
             );

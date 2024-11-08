@@ -57,26 +57,33 @@ const columns: Column<MovieModelTable>[] = [
     type: "string_autocomplete",
     readonly: true,
   },
-  { key: "title", label: "Title", type: "string" },
-  { key: "synopsis", label: "Synopsis", type: "string" },
-  { key: "posterUrl", label: "Poster", type: "string" },
-  { key: "backdropUrl", label: "Backdrop", type: "string" },
-  { key: "videoUrl", label: "Video", type: "string" },
-  { key: "releaseDate", label: "Release Date", type: "date" },
   {
     key: "approvalStatus",
     label: "Approval Status",
     type: "boolean",
   },
+  { key: "title", label: "Title", type: "string", required: true },
+  { key: "synopsis", label: "Synopsis", type: "string", required: true },
+  { key: "posterUrl", label: "Poster", type: "string", required: true },
+  { key: "backdropUrl", label: "Backdrop", type: "string", required: true },
+  { key: "videoUrl", label: "Video", type: "string", required: true },
+  { key: "releaseDate", label: "Release Date", type: "date", required: true },
+
   { key: "rating", label: "Rating", type: "number", readonly: true },
-  { key: "country", label: "Country", type: "string_autocomplete" },
+  {
+    key: "country",
+    label: "Country",
+    type: "string_autocomplete",
+    required: true,
+  },
   {
     key: "director",
     label: "Director",
     type: "string_autocomplete",
+    required: true,
   },
-  { key: "genres", label: "Genres", type: "string[]" },
-  { key: "actors", label: "Actors", type: "string[]" },
+  { key: "genres", label: "Genres", type: "string[]", required: true },
+  { key: "actors", label: "Actors", type: "string[]", required: true },
   { key: "awards", label: "Awards", type: "string[]" },
   { key: "reviews", label: "Reviews", type: "string[]" },
 ];
@@ -119,7 +126,6 @@ export default function AdminMoviePage() {
   );
 
   const [users, setUsers] = React.useState<string[]>([]);
-  const [realUsers, setRealUsers] = React.useState<UserModel[]>([]);
 
   const handleOpenDetailItem = () => {
     setOpenDetailItem(true);
@@ -131,6 +137,8 @@ export default function AdminMoviePage() {
 
   const fetchMovies = async (movieParamsModel?: MovieParamsModel) => {
     try {
+      const responseUsers = await userController.getUsers();
+      const dataUsers = responseUsers.data;
       const response = await movieController.getMovies(movieParamsModel);
       const { data: movies, pagination } = response;
       setRealMovies(movies);
@@ -138,7 +146,7 @@ export default function AdminMoviePage() {
         movies.map((movie) => {
           return convertMovieModelToTable({
             ...movie,
-            addedBy: realUsers.find((u) => u.id === movie.userId)!,
+            addedBy: dataUsers.find((u) => u.id === movie.userId)!,
           });
         })
       );
@@ -221,7 +229,6 @@ export default function AdminMoviePage() {
     try {
       const response = await userController.getUsers();
       const data = response.data;
-      setRealUsers(data);
       setUsers(
         data.map((user: UserModel) => {
           return user.username;
@@ -243,7 +250,7 @@ export default function AdminMoviePage() {
 
   React.useEffect(() => {
     fetchMovies(movieParams); // Pass current page to fetchMovies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieParams]);
 
   // TODO: ADD Movie
@@ -293,7 +300,7 @@ export default function AdminMoviePage() {
       return true;
     } catch (error) {
       console.error("Error adding movie:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -349,7 +356,7 @@ export default function AdminMoviePage() {
       return true;
     } catch (error) {
       console.error("Error updating movie:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -366,7 +373,7 @@ export default function AdminMoviePage() {
       return true;
     } catch (error) {
       console.error("Error deleting movie:", error);
-      return false;
+      throw String(error);
     }
   };
   const handlePageChange = async (newPage: number) => {
@@ -407,6 +414,7 @@ export default function AdminMoviePage() {
           </Box>
           <GenericTable<MovieModelTable>
             title="Movies"
+            actionInFront
             data={movies}
             columns={columns}
             options={{
@@ -428,7 +436,7 @@ export default function AdminMoviePage() {
               ) as string[],
               director: ["Pete Docter"],
               country: countries,
-              user: users,
+              addedBy: users,
               sortBy: columns.map((column) => column.key),
               sortOrder: SORT_ORDER_DROPDOWN,
               pageSize: PAGE_SIZE_DROPDOWN,

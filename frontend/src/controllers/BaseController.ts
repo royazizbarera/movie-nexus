@@ -1,7 +1,7 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 
 // Definisikan tipe umum untuk struktur respons API dengan code numerik
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   message: string;
   code: number; // Mengganti status menjadi code numerik
   data: T;
@@ -29,8 +29,7 @@ export abstract class BaseController {
       const response = await this.api.get<ApiResponse<T>>(url, { params });
       return response.data; // Kembalikan struktur data lengkap (message, code, data, pagination)
     } catch (error) {
-      console.error(`GET request to ${url} failed:`, error);
-      throw error;
+      this.handleError(error);
     }
   }
 
@@ -40,8 +39,7 @@ export abstract class BaseController {
       const response = await this.api.post<ApiResponse<T>>(url, data);
       return response.data;
     } catch (error) {
-      console.error(`POST request to ${url} failed:`, error);
-      throw error;
+      this.handleError(error);
     }
   }
 
@@ -55,8 +53,7 @@ export abstract class BaseController {
       const response = await this.api.put<ApiResponse<T>>(url, data);
       return response.data;
     } catch (error) {
-      console.error(`PUT request to ${url} failed:`, error);
-      throw error;
+      this.handleError(error);
     }
   }
 
@@ -70,8 +67,28 @@ export abstract class BaseController {
       const response = await this.api.delete<ApiResponse<T>>(url);
       return response.data;
     } catch (error) {
-      console.error(`DELETE request to ${url} failed:`, error);
-      throw error;
+      this.handleError(error);
+    }
+  }
+
+  // Metode umum untuk menangani error dari Axios
+  private handleError(error: unknown): never {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<ApiResponse<any>>;
+      
+      if (axiosError.response && axiosError.response.data) {
+        // Jika error memiliki data di response, gunakan pesan dari server
+        throw new Error(axiosError.response.data.message || 'An error occurred');
+      } else if (axiosError.request) {
+        // Error saat mengirim permintaan, tetapi tidak ada respons
+        throw new Error('No response received from server');
+      } else {
+        // Error saat membuat permintaan
+        throw new Error(axiosError.message);
+      }
+    } else {
+      // Jika error bukan dari Axios
+      throw new Error('An unexpected error occurred');
     }
   }
 }

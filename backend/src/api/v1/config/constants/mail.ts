@@ -13,3 +13,18 @@ export const mailVerivicationOptions = (to: string, code: string) => {
     `,
   };
 };
+
+
+export const mailResetPasswordOptions = (to: string, code: string) => {
+  return {
+    from: FROM,
+    to: to,
+    subject: "Movie Nexus Reset Password",
+    html: `
+      <h1>Movie Nexus</h1>
+      <p>You have requested to reset your password. Your reset code is:</p>
+      <h2>${code}</h2>
+      <p>Enter this code in the reset password form to complete the process.</p>
+    `,
+  };
+};

@@ -7,6 +7,7 @@ import { generateToken } from "../helpers/handleToken";
 import { setTokenCookies } from "../helpers/setTokenCookies";
 import MailService from "../services/MailService";
 import { User } from "@prisma/client";
+import { FRONTEND_URL } from "../config/constants/url";
 
 class AuthController {
   private static instance: AuthController;
@@ -40,14 +41,11 @@ class AuthController {
     passport.authenticate("google", async (err: any, user: User, info: any) => {
       try {
         if (err || !user) {
-          console.error(err);
-          console.error(user);
-          return res.status(401).json({ message: "Authentication failed" });
+          return res.status(401).json({ message: "Authentication failed." });
         }
         const session = req.session as any;
-        const redirectUrl = session.redirectUrl || "http://localhost:3002"; // Default ke Home di client
+        const redirectUrl = session.redirectUrl || FRONTEND_URL; // Default ke Home di client
         delete session.redirectUrl; // Hapus redirectUrl setelah digunakan
-        console.log("user", user);
         // Buat token JWT dan setel cookie
         const token = generateToken(user.id, user.email);
         setTokenCookies(res, token);
@@ -96,9 +94,7 @@ class AuthController {
           user.verificationCode!
         );
       } catch (error) {
-        console.log("Failed to send verification code", error);
       }
-      console.info(`User ${user.email} sign up`);
       // kirim response
       return res.status(HttpStatus.CREATED).json(
         ResponseApi({
@@ -132,7 +128,6 @@ class AuthController {
       // buat token simpan di cookie
       const token = generateToken(user.id, user.email);
       setTokenCookies(res, token);
-      console.info(`User ${user.email} logged in`);
       // kirim respon
       return res.status(HttpStatus.OK).json(
         ResponseApi({
@@ -198,7 +193,7 @@ class AuthController {
         ResponseApi({
           code: HttpStatus.OK,
           message: "Verification code sent successfully",
-          data: user,
+          data: null,
           version: 1.0,
         })
       );
@@ -280,6 +275,94 @@ class AuthController {
         ResponseApi({
           code: HttpStatus.BAD_REQUEST,
           message: String(error),
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  public async forgotPassword(req: Request, res: Response) {
+    const { email } = req.body;
+
+    try {
+      const user = await authService.forgotPassword(email);
+
+      // kirim kode reset password ke email
+      await MailService.sendResetPasswordCode(
+        user.email,
+        user.verificationResetPasswordCode!
+      );
+
+      return res.status(HttpStatus.OK).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Password reset email has been sent.",
+          version: 1.0,
+        })
+      );
+    } catch (error: any) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: String(error.message || error),
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  public async resetPassword(req: Request, res: Response) {
+    const { email, verificationCode, newPassword } = req.body;
+
+    try {
+      const user = await authService.resetPassword(
+        email,
+        verificationCode,
+        newPassword
+      );
+
+      return res.status(HttpStatus.OK).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Password has been reset.",
+          data: user,
+          version: 1.0,
+        })
+      );
+    } catch (error: any) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: String(error.message || error),
+          errors: error,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  // verificationResetPasswordCode
+  public async verificationResetPasswordCode(req: Request, res: Response) {
+    const { code } = req.body;
+
+    try {
+      const user = await authService.verificationResetPasswordCode(code);
+
+      return res.status(HttpStatus.OK).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Verification code is valid.",
+          data: user,
+          version: 1.0,
+        })
+      );
+    } catch (error: any) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: String(error.message || error),
           errors: error,
           version: 1.0,
         })

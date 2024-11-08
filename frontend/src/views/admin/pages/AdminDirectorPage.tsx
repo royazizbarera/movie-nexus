@@ -28,8 +28,6 @@ import {
 } from "../../../configs/constants";
 import { CountryModel } from "../../../models/CountryModel";
 
-
-
 const columns: any[] = [
   {
     key: "id",
@@ -38,17 +36,21 @@ const columns: any[] = [
     readonly: true,
     width: 70,
   },
-  { key: "name", label: "Name", type: "string" },
-  { key: "birthDate", label: "Birth Date", type: "date" },
+  { key: "name", label: "Name", type: "string", required: true },
+  { key: "birthDate", label: "Birth Date", type: "date", required: true },
   { key: "photoUrl", label: "Photo Url", type: "string" },
-  { key: "country", label: "Country", type: "string_autocomplete" },
+  {
+    key: "country",
+    label: "Country",
+    type: "string_autocomplete",
+    required: true,
+  },
 ];
 
 export default function AdminDirectorPage() {
   const [directors, setDirectors] = React.useState<DirectorModelTable[]>([]);
   const [countries, setCountries] = React.useState<string[]>([]);
   const [realCountries, setRealCountries] = React.useState<CountryModel[]>([]);
-
 
   const [pagination, setPagination] = React.useState<PaginationModel>({
     page: 1,
@@ -111,16 +113,15 @@ export default function AdminDirectorPage() {
       const response = await directorController.addDirector(parsedDirector);
       console.info("add director: ", parsedDirector);
       fetchDirectors(directorParams);
-      if(response.code !== 201) {
+      if (response.code !== 201) {
         return false;
       }
       return true;
     } catch (error) {
       console.error("Error adding director:", error);
-      return false;
+      throw String(error);
     }
   };
-
 
   // TODO: Implement edit director
   const handleEditDirector = async (updatedDirector: DirectorModelTable) => {
@@ -131,7 +132,8 @@ export default function AdminDirectorPage() {
         birthDate: new Date(updatedDirector.birthDate).toISOString(),
         photoUrl: updatedDirector.photoUrl,
         countryCode:
-          realCountries.find((c) => c.name === updatedDirector.country)?.code || "",
+          realCountries.find((c) => c.name === updatedDirector.country)?.code ||
+          "",
       };
       const response = await directorController.updateDirector(
         updatedDirector.id,
@@ -145,7 +147,7 @@ export default function AdminDirectorPage() {
       return true;
     } catch (error) {
       console.error("Error updating director:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -162,7 +164,7 @@ export default function AdminDirectorPage() {
       return true;
     } catch (error) {
       console.error("Error deleting director:", error);
-      return false;
+      throw String(error);
     }
   };
 
@@ -226,7 +228,6 @@ export default function AdminDirectorPage() {
             }}
             onFilterChange={handleFilterChange}
             applySearch
-            realtimeSearch
             placeholderSearch="Search director..."
             onSearchApply={(searchTerm) =>
               handleFilterChange("searchTerm", searchTerm)

@@ -21,7 +21,6 @@ class UserService {
             }
             return prisma.user.count({where: whereClause});
         } catch (error) {
-            console.error("Error counting users:", error);
             throw new Error("Could not count users");
         }
     }
@@ -151,6 +150,22 @@ class UserService {
             });
         } catch (error) {
             throw new Error("Error unsuspending user:" + error);
+        }
+    }
+
+    /**
+     * Deletes a user based on the provided user ID.
+     * @param {number} userId - The ID of the user to delete.
+     * @returns {Promise<void>} A promise that resolves when the user is deleted.
+     * @throws {Error} If there is an issue deleting the user.
+     */
+    async deleteUser(userId: number): Promise<void> {
+        try {
+            await prisma.user.delete({
+                where: {id: userId},
+            });
+        } catch (error) {
+            throw new Error("Error deleting user:" + error);
         }
     }
 }

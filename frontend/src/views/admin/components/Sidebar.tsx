@@ -37,6 +37,8 @@ import MovieNexusLogo from "./MovieNexusLogo";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../contexts/authStore";
 import { Skeleton } from "@mui/joy";
+import movieController from "../../../controllers/MovieController";
+import reviewController from "../../../controllers/ReviewController";
 
 function Toggler({
   defaultExpanded = false,
@@ -107,6 +109,24 @@ type SidebarProps = {
 
 export default function Sidebar({ selected }: SidebarProps) {
   const { user, logout } = useAuthStore();
+  const [totalUnapprovedMovies, setTotalUnapprovedMovies] =
+    React.useState<number>(0);
+  const [totalUnapprovedReviews, setTotalUnapprovedReviews] =
+    React.useState<number>(0);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const movieResponse = await movieController.totalUnapprovedMovies();
+      setTotalUnapprovedMovies(movieResponse.data);
+
+      const reviewResponse = await reviewController.totalUnapprovedReviews();
+      setTotalUnapprovedReviews(
+        reviewResponse.data
+      );
+    };
+    fetchData();
+  }, []);
+
   const isSelected = (item: string) => selected === item;
   const navigate = useNavigate();
 
@@ -326,7 +346,7 @@ export default function Sidebar({ selected }: SidebarProps) {
                     <Typography level="title-sm">Approval</Typography>
                   </ListItemContent>
                   <Chip size="sm" color="primary" variant="solid">
-                    4
+                    {totalUnapprovedMovies + totalUnapprovedReviews}
                   </Chip>
                   <KeyboardArrowDownIcon
                     sx={[
@@ -352,7 +372,7 @@ export default function Sidebar({ selected }: SidebarProps) {
                       <Typography level="title-sm">Movies Approval</Typography>
                     </ListItemContent>
                     <Chip size="sm" color="primary" variant="solid">
-                      3
+                      {totalUnapprovedMovies}
                     </Chip>
                   </ListItemButton>
                 </ListItem>
@@ -366,7 +386,7 @@ export default function Sidebar({ selected }: SidebarProps) {
                       <Typography level="title-sm">Reviews Approval</Typography>
                     </ListItemContent>
                     <Chip size="sm" color="primary" variant="solid">
-                      1
+                      {totalUnapprovedReviews}
                     </Chip>
                   </ListItemButton>
                 </ListItem>

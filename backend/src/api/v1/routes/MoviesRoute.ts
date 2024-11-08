@@ -19,6 +19,13 @@ router.get("/", movieController.getMovies);
  */
 router.get("/unapproved", verifyAdmin, movieController.getUnapprovedMovies);
 
+
+// TODO: Refactor if needed
+router.get("/total-unapproved-movies", movieController.totalMovies);
+
+// TODO: Refactor if needed
+router.get("/added-by/:username", movieController.getMoviesByUser);
+
 /**
  * @route GET /movies/:id
  * @description Get a single movie by ID
@@ -46,5 +53,6 @@ router.put("/:id", verifyAdmin, movieController.updateMovieById);
  * @access Private
  */
 router.delete("/:id", verifyAdmin, movieController.deleteMovieById);
+
 
 export default router;

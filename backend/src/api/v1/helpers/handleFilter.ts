@@ -33,7 +33,6 @@ export const handleFilter = (filters: any[]) => {
                 break;
         }
         whereClause.push(condition);
-        console.log(whereClause);
     });
     return whereClause;
 }

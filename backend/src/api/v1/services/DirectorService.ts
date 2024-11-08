@@ -28,7 +28,6 @@ class DirectorService {
             }
             return prisma.director.count({ where: whereClause });
         } catch (error) {
-            console.error("Error counting directors:", error);
             throw new Error("Could not count directors");
         }
     }
@@ -152,7 +151,6 @@ class DirectorService {
                 });
             });
         } catch (error) {
-            console.error(error);
             throw new Error("Could not create director");
         }
     }
@@ -179,7 +177,6 @@ class DirectorService {
                 ...this.joinTable,
             });
         } catch (error) {
-            console.error(`Error updating director with ID ${id}:`, error);
             throw new Error(`Could not update director with ID ${id}`);
         }
     }
@@ -205,7 +202,6 @@ class DirectorService {
                 deletedDirector,
             };
         } catch (error) {
-            console.error(`Error deleting director with ID ${id}:`, error);
             throw new Error(`Could not delete director with ID ${id}`);
         }
     }

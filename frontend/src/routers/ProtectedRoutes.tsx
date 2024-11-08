@@ -6,15 +6,23 @@ type ProtectedRouteProps = {
   element: React.ReactNode;
   role?: "admin" | "writer" | ["admin", "writer"]; // Role yang dibutuhkan untuk mengakses halaman
   isAuthenticatedState?: boolean;
+  isVerifiedState?: boolean | undefined;
 };
 
 const ProtectedRoute = ({
   element,
   role,
   isAuthenticatedState = true,
+  isVerifiedState = undefined,
 }: ProtectedRouteProps) => {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
+
+  if (isVerifiedState === false && user?.isVerified === false) {
+    return <>{element}</>;
+  } else if (isVerifiedState === false && user?.isVerified === true) {
+    return <Navigate to="/user-profile" replace />;
+  }
 
   // Jika pengguna belum login diperbolehkan masuk ke halaman login
   if (!isAuthenticatedState && !isAuthenticated) {

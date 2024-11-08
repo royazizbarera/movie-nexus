@@ -39,7 +39,6 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import DangerousOutlinedIcon from "@mui/icons-material/DangerousOutlined";
 
-
 const styleSelect = {
   width: "100%",
   [`& .MuiSelect-indicator`]: {
@@ -71,6 +70,7 @@ export interface Column<T> {
 interface GenericTableProps<T> {
   title?: string; // Title of the table
   titleSolo?: string;
+  actionInFront?: boolean;
   data: T[];
   columns: Column<T>[];
   renderRowActions?: (item: T) => React.ReactNode; // Optionally allow custom row actions
@@ -78,7 +78,7 @@ interface GenericTableProps<T> {
 
   onEdit: (updatedItem: T) => Promise<void | boolean>; // Function to handle edit submission
   onDelete: (item: T) => Promise<void | boolean>; // Function to handle delete
-  onAdd?: (newItem: T) => Promise<void | boolean>; // Function to handle add
+  onAdd?: (newItem: T) => Promise<void | boolean | string>; // Function to handle add
   simpleAddItem?: boolean; // Simple add without modal
   onPageChange: (page: number) => void; // Function to handle pagination
   page: number; // Current page
@@ -98,6 +98,7 @@ interface GenericTableProps<T> {
 export default function GenericTable<T>({
   title,
   titleSolo = title,
+  actionInFront = false,
   data,
   columns,
   renderRowActions,
@@ -133,6 +134,46 @@ export default function GenericTable<T>({
   const [boolSelectValues, setBoolSelectValues] = React.useState<{
     [key: string]: boolean;
   }>({});
+
+  // Tambahkan state error untuk menyimpan status error dari input yang required
+  const [errorFields, setErrorFields] = React.useState<{
+    [key: string]: string;
+  }>({});
+
+  // Fungsi untuk mengecek apakah ada field yang kosong dan dibutuhkan
+  // Perbaiki penggunaan validation functions
+  const validateRequiredFields = (formData: { [key: string]: any }) => {
+    const newErrorFields: { [key: string]: string } = {};
+
+    columns.forEach((col) => {
+      if (
+        col.type === "string[]" ||
+        col.type === "number[]" ||
+        col.type === "boolean"
+      ) {
+        return;
+      }
+      if (col.required && !formData[col.key as string]) {
+        newErrorFields[col.key as string] = `${col.label} is required`;
+      }
+    });
+
+    Object.keys(multiSelectValues).forEach((key) => {
+      const column = columns.find((col) => col.key === key);
+      if (column?.required && multiSelectValues[key]?.length === 0) {
+        newErrorFields[key as string] = `${column.label} is required`;
+      }
+    });
+
+    Object.keys(boolSelectValues).forEach((key) => {
+      const column = columns.find((col) => col.key === key);
+      if (column?.required && boolSelectValues[key] === undefined) {
+        newErrorFields[key as string] = `${column.label} is required`;
+      }
+    });
+    setErrorFields(newErrorFields);
+    return Object.keys(newErrorFields).length === 0;
+  };
 
   // Modal state
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -197,13 +238,17 @@ export default function GenericTable<T>({
 
     // Populate multiSelectValues for `string[]` types
     const newMultiSelectValues: { [key: string]: string[] } = {};
+    const newBoolSelectValues: { [key: string]: boolean } = {};
     columns.forEach((col) => {
       if (col.type === "string[]") {
         newMultiSelectValues[col.key as string] = item[col.key] as string[];
       }
+      if (col.type === "boolean") {
+        newBoolSelectValues[col.key as string] = item[col.key] as boolean;
+      }
     });
     setMultiSelectValues(newMultiSelectValues);
-
+    setBoolSelectValues(newBoolSelectValues);
     setOpenEditModal(true);
   };
 
@@ -214,7 +259,7 @@ export default function GenericTable<T>({
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
-    setSelectedItem(null);
+    // setSelectedItem(null);
   };
 
   // TODO (DONE): Handle delete item
@@ -320,6 +365,20 @@ export default function GenericTable<T>({
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
 
+    // Validasi form: jika gagal validasi, tidak melakukan submit
+    if (!validateRequiredFields(formJson)) {
+      handleOpenSnackbar({
+        ...defaultSnackbarState,
+        open: true,
+        title: "Please fill in all required fields",
+        key: "required_fields",
+        color: "warning",
+        variant: "solid",
+        autoHideDuration: 5000,
+      });
+      return;
+    }
+
     // Overwrite array fields with values from multiSelectValues
     const finalData = {
       ...selectedItem,
@@ -354,11 +413,25 @@ export default function GenericTable<T>({
             autoHideDuration: 5000,
           });
         }
-      } catch (error) {
-        console.error("Failed to update data", error);
-      } finally {
         setOpenEditModal(false);
         setSelectedItem(null);
+        setMultiSelectValues({
+          genres: [],
+          actors: [],
+          awards: [],
+        });
+        setBoolSelectValues({});
+      } catch (error) {
+        console.error("Failed to update data", error);
+        handleOpenSnackbar({
+          ...defaultSnackbarState,
+          open: true,
+          title: String(error),
+          key: "failed_update_item",
+          color: "danger",
+          variant: "solid",
+          autoHideDuration: 5000,
+        });
       }
     }
   };
@@ -380,13 +453,26 @@ export default function GenericTable<T>({
       ...boolSelectValues,
     };
 
+    // Validasi form: jika gagal validasi, tidak melakukan submit
+    if (!validateRequiredFields(formJson)) {
+      handleOpenSnackbar({
+        ...defaultSnackbarState,
+        open: true,
+        title: "Please fill in all required fields",
+        key: "required_fields_add",
+        color: "warning",
+        variant: "solid",
+        autoHideDuration: 5000,
+      });
+      return;
+    }
     // Lakukan sesuatu dengan data yang sudah di-submit
     console.log("Submitted add data:", finalData);
     console.info("New Item: ", newItem);
     if (newItem && onAdd) {
       try {
-        const success = await onAdd(finalData as T); // Gabungkan data form dengan newItem
-        success
+        const response = await onAdd(finalData as T); // Gabungkan data form dengan newItem
+        response === true
           ? handleOpenSnackbar({
               ...defaultSnackbarState,
               open: true,
@@ -399,27 +485,31 @@ export default function GenericTable<T>({
           : handleOpenSnackbar({
               ...defaultSnackbarState,
               open: true,
-              title: "Failed to add item",
+              title: String(response),
               key: "failed_add_item",
               color: "danger",
               variant: "solid",
               autoHideDuration: 5000,
             });
-      } catch (error) {
+        setOpenAddModal(false);
+        setNewItem({} as T);
+        setMultiSelectValues({
+          genres: [],
+          actors: [],
+          awards: [],
+        });
+        setBoolSelectValues({});
+      } catch (error: any) {
         // open snackbar error
         handleOpenSnackbar({
           ...defaultSnackbarState,
           open: true,
-          title: "Failed to add item",
+          title: String(error.message || error),
           key: "failed_add_item",
           color: "danger",
           variant: "solid",
           autoHideDuration: 5000,
         });
-        console.error("Failed to add data", error);
-      } finally {
-        setOpenAddModal(false);
-        setNewItem({} as T);
       }
     }
   };
@@ -445,7 +535,15 @@ export default function GenericTable<T>({
           </Typography>
         );
       case "boolean":
-        return <Checkbox size="sm" checked={value as boolean} disabled />;
+        return (
+          <Checkbox
+            size="sm"
+            variant="solid"
+            checked={value as boolean}
+            color={(value as boolean) ? "success" : "danger"}
+            onClick={() => {}}
+          />
+        );
       case "string[]":
         return (
           <Typography level="body-md" noWrap>
@@ -469,6 +567,7 @@ export default function GenericTable<T>({
     col: Column<T>,
     options: string[] = []
   ) => {
+    console.info("Error Fields: ", errorFields);
     switch (col.type) {
       case "string":
         return (
@@ -476,6 +575,7 @@ export default function GenericTable<T>({
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={value as string}
+            required={col.required}
           />
         );
       case "number":
@@ -485,6 +585,7 @@ export default function GenericTable<T>({
             name={String(col.key)} // Menggunakan name untuk FormData
             type="number"
             defaultValue={String(value)}
+            required={col.required}
           />
         );
       case "date":
@@ -498,6 +599,7 @@ export default function GenericTable<T>({
                 ? new Date(value as string).toISOString().split("T")[0]
                 : new Date().toISOString().split("T")[0]
             }
+            required={col.required}
           />
         );
       case "boolean":
@@ -513,6 +615,7 @@ export default function GenericTable<T>({
                 [col.key as string]: newValue,
               }));
             }}
+            required={col.required}
           />
         );
       case "string[]":
@@ -561,9 +664,20 @@ export default function GenericTable<T>({
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={String(value)}
+            required={col.required}
           />
         );
     }
+  };
+
+  // TODO (DONE): Render error message for required fields
+  // Render error message for required fields
+  const renderErrorField = (key: string) => {
+    return errorFields[key] ? (
+      <Typography level="body-md" color="danger">
+        {errorFields[key]}
+      </Typography>
+    ) : null;
   };
 
   return (
@@ -613,7 +727,7 @@ export default function GenericTable<T>({
             Delete Selected Items
           </Button>
           {/* simple add item */}
-          {!simpleAddItem && (
+          {!simpleAddItem && onAdd && (
             <Button
               variant="solid"
               color="success"
@@ -628,20 +742,30 @@ export default function GenericTable<T>({
 
       {simpleAddItem && (
         <Box
-          flex={1}
-          flexGrow={1}
           gap={2}
           justifyContent={{
             xs: "space-between",
             sm: "flex-end",
+            md: "flex-end",
           }}
           sx={{
+            flex: {
+              xs: 1,
+              sm: 1,
+              md: 0,
+            },
+            flexGrow: {
+              xs: 1,
+              sm: 1,
+              md: 0,
+            },
             alignItems: "flex-end",
             display: "flex",
             flexDirection: {
               xs: "column",
               sm: "columm",
             },
+            height: "fit-content",
           }}
         >
           {/* simple add item */}
@@ -653,25 +777,26 @@ export default function GenericTable<T>({
               flexGrow: {
                 xs: 1,
                 sm: 1,
-                md: 1,
+                md: 0,
               },
               width: {
                 xs: "100%",
                 sm: "100%",
                 md: "100%",
               },
+              height: "fit-content",
             }}
           >
             <form
               onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 handleFormAddSubmit(event);
-                event.currentTarget.reset();
               }}
               style={{
                 display: "flex",
                 gap: 2,
                 flexGrow: 1,
+                height: "fit-content",
               }}
             >
               <Stack
@@ -691,6 +816,7 @@ export default function GenericTable<T>({
                     sm: "100%",
                     md: "100%",
                   },
+                  height: "fit-content",
                 }}
               >
                 {columns.map((col) =>
@@ -707,12 +833,21 @@ export default function GenericTable<T>({
                         },
                       }}
                     >
-                      <FormLabel>{col.label}</FormLabel>
+                      <FormLabel>
+                        {col.label}{" "}
+                        {col.required ? (
+                          <span style={{ color: "red" }}>*</span>
+                        ) : (
+                          ""
+                        )}
+                      </FormLabel>
+
                       {renderInputField(
                         newItem[col.key],
                         col,
                         options[col.key as string] || []
                       )}
+                      {renderErrorField(col.key as string)}
                     </FormControl>
                   )
                 )}
@@ -733,6 +868,7 @@ export default function GenericTable<T>({
           </Box>
         </Box>
       )}
+
       <AccordionGroup
         size={"sm"}
         transition={{
@@ -906,6 +1042,22 @@ export default function GenericTable<T>({
                   sx={{ verticalAlign: "text-bottom" }}
                 />
               </th>
+              {actionInFront && (
+                <Box
+                  component={"th" as any}
+                  sx={{
+                    width: {
+                      xs: "100px",
+                      sm: 200,
+                    },
+                    flexWrap: "wrap",
+                    verticalAlign: "middle !important",
+                    resize: "horizontal",
+                  }}
+                >
+                  Actions
+                </Box>
+              )}
               {columns.map((col) => (
                 <Box
                   key={(col.key as string) + "-header"}
@@ -923,20 +1075,22 @@ export default function GenericTable<T>({
                   {col.label}
                 </Box>
               ))}
-              <Box
-                component={"th" as any}
-                sx={{
-                  width: {
-                    xs: "100px",
-                    sm: 200,
-                  },
-                  flexWrap: "wrap",
-                  verticalAlign: "middle !important",
-                  resize: "horizontal",
-                }}
-              >
-                Actions
-              </Box>
+              {!actionInFront && (
+                <Box
+                  component={"th" as any}
+                  sx={{
+                    width: {
+                      xs: "100px",
+                      sm: 200,
+                    },
+                    flexWrap: "wrap",
+                    verticalAlign: "middle !important",
+                    resize: "horizontal",
+                  }}
+                >
+                  Actions
+                </Box>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -956,6 +1110,24 @@ export default function GenericTable<T>({
                     sx={{ verticalAlign: "text-bottom" }}
                   />
                 </td>
+                {actionInFront && (
+                  <td>
+                    <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                      <Button onClick={() => handleOpenEditModal(item)}>
+                        Edit
+                      </Button>
+
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleOpenDeleteItemModal(item)}
+                      >
+                        Delete
+                      </Button>
+                      {renderRowActions && renderRowActions(item)}
+                    </Box>
+                  </td>
+                )}
+
                 {columns.map((col) => (
                   <td
                     key={col.key as string}
@@ -966,21 +1138,23 @@ export default function GenericTable<T>({
                     {renderCellData(item, col)}
                   </td>
                 ))}
-                <td>
-                  <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                    <Button onClick={() => handleOpenEditModal(item)}>
-                      Edit
-                    </Button>
+                {!actionInFront && (
+                  <td>
+                    <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                      <Button onClick={() => handleOpenEditModal(item)}>
+                        Edit
+                      </Button>
 
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleOpenDeleteItemModal(item)}
-                    >
-                      Delete
-                    </Button>
-                    {renderRowActions && renderRowActions(item)}
-                  </Box>
-                </td>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleOpenDeleteItemModal(item)}
+                      >
+                        Delete
+                      </Button>
+                      {renderRowActions && renderRowActions(item)}
+                    </Box>
+                  </td>
+                )}
               </tr>
             ))}
             {data.length === 0 && (
@@ -1022,20 +1196,26 @@ export default function GenericTable<T>({
               onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 handleFormAddSubmit(event);
-                event.currentTarget.reset();
               }}
-              onReset={() => setNewItem({} as T)} // Tombol reset untuk menghapus input
             >
               <Stack spacing={2}>
                 {columns.map((col) =>
                   col.readonly ? null : (
                     <FormControl key={col.key as string}>
-                      <FormLabel>{col.label}</FormLabel>
+                      <FormLabel>
+                        {col.label}{" "}
+                        {col.required ? (
+                          <span style={{ color: "red" }}>*</span>
+                        ) : (
+                          ""
+                        )}
+                      </FormLabel>
                       {renderInputField(
                         newItem[col.key],
                         col,
                         options[col.key as string] || []
                       )}
+                      {renderErrorField(col.key as string)}
                     </FormControl>
                   )
                 )}
@@ -1065,12 +1245,20 @@ export default function GenericTable<T>({
                 {columns.map((col) =>
                   col.readonly ? null : (
                     <FormControl key={col.key as string}>
-                      <FormLabel>{col.label}</FormLabel>
+                      <FormLabel>
+                        {col.label}{" "}
+                        {col.required ? (
+                          <span style={{ color: "red" }}>*</span>
+                        ) : (
+                          ""
+                        )}
+                      </FormLabel>
                       {renderInputField(
                         selectedItem ? selectedItem[col.key] : "",
                         col,
                         options[col.key as string] || []
                       )}
+                      {renderErrorField(col.key as string)}
                     </FormControl>
                   )
                 )}
@@ -1176,6 +1364,9 @@ export default function GenericTable<T>({
             <WarningAmberOutlinedIcon />
           )
         }
+        sx={{
+          zIndex: 30000,
+        }}
       >
         {snackbarState.title}
       </Snackbar>

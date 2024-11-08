@@ -28,7 +28,6 @@ class AwardService {
             }
             return prisma.award.count({ where: whereClause });
         } catch (error) {
-            console.error("Error counting awards:", error);
             throw new Error("Could not count awards");
         }
     }
