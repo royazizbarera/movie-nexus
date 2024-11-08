@@ -16,6 +16,7 @@ import React from "react";
 import { useAuthStore } from "../../../contexts/authStore";
 
 import DangerousOutlinedIcon from "@mui/icons-material/DangerousOutlined";
+import { useNavigate } from "react-router-dom";
 
 interface InsertEmailForgotPasswordFormProps {
   onSubmit?: (email: string) => void;
@@ -24,6 +25,7 @@ interface InsertEmailForgotPasswordFormProps {
 export default function InsertEmailForgotPasswordForm({
   onSubmit,
 }: InsertEmailForgotPasswordFormProps) {
+   const navigate = useNavigate();
   const { forgotPassword, isLoading, message, error } = useAuthStore();
   const [openSnackbar, setOpenSnackbar] = React.useState<{
     status: boolean;
@@ -129,7 +131,9 @@ export default function InsertEmailForgotPasswordForm({
             <Link
               component="button"
               textColor={"primary.plainColor"}
-              onClick={() => console.log("Create Account")}
+              onClick={() => {
+                navigate('/sign-up');
+              }}
               sx={{ fontSize: "0.8rem", fontWeight: "bold" }}
             >
               Create Account

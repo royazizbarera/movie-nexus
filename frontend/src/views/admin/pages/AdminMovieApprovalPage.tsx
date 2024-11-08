@@ -260,57 +260,6 @@ export default function AdminMovieApprovalPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieParams]);
 
-  // TODO: ADD Movie
-  const handleAddMovie = async (newMovie: MovieModelTable) => {
-    try {
-      const parsedMovie: MovieModel = {
-        id: newMovie.id,
-        title: newMovie.title,
-        synopsis: newMovie.synopsis,
-        posterUrl: newMovie.posterUrl,
-        backdropUrl: newMovie.backdropUrl,
-        videoUrl: newMovie.videoUrl,
-        releaseDate: newMovie.releaseDate,
-        approvalStatus: newMovie.approvalStatus,
-        rating: newMovie.rating,
-        country: realCountries.find((c) => c.name === newMovie.country) || null,
-        countryCode:
-          realCountries.find((c) => c.name === newMovie.country)?.code || "",
-        director:
-          realDirectors.find((d) => d.name === newMovie.director) || null,
-        directorId:
-          realDirectors.find((d) => d.name === newMovie.director)?.id || 0,
-        genres: newMovie.genres.map((genre) => {
-          return (
-            realGenres.find((g) => g.name === genre)! || { id: 0, name: "" }
-          );
-        }),
-        actors: newMovie.actors.map((actor) => {
-          return realActors.find((a) => a.name === actor)!;
-        }),
-        awards:
-          newMovie.awards.map((award) => {
-            return realAwards.find((a) => a.name === award)!;
-          }) || undefined,
-        reviews: null,
-
-        addedBy: user || null,
-        userId: user?.id || 2606,
-      };
-      console.info("parsed movie: ", parsedMovie);
-      const response = await movieController.addMovie(parsedMovie);
-      console.info("add movie: ", parsedMovie);
-      fetchMovies(movieParams);
-      if (response.code !== 201) {
-        return false;
-      }
-      return true;
-    } catch (error) {
-      console.error("Error adding movie:", error);
-      return false;
-    }
-  };
-
   // TODO: UPDATE Movie
   const handleEditMovie = async (updatedMovie: MovieModelTable) => {
     try {

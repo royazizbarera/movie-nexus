@@ -7,7 +7,7 @@ export default function SignInPage() {
   return (
     <>
       <AppAppBar />
-      <MainLayout giveSpace pt={12}>
+      <MainLayout giveSpace pt={8}>
         <Box
           sx={{
             padding: 2,

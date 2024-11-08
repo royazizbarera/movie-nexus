@@ -1,4 +1,4 @@
 import GenreModel from "../models/GenreModel";
-import genreData from "../databases/datas/genres.json";
+import { genres_ts } from "./datas_ts/genres_ts";
 
-export const genres: GenreModel[] = genreData;
+export const genres: GenreModel[] = genres_ts;

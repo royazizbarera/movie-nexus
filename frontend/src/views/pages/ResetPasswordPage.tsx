@@ -5,6 +5,7 @@ import ResetPasswordForm from "../components/forgot-password/ResetPasswordForm";
 import InsertEmailForgotPasswordForm from "../components/forgot-password/InsertEmailForgotPasswordForm";
 import React from "react";
 import VerificationResetPasswordCode from "../components/forgot-password/VerificationResetPasswordCode";
+import { useNavigate } from "react-router-dom";
 
 type StateSteps =
   | "InsertEmailForgotPasswordForm"
@@ -12,6 +13,8 @@ type StateSteps =
   | "ResetPasswordForm";
 
 export default function ResetPasswordPage() {
+  const navigate = useNavigate();
+
   const [resetPasswordProps, setResetPasswordProps] = React.useState<{
     email: string;
     code: string;
@@ -61,7 +64,9 @@ export default function ResetPasswordPage() {
             <ResetPasswordForm
               code={resetPasswordProps.code}
               email={resetPasswordProps.email}
-              onSubmit={(newPassword) => {}}
+              onSubmit={() => {
+                navigate("/sign-in");
+              }}
             />
           )}
         </Box>

@@ -1,4 +1,4 @@
 import CountryModel from "../models/CountryModel";
-import countryData from "../databases/datas/countries.json";
+import { countries_ts } from "./datas_ts/countries_ts";
 
-export const countries: CountryModel[] = countryData;
+export const countries: CountryModel[] = countries_ts;

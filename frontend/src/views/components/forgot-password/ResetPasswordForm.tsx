@@ -1,13 +1,12 @@
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   Input,
-  Link,
   Sheet,
   Typography,
   Snackbar,
+  IconButton,
 } from "@mui/joy";
 
 import React from "react";
@@ -16,11 +15,13 @@ import { useAuthStore } from "../../../contexts/authStore";
 // icon
 import DangerousOutlinedIcon from "@mui/icons-material/DangerousOutlined";
 import LockIcon from "@mui/icons-material/Lock";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 interface ResetPasswordFormProps {
   code: string;
   email: string;
-  onSubmit?: (newPassword: string) => void;
+  onSubmit?: () => void;
 }
 
 export default function ResetPasswordForm({
@@ -28,6 +29,8 @@ export default function ResetPasswordForm({
   email,
   onSubmit,
 }: ResetPasswordFormProps) {
+  const [showPassword, setShowPassword] = React.useState(false);
+
   const { updatePassword, isLoading, message, error } = useAuthStore();
   const [openSnackbar, setOpenSnackbar] = React.useState<{
     status: boolean;
@@ -85,7 +88,7 @@ export default function ResetPasswordForm({
         verificationCode: code,
       });
       setOpenSnackbar({ status: true, variant: "success", message: message });
-      onSubmit && onSubmit(password);
+      onSubmit && onSubmit();
     } catch (err) {
       setOpenSnackbar({
         status: true,
@@ -146,15 +149,43 @@ export default function ResetPasswordForm({
             <FormControl key={"pwd-1"}>
               <Input
                 name={"pwd-1"}
+                type={showPassword ? "text" : "password"}
                 placeholder={"Enter your new password"}
                 required
+                endDecorator={
+                  <IconButton
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    {showPassword ? (
+                      <VisibilityOutlinedIcon />
+                    ) : (
+                      <VisibilityOffOutlinedIcon />
+                    )}
+                  </IconButton>
+                }
               />
             </FormControl>
             <FormControl key={"pwd-2"}>
               <Input
                 name={"pwd-2"}
+                type={showPassword ? "text" : "password"}
                 placeholder={"Re-Enter your new password"}
                 required
+                endDecorator={
+                  <IconButton
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    {showPassword ? (
+                      <VisibilityOutlinedIcon />
+                    ) : (
+                      <VisibilityOffOutlinedIcon />
+                    )}
+                  </IconButton>
+                }
               />
             </FormControl>
             <Button type="submit" variant="solid" color="primary">
