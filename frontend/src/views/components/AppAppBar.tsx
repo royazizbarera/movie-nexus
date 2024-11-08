@@ -6,7 +6,6 @@ import {
   IconButton,
   List,
   Drawer,
-  Autocomplete,
   DialogContent,
   DialogTitle,
   Modal,

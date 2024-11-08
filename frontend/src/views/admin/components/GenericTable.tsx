@@ -575,6 +575,7 @@ export default function GenericTable<T>({
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={value as string}
+            required={col.required}
           />
         );
       case "number":
@@ -584,6 +585,7 @@ export default function GenericTable<T>({
             name={String(col.key)} // Menggunakan name untuk FormData
             type="number"
             defaultValue={String(value)}
+            required={col.required}
           />
         );
       case "date":
@@ -597,6 +599,7 @@ export default function GenericTable<T>({
                 ? new Date(value as string).toISOString().split("T")[0]
                 : new Date().toISOString().split("T")[0]
             }
+            required={col.required}
           />
         );
       case "boolean":
@@ -612,6 +615,7 @@ export default function GenericTable<T>({
                 [col.key as string]: newValue,
               }));
             }}
+            required={col.required}
           />
         );
       case "string[]":
@@ -660,6 +664,7 @@ export default function GenericTable<T>({
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={String(value)}
+            required={col.required}
           />
         );
     }

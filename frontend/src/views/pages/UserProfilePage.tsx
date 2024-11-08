@@ -25,7 +25,6 @@ export default function UserProfilePage() {
   }, [user]);
 
   const handleClickVerification = () => {
-    
     navigate("/verify-email");
   };
 
@@ -75,42 +74,8 @@ export default function UserProfilePage() {
             </Grid>
           )}
           <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-            <UserCard user={user} />
+            <UserCard />
           </Grid>
-
-          {/* Favorite Film Section */}
-          {/* <Grid xs={12} sm={12} md={4} lg={4} xl={4}>
-            <Box>
-              <Grid
-                container
-                spacing={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}
-                sx={{ flexGrow: 1, justifyContent: "space-between" }}
-              >
-                {favoriteMovies.map((movie) => (
-                  <Grid
-                    key={movie.id}
-                    xs={6}
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    xl={6}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <MovieCard
-                      id={movie.id}
-                      title={movie.title}
-                      posterUrl={movie.posterUrl}
-                      rating={movie.rating}
-                      year={Number(movie.year)}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Grid> */}
         </Grid>
         {/* Post Movie */}
         <Box>

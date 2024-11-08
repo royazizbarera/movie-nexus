@@ -9,6 +9,7 @@ import { Avatar, Divider } from "@mui/joy";
 import { useState } from "react";
 import { useAuthStore } from "../../contexts/authStore";
 import { BASE_AUTH_URL } from "../../configs/constants";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onSuccessfulLogin?: () => void;
@@ -18,13 +19,12 @@ export default function LoginForm({ onSuccessfulLogin }: LoginFormProps) {
   const { signInWithEmailAndPassword, user, isLoading, error } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     const currentUrl = window.location.href; // Dapatkan URL halaman saat ini
     window.open(
-      `${BASE_AUTH_URL}/google?redirectUrl=${encodeURIComponent(
-        currentUrl
-      )}`,
+      `${BASE_AUTH_URL}/google?redirectUrl=${encodeURIComponent(currentUrl)}`,
       "_self"
     );
   };
@@ -56,9 +56,8 @@ export default function LoginForm({ onSuccessfulLogin }: LoginFormProps) {
     >
       <div>
         <Typography level="h4" component="h1">
-          <b>Welcome!</b>
+          <b>Sign In!</b>
         </Typography>
-        <Typography level="body-sm">Login to continue.</Typography>
       </div>
 
       {error && (
@@ -75,6 +74,7 @@ export default function LoginForm({ onSuccessfulLogin }: LoginFormProps) {
           placeholder="johndoe@email.com"
           value={email} // Controlled input
           onChange={(e) => setEmail(e.target.value)} // Update state
+          required
         />
       </FormControl>
       <FormControl>
@@ -85,6 +85,7 @@ export default function LoginForm({ onSuccessfulLogin }: LoginFormProps) {
           placeholder="password"
           value={password} // Controlled input
           onChange={(e) => setPassword(e.target.value)} // Update state
+          required
         />
       </FormControl>
 
@@ -97,14 +98,26 @@ export default function LoginForm({ onSuccessfulLogin }: LoginFormProps) {
       </Button>
 
       <Typography
-        endDecorator={<Link href="/sign-up">Sign up</Link>}
-        sx={{ fontSize: "sm", alignSelf: "center" }}
+        endDecorator={<Link href="/forgot-password">Forgot password?</Link>}
+        sx={{
+          display: "flex",
+          fontSize: "sm",
+          alignSelf: "right",
+          justifyContent: "right",
+          flex: 1,
+        }}
+      />
+
+      <Divider>OR</Divider>
+
+      <Button
+        variant="outlined"
+        onClick={() => {
+          navigate("/sign-up");
+        }}
       >
-        Don&apos;t have an account?
-      </Typography>
-
-      <Divider />
-
+        Sign Up
+      </Button>
       <Button
         variant="outlined"
         onClick={handleGoogleLogin}

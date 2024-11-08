@@ -63,8 +63,15 @@ export default function ClientRoutes() {
       />
 
       {/* Reset Password */}
-      <Route path="/forgot-password" element={<ResetPasswordPage />} />
-
+      <Route
+        path="/forgot-password"
+        element={
+          <ProtectedRoute
+            isAuthenticatedState={false}
+            element={<ResetPasswordPage />}
+          />
+        }
+      />
       {/* Unauthorized */}
       <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
       {/* Admin */}

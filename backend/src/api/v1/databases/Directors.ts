@@ -1,7 +1,7 @@
 import DirectorModel from "../models/DirectorModel";
-import directorData from "../databases/datas/directors.json";
+import { directors_ts } from "./datas_ts/directors_ts";
 
-const processedData = directorData.map((director) => {
+const processedData = directors_ts.map((director) => {
     return {
         ...director,
         birthDate: director.birthDate ? new Date(director.birthDate) : new Date(0),

@@ -1,12 +1,13 @@
 import React from "react";
 import { Box, Typography } from "@mui/joy";
 
+import { Link } from "react-router-dom";
+
 const Logo: React.FC = () => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <a
-        href="/"
-        draggable
+      <Link
+        to="/"
         style={{
           display: "flex",
           alignItems: "center",
@@ -14,7 +15,7 @@ const Logo: React.FC = () => {
         }}
       >
         <Typography
-        fontSize={16}
+          fontSize={16}
           sx={{
             pb: {
               xs: "2px",
@@ -31,7 +32,7 @@ const Logo: React.FC = () => {
         >
           Movie Nexus
         </Typography>
-      </a>
+      </Link>
     </Box>
   );
 };
