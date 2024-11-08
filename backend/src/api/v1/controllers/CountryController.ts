@@ -48,7 +48,6 @@ class CountryController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching countries: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -103,7 +102,6 @@ class CountryController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching country: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,

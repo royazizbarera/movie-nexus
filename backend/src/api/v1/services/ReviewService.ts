@@ -22,7 +22,6 @@ class ReviewService {
       }
       return prisma.review.count({ where: whereClause });
     } catch (error) {
-      console.error("Error counting reviews:", error);
       throw new Error("Could not count reviews");
     }
   }
@@ -181,7 +180,6 @@ class ReviewService {
         });
       });
     } catch (error) {
-      console.error(error);
       throw new Error("Could not create review");
     }
   }
@@ -195,7 +193,6 @@ class ReviewService {
    */
   async updateReviewById(id: number, updatedData: any): Promise<any> {
     try {
-      console.log("Updated data: ", updatedData);
       const dataToUpdate: any = {
         ...(updatedData.content ? { content: updatedData.cotent } : {}),
         ...(updatedData.rating ? { rating: updatedData.rating } : {}),
@@ -203,7 +200,6 @@ class ReviewService {
           ? { approvalStatus: updatedData.approvalStatus }
           : {}),
       };
-      console.log("Data to Update", dataToUpdate);
       return await prisma.review.update({
         where: { id },
         data: dataToUpdate,

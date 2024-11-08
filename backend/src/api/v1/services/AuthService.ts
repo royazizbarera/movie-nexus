@@ -43,7 +43,6 @@ class AuthService {
       if (existingUser) {
         throw new Error("User with this email already exists");
       }
-      console.info(username, " Mencoba mendaftar.");
       // hash password
       const hashedPassword = await bcrypt.hash(password, 10);
       const verificationCode = generateVerificationCode();
@@ -63,7 +62,6 @@ class AuthService {
       });
 
       const userResponse = { ...newUser, password: undefined };
-      console.info(username, " Berhasil tercatat di database.");
       return userResponse;
     } catch (error: any) {
       throw new Error(error || "Failed to create user");

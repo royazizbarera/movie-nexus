@@ -41,14 +41,11 @@ class AuthController {
     passport.authenticate("google", async (err: any, user: User, info: any) => {
       try {
         if (err || !user) {
-          console.error(err);
-          console.error(user);
           return res.status(401).json({ message: "Authentication failed." });
         }
         const session = req.session as any;
         const redirectUrl = session.redirectUrl || FRONTEND_URL; // Default ke Home di client
         delete session.redirectUrl; // Hapus redirectUrl setelah digunakan
-        console.log("user", user);
         // Buat token JWT dan setel cookie
         const token = generateToken(user.id, user.email);
         setTokenCookies(res, token);
@@ -97,9 +94,7 @@ class AuthController {
           user.verificationCode!
         );
       } catch (error) {
-        console.log("Failed to send verification code", error);
       }
-      console.info(`User ${user.email} sign up`);
       // kirim response
       return res.status(HttpStatus.CREATED).json(
         ResponseApi({
@@ -133,7 +128,6 @@ class AuthController {
       // buat token simpan di cookie
       const token = generateToken(user.id, user.email);
       setTokenCookies(res, token);
-      console.info(`User ${user.email} logged in`);
       // kirim respon
       return res.status(HttpStatus.OK).json(
         ResponseApi({

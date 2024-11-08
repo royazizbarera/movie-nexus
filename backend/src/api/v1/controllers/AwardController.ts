@@ -54,7 +54,6 @@ class AwardController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching awards: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -109,7 +108,6 @@ class AwardController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching award: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -144,7 +142,6 @@ class AwardController {
                 })
             );
         } catch (error) {
-            console.error("Error creating award: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -180,7 +177,6 @@ class AwardController {
                 })
             );
         } catch (error) {
-            console.error("Error updating award: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -215,7 +211,6 @@ class AwardController {
                 })
             );
         } catch (error) {
-            console.error("Error deleting award: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,

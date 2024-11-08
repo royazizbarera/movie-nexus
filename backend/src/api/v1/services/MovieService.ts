@@ -84,7 +84,6 @@ class MovieService {
       }
       return prisma.movie.count({ where: whereClause });
     } catch (error) {
-      console.error("Error counting movies:", error);
       throw new Error("Could not count movies");
     }
   }
@@ -175,7 +174,6 @@ class MovieService {
             },
           },
         });
-        console.info("Movie created successfully", movie.title);
         return prisma.movie.findUnique({
           where: { id: movie.id },
           include: this.joinTable.include,
@@ -291,7 +289,6 @@ class MovieService {
 
       return this.refactorMovies([updatedMovie])[0];
     } catch (error) {
-      console.error(`Error updating movie with ID ${id}:`, error);
       throw new Error(`Could not update movie with ID ${id}`);
     }
   }
@@ -335,7 +332,6 @@ class MovieService {
         deletedMovie,
       };
     } catch (error) {
-      console.error(`Error deleting movie with ID ${id}:`, error);
       throw new Error(`Could not delete movie with ID ${id}`);
     }
   }
@@ -436,7 +432,6 @@ class MovieService {
 
       return [this.refactorMovies(movies), totalItems];
     } catch (error) {
-      console.error("Failed to fetch movies: ", error);
       throw new Error("Error fetching movies");
     }
   }
@@ -451,7 +446,6 @@ class MovieService {
 
       return this.refactorMovies(movies);
     } catch (error) {
-      console.error("Failed to fetch movies: ", error);
       throw new Error("Error fetching movies");
     }
   }

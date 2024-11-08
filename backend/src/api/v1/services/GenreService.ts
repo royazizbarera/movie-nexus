@@ -21,7 +21,6 @@ class GenreService {
             }
             return prisma.genre.count({ where: whereClause });
         } catch (error) {
-            console.error("Error counting genres:", error);
             throw new Error("Could not count genres");
         }
     }

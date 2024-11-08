@@ -19,7 +19,6 @@ passport.use(
           profile.emails?.[0].value || "",
           profile.displayName
         );
-        // console.log("user", user);
         return done(null, user);
       } catch (error) {
         return done(error);

@@ -57,7 +57,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error fetching reviews: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -119,7 +118,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error fetching unapproved reviews: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -174,7 +172,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error fetching review: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -209,7 +206,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error creating review: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -248,7 +244,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error updating review: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -283,7 +278,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error deleting review: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -318,7 +312,6 @@ class ReviewController {
         })
       );
     } catch (error) {
-      console.error("Error fetching unapproved reviews: ", error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
         ResponseApi({
           code: HttpStatus.INTERNAL_SERVER_ERROR,

@@ -2,6 +2,7 @@ import movieService from "../services/MovieService";
 import ResponseApi from "../config/ResponseApi";
 import HttpStatus from "../config/constants/HttpStatus";
 import { Response, Request } from "express";
+import { stat } from "fs";
 
 class MovieController {
   /**
@@ -79,8 +80,15 @@ class MovieController {
           },
         })
       );
-    } catch (error) {
-      return this.handleError(res, error, "Failed to fetch movies");
+    } catch (error: any) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          errors: error.message || error,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -133,7 +141,14 @@ class MovieController {
         })
       );
     } catch (error) {
-      return this.handleError(res, error, "Failed to fetch movies");
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -156,7 +171,14 @@ class MovieController {
         })
       );
     } catch (error) {
-      return this.handleError(res, error, "Failed to fetch movie");
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movie",
+          data: null,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -183,15 +205,15 @@ class MovieController {
         })
       );
     } catch (error: any) {
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
-          ResponseApi({
-            code: HttpStatus.INTERNAL_SERVER_ERROR,
-            message: "Failed to update movie",
-            errors: error.message || error,
-            version: 1.0,
-          })
-        );
-      }
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to update movie",
+          errors: error.message || error,
+          version: 1.0,
+        })
+      );
+    }
   }
 
   /**
@@ -214,7 +236,14 @@ class MovieController {
         })
       );
     } catch (error) {
-      return this.handleError(res, error, "Failed to delete movie");
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to delete movie",
+          data: null,
+          version: 1.0,
+        })
+      );
     }
   }
 
@@ -269,7 +298,6 @@ class MovieController {
   // getMoviesByUser using movieService/getMoviesByUser
   async getMoviesByUser(req: Request, res: Response): Promise<Response> {
     try {
-      console.info("Fetching movies by user", req.params.username);
       const movies = await movieService.getMoviesByUser(req.params.username);
 
       return res.json(

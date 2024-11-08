@@ -52,7 +52,6 @@ class ActorController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching actors: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -107,7 +106,6 @@ class ActorController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching actor: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -142,7 +140,6 @@ class ActorController {
                 })
             );
         } catch (error) {
-            console.error("Error creating actor: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -178,7 +175,6 @@ class ActorController {
                 })
             );
         } catch (error) {
-            console.error("Error updating actor: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -213,7 +209,6 @@ class ActorController {
                 })
             );
         } catch (error) {
-            console.error("Error deleting actor: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,

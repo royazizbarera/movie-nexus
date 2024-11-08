@@ -44,7 +44,6 @@ export default async function insertDummyData() {
     //     throw new Error("Dummy data already inserted");
     //   }
 
-      console.log("Inserting dummy data");
       // Helper function to perform batch upserts
       const batchUpsert = async (model: any, data: any[], identifier: any) => {
         const upserts = data.map((item) =>
@@ -76,34 +75,28 @@ export default async function insertDummyData() {
       await batchUpsert(prisma.country, countries, (country: CountryModel) => ({
         code: country.code,
       }));
-      console.info("Inserting country");
       // Insert genres
       await batchUpsert(prisma.genre, genres, (genre: GenreModel) => ({
         id: genre.id,
       }));
-      console.info("Inserting genre");
       // Insert awards
       await batchUpsert(prisma.award, awards, (award: AwardModel) => ({
         id: award.id,
       }));
-      console.info("Inserting award");
       // Insert actors
       await batchUpsert(prisma.actor, actors, (actor: ActorModel) => ({
         id: actor.id,
       }));
-      console.info("Inserting actor");
       // Insert directors
       await batchUpsert(
         prisma.director,
         directors,
         (director: DirectorModel) => ({ id: director.id })
       );
-      console.info("Inserting director");
       // Insert movies
       await batchUpsert(prisma.movie, movies, (movie: MovieModel) => ({
         id: movie.id,
       }));
-      console.info("Inserting movie");
       // Insert movie genres
       await batchUpsert(
         prisma.movieGenres,
@@ -115,7 +108,6 @@ export default async function insertDummyData() {
           },
         })
       );
-      console.info("Inserting movie genre");
       // Insert movie actors
       await batchUpsert(
         prisma.movieActors,
@@ -127,7 +119,6 @@ export default async function insertDummyData() {
           },
         })
       );
-      console.info("Inserting movie actor");
       // Insert movie awards
       await batchUpsert(
         prisma.movieAwards,
@@ -139,7 +130,6 @@ export default async function insertDummyData() {
           },
         })
       );
-      console.info("Inserting movie award");
       const maxMovieId = Math.max(...movies.map((movie) => movie.id));
       await prisma.$executeRawUnsafe(
         `ALTER SEQUENCE "Movie_id_seq" RESTART WITH ${maxMovieId + 1}`

@@ -50,7 +50,6 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error fetching users: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -81,7 +80,6 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error suspending user: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -112,7 +110,6 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error unsuspending user: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -136,7 +133,6 @@ class UserController {
                 })
             );
         } catch (error) {
-            console.error("Error deleting user: ", error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,

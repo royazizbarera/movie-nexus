@@ -21,7 +21,6 @@ class UserService {
             }
             return prisma.user.count({where: whereClause});
         } catch (error) {
-            console.error("Error counting users:", error);
             throw new Error("Could not count users");
         }
     }

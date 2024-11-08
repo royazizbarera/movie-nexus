@@ -26,12 +26,10 @@ router.get(
     // Pada titik ini, req.user sudah diisi oleh Passport
     const user: User = req.user as User;
     if (!user) {
-      console.log("User not found");
       return res.redirect(`${FRONTEND_URL}/sign-in`);
     }
 
     // Anda dapat mengakses user di sini
-    console.log("User:", user);
     const token = generateToken(user.id, user.email);
     setTokenCookies(res, token);
 
