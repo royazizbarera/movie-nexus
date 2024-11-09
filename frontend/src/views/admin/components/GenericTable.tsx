@@ -1058,20 +1058,22 @@ export default function GenericTable<T>({
                   >
                     Actions
                   </Box>
-                  <Box
-                    component={"th" as any}
-                    sx={{
-                      width: {
-                        xs: "100px",
-                        sm: 200,
-                      },
-                      flexWrap: "wrap",
-                      verticalAlign: "middle !important",
-                      resize: "horizontal",
-                    }}
-                  >
-                    Other Actions
-                  </Box>
+                  {renderRowActions && (
+                    <Box
+                      component={"th" as any}
+                      sx={{
+                        width: {
+                          xs: "100px",
+                          sm: 200,
+                        },
+                        flexWrap: "wrap",
+                        verticalAlign: "middle !important",
+                        resize: "horizontal",
+                      }}
+                    >
+                      Other Actions
+                    </Box>
+                  )}
                 </>
                 // Render
               )}
@@ -1108,20 +1110,22 @@ export default function GenericTable<T>({
                   >
                     Actions
                   </Box>
-                  <Box
-                    component={"th" as any}
-                    sx={{
-                      width: {
-                        xs: "100px",
-                        sm: 200,
-                      },
-                      flexWrap: "wrap",
-                      verticalAlign: "middle !important",
-                      resize: "horizontal",
-                    }}
-                  >
-                    Other Actions
-                  </Box>
+                  {renderRowActions && (
+                    <Box
+                      component={"th" as any}
+                      sx={{
+                        width: {
+                          xs: "100px",
+                          sm: 200,
+                        },
+                        flexWrap: "wrap",
+                        verticalAlign: "middle !important",
+                        resize: "horizontal",
+                      }}
+                    >
+                      Other Actions
+                    </Box>
+                  )}
                 </>
               )}
             </tr>
@@ -1159,7 +1163,7 @@ export default function GenericTable<T>({
                     </Box>
                   </td>
                 )}
-                {actionInFront && (
+                {actionInFront && renderRowActions &&(
                   <td>{renderRowActions && renderRowActions(item)}</td>
                 )}
 
