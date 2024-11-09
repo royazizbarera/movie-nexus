@@ -209,6 +209,35 @@ class CountryController {
             }));
         }
     }
+
+    /**
+     * Retrieves the total number of countries.
+     *
+     * @param {Request} req - The Express request object.
+     * @param {Response} res - The Express response object to send back the result.
+     * @returns {Promise<Response>} A promise that resolves to a JSON response containing the total number of countries.
+     * @throws {Error} If there is an issue fetching the total number of countries, an error message will be returned.
+     */
+    async totalCountries(req: Request, res: Response): Promise<Response> {
+        try {
+            const totalCountries = await countryService.totalCountries();
+
+            return res.json(ResponseApi({
+                code: HttpStatus.OK,
+                message: "Total countries fetched successfully",
+                data: totalCountries,
+                version: 1.0,
+            }));
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(ResponseApi({
+                code: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: "Failed to fetch total countries",
+                errors: errorMessage,
+                version: 1.0,
+            }));
+        }
+    }
 }
 
 const countryController = new CountryController();

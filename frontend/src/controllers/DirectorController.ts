@@ -38,6 +38,11 @@ class DirectorController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
   }
+
+  // Mendapatkan total directors
+  public async totalDirectors() {
+    return this.get<number>('/total');
+  }
 }
 
 const directorController = new DirectorController();

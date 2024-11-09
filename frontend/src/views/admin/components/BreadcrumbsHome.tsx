@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function BreadcrumbsHome() {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/admin/home");
+    navigate("/admin/dashboard");
   }
   return (
     <Link

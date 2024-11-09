@@ -35,6 +35,11 @@ class AwardController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
   }
+
+  // Mendapatkan total awards
+  public async totalAwards() {
+    return this.get<number>('/total');
+  }
 }
 
 const awardController = new AwardController();

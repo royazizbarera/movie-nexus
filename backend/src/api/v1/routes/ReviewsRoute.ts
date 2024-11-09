@@ -13,6 +13,9 @@ const router = express.Router();
  */
 router.get("/", ReviewController.getReviews);
 
+// get total reviews
+router.get("/total", ReviewController.totalReviews);
+
 /**
  * @route GET /reviews/unapproved
  * @description Get a list of all unapproved reviews

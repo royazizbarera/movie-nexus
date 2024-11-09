@@ -205,6 +205,19 @@ class DirectorService {
             throw new Error(`Could not delete director with ID ${id}`);
         }
     }
+
+    /**
+     * Retrieves the total number of directors.
+     * @returns {Promise<number>} The total number of directors.
+     * @throws {Error} If there is an issue counting the directors.
+     */
+    async totalDirectors(): Promise<number> {
+        try {
+            return prisma.director.count();
+        } catch (error) {
+            throw new Error("Could not count directors");
+        }
+    }
 }
 
 const directorService = new DirectorService();

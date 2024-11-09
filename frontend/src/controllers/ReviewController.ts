@@ -52,6 +52,11 @@ class ReviewController extends BaseController {
   public async totalUnapprovedReviews() {
     return this.get<number>("/total-unapproved-reviews");
   }
+
+  // total reviews
+  public async totalReviews() {
+    return this.get<number>("/total");
+  }
 }
 
 const reviewController = new ReviewController();

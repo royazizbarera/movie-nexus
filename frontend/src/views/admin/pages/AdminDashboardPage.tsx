@@ -9,6 +9,7 @@ import {
   Button,
   CardActions,
   Grid,
+  CircularProgress,
 } from "@mui/joy";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -27,6 +28,15 @@ import AutoAwesomeMotionRoundedIcon from "@mui/icons-material/AutoAwesomeMotionR
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import RateReviewRoundedIcon from "@mui/icons-material/RateReviewRounded";
+import { useNavigate } from "react-router-dom";
+import movieController from "../../../controllers/MovieController";
+import actorController from "../../../controllers/ActorController";
+import genreController from "../../../controllers/GenreController";
+import countryController from "../../../controllers/CountryController";
+import awardController from "../../../controllers/AwardController";
+import directorController from "../../../controllers/DirectorController";
+import userController from "../../../controllers/UserController";
+import reviewController from "../../../controllers/ReviewController";
 
 const iconStyle = {
   width: 40,
@@ -37,9 +47,15 @@ interface CardTotalItemsProps {
   totalItems: number;
   title: string;
   icon: React.ReactNode;
+  onClick?: () => void;
 }
 
-function CardTotalItems({ totalItems, title, icon }: CardTotalItemsProps) {
+function CardTotalItems({
+  totalItems,
+  title,
+  icon,
+  onClick,
+}: CardTotalItemsProps) {
   return (
     <Card variant="solid" color="primary" invertedColors>
       <CardContent orientation="horizontal">
@@ -59,11 +75,17 @@ function CardTotalItems({ totalItems, title, icon }: CardTotalItemsProps) {
         </Box>
         <CardContent>
           <Typography level="title-md">{title}</Typography>
-          <Typography level="h2">{totalItems}</Typography>
+          {totalItems < 0 ? (
+            <CircularProgress />
+          ) : (
+            <Typography level="h2" color="success">
+              {totalItems || "Loading..."}
+            </Typography>
+          )}
         </CardContent>
       </CardContent>
       <CardActions>
-        <Button variant="solid" size="sm">
+        <Button onClick={onClick} variant="solid" size="sm">
           View table
         </Button>
       </CardActions>
@@ -72,6 +94,107 @@ function CardTotalItems({ totalItems, title, icon }: CardTotalItemsProps) {
 }
 
 export default function AdminDashboardPage() {
+  const navigate = useNavigate();
+  const [totalItems, setTotalItems] = React.useState({
+    movies: -1,
+    actors: -1,
+    genres: -1,
+    countries: -1,
+    awards: -1,
+    directors: -1,
+    users: -1,
+    reviews: -1,
+  });
+
+  React.useEffect(() => {
+    const fetchTotalItems = async () => {
+      try {
+        const movies = await movieController.totalMovies();
+        const actors = await actorController.totalActors();
+        const genres = await genreController.totalGenres();
+        const countries = await countryController.totalCountries();
+        const awards = await awardController.totalAwards();
+        const directors = await directorController.totalDirectors();
+        const users = await userController.totalUsers();
+        const reviews = await reviewController.totalReviews();
+
+        setTotalItems({
+          movies: movies.data,
+          actors: actors.data,
+          genres: genres.data,
+          countries: countries.data,
+          awards: awards.data,
+          directors: directors.data,
+          users: users.data,
+          reviews: reviews.data,
+        });
+      } catch (error) {
+        setTotalItems({
+          movies: -1,
+          actors: -1,
+          genres: -1,
+          countries: -1,
+          awards: -1,
+          directors: -1,
+          users: -1,
+          reviews: -1,
+        });
+      }
+    };
+    fetchTotalItems();
+  }, []);
+
+  const itemData = [
+    {
+      totalItems: totalItems.movies,
+      title: "Movies",
+      icon: <MovieRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/movies"),
+    },
+    {
+      totalItems: totalItems.actors,
+      title: "Actors",
+      icon: <SportsMartialArtsRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/actors"),
+    },
+    {
+      totalItems: totalItems.genres,
+      title: "Genres",
+      icon: <AutoAwesomeMotionRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/genres"),
+    },
+    {
+      totalItems: totalItems.countries,
+      title: "Countries",
+      icon: <PublicRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/countries"),
+    },
+    {
+      totalItems: totalItems.awards,
+      title: "Awards",
+      icon: <EmojiEventsRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/awards"),
+    },
+    {
+      totalItems: totalItems.directors,
+      title: "Directors",
+      icon: <TaskAltRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/directors"),
+    },
+    {
+      totalItems: totalItems.users,
+      title: "Users",
+      icon: <AccountCircleRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/users"),
+    },
+    {
+      totalItems: totalItems.reviews,
+      title: "Reviews",
+      icon: <RateReviewRoundedIcon sx={iconStyle} />,
+      onClick: () => navigate("/admin/reviews"),
+    },
+  ];
+
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -109,110 +232,16 @@ export default function AdminDashboardPage() {
           }}
         >
           <Grid container spacing={2}>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Movies"
-                icon={
-                  <MovieRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Countries"
-                icon={
-                  <PublicRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Awards"
-                icon={
-                  <EmojiEventsRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Genres"
-                icon={
-                  <SportsMartialArtsRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Directors"
-                icon={
-                  <AutoAwesomeMotionRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Actors"
-                icon={
-                  <TaskAltRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="User"
-                icon={
-                  <AccountCircleRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} lg={3}>
-              <CardTotalItems
-                totalItems={10}
-                title="Reviews"
-                icon={
-                  <RateReviewRoundedIcon
-                    sx={{
-                      ...iconStyle,
-                    }}
-                  />
-                }
-              />
-            </Grid>
+            {itemData.map((item, index) => (
+              <Grid xs={12} sm={6} md={4} lg={3} key={index}>
+                <CardTotalItems
+                  totalItems={item.totalItems}
+                  title={item.title}
+                  icon={item.icon}
+                  onClick={item.onClick}
+                />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Box>

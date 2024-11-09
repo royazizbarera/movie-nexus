@@ -11,6 +11,9 @@ const router = express.Router();
  */
 router.get("/", genreController.getGenres);
 
+// get total genres
+router.get("/total", genreController.totalGenres);
+
 /**
  * @route GET /genres/:id
  * @description Get a single genre by ID

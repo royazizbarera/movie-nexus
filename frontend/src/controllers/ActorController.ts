@@ -39,6 +39,11 @@ class ActorController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
   }
+
+  // Mendapatkan total actors
+  public async totalActors() {
+    return this.get<number>("/total");
+  }
 }
 
 const actorController = new ActorController();

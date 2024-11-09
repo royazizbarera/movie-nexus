@@ -10,6 +10,7 @@ import VerifyEmailPage from "../views/pages/VerifyEmailPage";
 import ActorsPage from "../views/pages/ActorsPage";
 import DetailActor from "../views/pages/DetailActor";
 import ResetPasswordPage from "../views/pages/ResetPasswordPage";
+import PopularMoviesPage from "../views/pages/PopularMoviesPage";
 
 export default function ClientRoutes() {
   return (
@@ -20,6 +21,7 @@ export default function ClientRoutes() {
       <Route path="/actors" element={<ActorsPage />} />
       <Route path="/actors/:id" element={<DetailActor />} />
 
+      <Route path="/populars" element={<PopularMoviesPage />} />
       <Route
         path="/sign-in"
         element={

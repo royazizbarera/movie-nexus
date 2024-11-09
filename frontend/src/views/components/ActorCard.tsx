@@ -6,8 +6,6 @@ import Typography from "@mui/joy/Typography";
 import { Avatar, Box } from "@mui/joy";
 import { Link } from "react-router-dom";
 import AspectRatio from "@mui/joy/AspectRatio";
-import IconButton from "@mui/joy/IconButton";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAddOutlined";
 
 interface ActorCardProps {
   id?: number;
@@ -33,20 +31,6 @@ export default function ActorCard({ id, name, photoUrl }: ActorCardProps) {
       >
         <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
           <Link to={`/actors/${id || 0}`}>
-            <IconButton
-              aria-label="bookmark Bahamas Islands"
-              variant="plain"
-              color="neutral"
-              size="sm"
-              sx={{
-                position: "absolute",
-                top: "0.5rem",
-                right: "0.5rem",
-                zIndex: 100,
-              }}
-            >
-              <BookmarkAddIcon />
-            </IconButton>
             <AspectRatio ratio="2/3">
               {photoUrl && (
                 <img

@@ -247,11 +247,35 @@ class MovieController {
     }
   }
 
-  async totalMovies(req: Request, res: Response): Promise<Response> {
+  async totalMoviesUnapproved(req: Request, res: Response): Promise<Response> {
     try {
       const total = await movieService.countMovies({
         AND: [{ approvalStatus: false }],
       });
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movies fetched successfully",
+          data: total,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  // total movies
+  async totalMovies(req: Request, res: Response): Promise<Response> {
+    try {
+      const total = await movieService.countMovies();
       return res.json(
         ResponseApi({
           code: HttpStatus.OK,
@@ -299,6 +323,31 @@ class MovieController {
   async getMoviesByUser(req: Request, res: Response): Promise<Response> {
     try {
       const movies = await movieService.getMoviesByUser(req.params.username);
+
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Movies fetched successfully",
+          data: movies,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch movies",
+          data: null,
+          version: 1.0,
+        })
+      );
+    }
+  }
+
+  // get popular movies
+  async getPopularMovies(req: Request, res: Response): Promise<Response> {
+    try {
+      const movies = await movieService.getPopularMovies();
 
       return res.json(
         ResponseApi({

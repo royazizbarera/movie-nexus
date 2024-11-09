@@ -83,8 +83,8 @@ class UserController {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
-                    message: "Failed to suspend user",
-                    errors: error instanceof Error ? error.message : String(error),
+                    message: String(error),
+                    errors: String(error),
                 })
             );
         }
@@ -137,6 +137,55 @@ class UserController {
                 ResponseApi({
                     code: HttpStatus.INTERNAL_SERVER_ERROR,
                     message: "Failed to delete user",
+                    errors: error instanceof Error ? error.message : String(error),
+                })
+            );
+        }
+    }
+
+    // update user
+    async updateUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const {userId} = req.params;
+            const userData = req.body;
+            await userService.updateUser(parseInt(userId, 10), userData);
+
+            return res.json(
+                ResponseApi({
+                    code: HttpStatus.OK,
+                    message: "User updated successfully",
+                    version: 1.0,
+                })
+            );
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+                ResponseApi({
+                    code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    message: "Failed to update user",
+                    errors: error instanceof Error ? error.message : String(error),
+                })
+            );
+        }
+    }
+
+    // get total users
+    async totalUsers(req: Request, res: Response): Promise<Response> {
+        try {
+            const totalUsers = await userService.totalUsers();
+
+            return res.json(
+                ResponseApi({
+                    code: HttpStatus.OK,
+                    message: "Total users fetched successfully",
+                    data: totalUsers,
+                    version: 1.0,
+                })
+            );
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+                ResponseApi({
+                    code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    message: "Failed to fetch total users",
                     errors: error instanceof Error ? error.message : String(error),
                 })
             );

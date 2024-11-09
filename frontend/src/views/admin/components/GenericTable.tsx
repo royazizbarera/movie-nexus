@@ -1043,20 +1043,37 @@ export default function GenericTable<T>({
                 />
               </th>
               {actionInFront && (
-                <Box
-                  component={"th" as any}
-                  sx={{
-                    width: {
-                      xs: "100px",
-                      sm: 200,
-                    },
-                    flexWrap: "wrap",
-                    verticalAlign: "middle !important",
-                    resize: "horizontal",
-                  }}
-                >
-                  Actions
-                </Box>
+                <>
+                  <Box
+                    component={"th" as any}
+                    sx={{
+                      width: {
+                        xs: "100px",
+                        sm: 200,
+                      },
+                      flexWrap: "wrap",
+                      verticalAlign: "middle !important",
+                      resize: "horizontal",
+                    }}
+                  >
+                    Actions
+                  </Box>
+                  <Box
+                    component={"th" as any}
+                    sx={{
+                      width: {
+                        xs: "100px",
+                        sm: 200,
+                      },
+                      flexWrap: "wrap",
+                      verticalAlign: "middle !important",
+                      resize: "horizontal",
+                    }}
+                  >
+                    Other Actions
+                  </Box>
+                </>
+                // Render
               )}
               {columns.map((col) => (
                 <Box
@@ -1076,20 +1093,36 @@ export default function GenericTable<T>({
                 </Box>
               ))}
               {!actionInFront && (
-                <Box
-                  component={"th" as any}
-                  sx={{
-                    width: {
-                      xs: "100px",
-                      sm: 200,
-                    },
-                    flexWrap: "wrap",
-                    verticalAlign: "middle !important",
-                    resize: "horizontal",
-                  }}
-                >
-                  Actions
-                </Box>
+                <>
+                  <Box
+                    component={"th" as any}
+                    sx={{
+                      width: {
+                        xs: "100px",
+                        sm: 200,
+                      },
+                      flexWrap: "wrap",
+                      verticalAlign: "middle !important",
+                      resize: "horizontal",
+                    }}
+                  >
+                    Actions
+                  </Box>
+                  <Box
+                    component={"th" as any}
+                    sx={{
+                      width: {
+                        xs: "100px",
+                        sm: 200,
+                      },
+                      flexWrap: "wrap",
+                      verticalAlign: "middle !important",
+                      resize: "horizontal",
+                    }}
+                  >
+                    Other Actions
+                  </Box>
+                </>
               )}
             </tr>
           </thead>
@@ -1123,9 +1156,11 @@ export default function GenericTable<T>({
                       >
                         Delete
                       </Button>
-                      {renderRowActions && renderRowActions(item)}
                     </Box>
                   </td>
+                )}
+                {actionInFront && (
+                  <td>{renderRowActions && renderRowActions(item)}</td>
                 )}
 
                 {columns.map((col) => (

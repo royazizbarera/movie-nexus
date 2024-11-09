@@ -26,6 +26,8 @@ import {
   SORT_ORDER_DROPDOWN,
 } from "../../../configs/constants";
 import { HttpStatusCode } from "axios";
+import { Button } from "@mui/joy";
+import SnackBarMessage, { SnackBarMessageProps } from "../../components/SnackbarMessage";
 
 const columns: any[] = [
   {
@@ -67,6 +69,13 @@ const columns: any[] = [
 ];
 
 export default function AdminReviewPage() {
+  const [snackbar, setSnackbar] = React.useState<SnackBarMessageProps>({
+    key: "admin-user",
+    open: false,
+    message: "",
+    variant: "danger",
+  });
+  
   const [reviews, setReviews] = React.useState<ReviewModelTable[]>([]);
   const [pagination, setPagination] = React.useState<PaginationModel>({
     page: 1,
@@ -200,6 +209,7 @@ export default function AdminReviewPage() {
           </Box>
 
           <GenericTable<ReviewModelTable>
+            actionInFront
             title="Reviews"
             data={reviews}
             columns={columns}
@@ -223,10 +233,61 @@ export default function AdminReviewPage() {
             onSearchApply={(searchTerm) =>
               handleFilterChange("searchTerm", searchTerm)
             }
+            renderRowActions={(review) => {
+              function incrementTotalUnapprovedReviews() {
+                throw new Error("Function not implemented.");
+              }
+
+              return (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="sm"
+                    onClick={async () => {
+                      try {
+                        await handleEditReview({
+                          ...review,
+                          approvalStatus: false,
+                        });
+                        incrementTotalUnapprovedReviews();
+                        setSnackbar({
+                          key: "admin-review",
+                          open: true,
+                          message: `Review with id: ${review.id} has been rejected`,
+                          variant: "warning",
+                        });
+                      } catch (error) {
+                        setSnackbar({
+                          key: "admin-review",
+                          open: true,
+                          message: String(error),
+                          variant: "danger",
+                        });
+                      }
+                    }}
+                  >
+                    Reject
+                  </Button>
+                </Box>
+              );
+            }}
           />
 
           {/* <OrderList /> */}
         </AdminTableLayout>
+      </Box>
+      <Box sx={{ display: "flex", minHeight: "100dvh" }}>
+        {/* Your existing components here */}
+        {snackbar.open && (
+          <SnackBarMessage
+            key={snackbar.key}
+            open={snackbar.open}
+            message={snackbar.message}
+            variant={snackbar.variant}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+          />
+        )}
       </Box>
     </CssVarsProvider>
   );

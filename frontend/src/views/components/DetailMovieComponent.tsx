@@ -307,7 +307,9 @@ export default function DetailMovieComponent({
             >
               {/* List item */}
               {/* Belum ada Review */}
-              <Typography level="body-md">No reviews available.</Typography>
+              {!reviews && (
+                <Typography level="body-md">No reviews available.</Typography>
+              )}
               {/* Looping from reviews */}
               {reviews &&
                 reviews.length > 0 &&

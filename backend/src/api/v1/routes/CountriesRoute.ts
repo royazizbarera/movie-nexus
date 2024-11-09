@@ -11,6 +11,10 @@ const router = express.Router();
  */
 router.get("/", countryController.getCountries);
 
+// get total countries
+
+router.get("/total", countryController.totalCountries);
+
 /**
  * @route GET /countries/:code
  * @description Get a single country by its code

@@ -11,12 +11,15 @@ const router = express.Router();
  */
 router.get("/", verifyAdmin, UserController.getUsers);
 
+// get total users
+router.get("/total", verifyAdmin, UserController.totalUsers);
+
 // TODO: Delete account and refactor if needed
 router.delete("/:userId", verifyAdmin, UserController.deleteUser);
 
 
 // TODO: Update account
-
+router.put("/:userId", verifyAdmin, UserController.updateUser);
 /**
  * @route PUT /users
  * @description Suspends a user

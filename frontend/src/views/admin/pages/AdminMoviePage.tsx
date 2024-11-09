@@ -35,13 +35,17 @@ import {
   SORT_ORDER_DROPDOWN,
 } from "../../../configs/constants";
 import movieController from "../../../controllers/MovieController";
-import { Modal, ModalClose, ModalOverflow } from "@mui/joy";
+import { Button, Modal, ModalClose, ModalOverflow } from "@mui/joy";
 import DetailMovieComponent from "../../components/DetailMovieComponent";
 import { DirectorModel } from "../../../models/DirectorModel";
 import directorController from "../../../controllers/DirectorController";
 import { useAuthStore } from "../../../contexts/authStore";
 import userController from "../../../controllers/UserController";
 import { UserModel } from "../../../models/UserModel";
+import { useApprovalStore } from "../../../contexts/approvalStore";
+import SnackBarMessage, {
+  SnackBarMessageProps,
+} from "../../components/SnackbarMessage";
 
 const columns: Column<MovieModelTable>[] = [
   {
@@ -90,6 +94,14 @@ const columns: Column<MovieModelTable>[] = [
 
 export default function AdminMoviePage() {
   const { user } = useAuthStore();
+  const { incrementTotalUnapprovedMovies } = useApprovalStore();
+
+  const [snackbar, setSnackbar] = React.useState<SnackBarMessageProps>({
+    key: "admin-user",
+    open: false,
+    message: "",
+    variant: "danger",
+  });
 
   const [realMovies, setRealMovies] = React.useState<MovieModel[]>([]);
   const [movies, setMovies] = React.useState<MovieModelTable[]>([]);
@@ -464,6 +476,41 @@ export default function AdminMoviePage() {
               console.info("Detail movie: ", movie);
               handleOpenDetailItem();
             }}
+            renderRowActions={(movie) => {
+              return (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="sm"
+                    onClick={async () => {
+                      try {
+                        await handleEditMovie({
+                          ...movie,
+                          approvalStatus: false,
+                        });
+                        incrementTotalUnapprovedMovies();
+                        setSnackbar({
+                          key: "admin-movie",
+                          open: true,
+                          message: `Movie with id: ${movie.id} has been rejected`,
+                          variant: "warning",
+                        });
+                      } catch (error) {
+                        setSnackbar({
+                          key: "admin-movie",
+                          open: true,
+                          message: String(error),
+                          variant: "danger",
+                        });
+                      }
+                    }}
+                  >
+                    Reject
+                  </Button>
+                </Box>
+              );
+            }}
           />
 
           {/* <OrderList /> */}
@@ -484,6 +531,18 @@ export default function AdminMoviePage() {
           </ModalOverflow>
         </Modal>
       </React.Fragment>
+      <Box sx={{ display: "flex", minHeight: "100dvh" }}>
+        {/* Your existing components here */}
+        {snackbar.open && (
+          <SnackBarMessage
+            key={snackbar.key}
+            open={snackbar.open}
+            message={snackbar.message}
+            variant={snackbar.variant}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+          />
+        )}
+      </Box>
     </CssVarsProvider>
   );
 }

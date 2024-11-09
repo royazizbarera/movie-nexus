@@ -37,6 +37,11 @@ class CountryController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${code}`, user!.role!.toString());
   }
+
+  // Mendapatkan total countrys
+  public async totalCountries() {
+    return this.get<number>("/total");
+  }
 }
 
 const countryController = new CountryController();

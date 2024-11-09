@@ -39,6 +39,11 @@ class GenreController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
   }
+
+  // Mendapatkan total genres
+  public async totalGenres() {
+    return this.get<number>("/total");
+  }
 }
 
 const genreController = new GenreController();
