@@ -12,6 +12,7 @@ import usersRouter from "./UsersRoute";
 import mailRouter from "./MailRoute";
 import directorsRouter from "./DirectorsRoute";
 import reviewsRouter from "./ReviewsRoute";
+import InsertDummyDataRoute from "./InsertDummyDataRoute";
 
 /**
  * @route /actors
@@ -73,4 +74,10 @@ routers.use("/directors", directorsRouter);
  */
 routers.use("/reviews", reviewsRouter);
 
+
+/**
+ * @route /insertDummyData
+ * @description Routes for inserting dummy data
+ */
+routers.use("/insertDummyData", InsertDummyDataRoute);
 export default routers;

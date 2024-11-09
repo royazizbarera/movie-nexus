@@ -12,10 +12,10 @@ import Header from "../components/Header";
 import BreadcrumbsHome from "../components/BreadcrumbsHome";
 import BreadcrumbsDashboard from "../components/BreadcrumbsDashboard";
 import { AdminTableLayout } from "../layouts/AdminTableLayout";
-import GenericTable from "../components/GenericTable";
+import GenericTable, { Column } from "../components/GenericTable";
 import userController from "../../../controllers/UserController";
 import {
-  UserModel,
+  convertUserModelToTable,
   UserModelTable,
   UserParamsModel,
 } from "../../../models/UserModel";
@@ -25,24 +25,12 @@ import {
   PAGE_SIZE_DROPDOWN,
   SORT_ORDER_DROPDOWN,
 } from "../../../configs/constants";
+import { Button } from "@mui/joy";
+import SnackBarMessage, {
+  SnackBarMessageProps,
+} from "../../components/SnackbarMessage";
 
-function convertUserModelToTable(user: UserModel): UserModelTable {
-  return {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-    password: user.password,
-    photoProfile: user.photoProfile,
-    provider: user.provider,
-    role: user.role?.toString(),
-    isVerified: user.isVerified,
-    verificationCode: user.verificationCode,
-    verificationCodeExpired: user.verificationCodeExpired,
-    verificationRequestDate: user.verificationRequestDate,
-    isSuspened: user.isSuspened,
-  };
-}
-const columns: any[] = [
+const columns: Column<UserModelTable>[] = [
   {
     key: "id",
     label: "ID",
@@ -50,12 +38,17 @@ const columns: any[] = [
     readonly: true,
     width: 70,
   },
+  {
+    key: "isSuspended",
+    label: "Is Suspended",
+    type: "boolean",
+    width: 120,
+  },
   { key: "username", label: "Username", type: "string", required: true },
   { key: "email", label: "Email", type: "string", required: true },
-  { key: "password", label: "Password", type: "string", required: true },
   { key: "photoProfile", label: "Photo Profile", type: "string" },
   { key: "provider", label: "Provider", type: "string" },
-  { key: "role", label: "Role", type: "string", required: true },
+  { key: "role", label: "Role", type: "string_autocomplete", required: true },
   { key: "isVerified", label: "Is Verified", type: "boolean" },
   {
     key: "verificationCode",
@@ -84,9 +77,17 @@ export default function AdminUserPage() {
     totalItems: 0,
     totalPages: 1,
   });
+
   const [userParams, setUserParams] = React.useState<UserParamsModel>({
     page: pagination.page,
     pageSize: pagination.pageSize,
+  });
+
+  const [snackbar, setSnackbar] = React.useState<SnackBarMessageProps>({
+    key: "admin-user",
+    open: false,
+    message: "",
+    variant: "danger",
   });
 
   const fetchUsers = async (userParamsModel: UserParamsModel) => {
@@ -125,10 +126,6 @@ export default function AdminUserPage() {
   // TODO: UPDATE user
   const handleEditUser = async (updatedUser: UserModelTable) => {
     try {
-      // Kirim data yang telah diubah ke endpoint tertentu
-      // const response = await axios.put(`http://localhost:3001/user/${updatedUser.id}`, updatedUser);
-      // console.log('User updated successfully:', response.data);
-      console.info("update user: ", updatedUser);
     } catch (error) {
       console.error("Error updating user:", error);
     }
@@ -145,6 +142,56 @@ export default function AdminUserPage() {
     } catch (error) {
       console.error("Error deleting user:", error);
       throw String(error);
+    }
+  };
+
+  // TODO (DONE): SUSPEND user
+  const handleSuspendUser = async (user: UserModelTable) => {
+    try {
+      const response = await userController.suspendUser(user.id);
+      fetchUsers(userParams); // Fetch users again after suspend
+      console.log("User suspended successfully:", response.message);
+      console.info("suspend user with id: ", user.id);
+      // show success message snackbar
+      setSnackbar({
+        key: "success-suspend-user",
+        open: true,
+        message: "User suspended successfully",
+        variant: "warning",
+      });
+    } catch (error) {
+      console.error("Error suspending user:", error);
+      setSnackbar({
+        key: "error-suspend-user",
+        open: true,
+        message: String(error),
+        variant: "danger",
+      });
+    }
+  };
+
+  // TODO (DONE): UNSUSPEND user
+  const handleUnsuspendUser = async (user: UserModelTable) => {
+    try {
+      const response = await userController.unsuspendUser(user.id);
+      fetchUsers(userParams); // Fetch users again after unsuspend
+      console.log("User unsuspended successfully:", response.message);
+      console.info("unsuspend user with id: ", user.id);
+      // show success message snackbar
+      setSnackbar({
+        key: "success-unsuspend-user",
+        open: true,
+        message: "User unsuspended successfully",
+        variant: "warning",
+      });
+    } catch (error) {
+      console.error("Error unsuspending user:", error);
+      setSnackbar({
+        key: "error-unsuspend-user",
+        open: true,
+        message: String(error),
+        variant: "danger",
+      });
     }
   };
 
@@ -185,11 +232,13 @@ export default function AdminUserPage() {
           </Box>
 
           <GenericTable<UserModelTable>
+            actionInFront
             title="Users"
             data={users}
             columns={columns}
             options={{
               country: countries,
+              role: ["admin", "writer"],
             }}
             onEdit={handleEditUser}
             onDelete={handleDeleteUser}
@@ -215,10 +264,44 @@ export default function AdminUserPage() {
             onSearchApply={(searchTerm) =>
               handleFilterChange("searchTerm", searchTerm)
             }
+            renderRowActions={(user) => {
+              return (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="sm"
+                    onClick={() => handleSuspendUser(user)}
+                  >
+                    Suspend
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    size="sm"
+                    onClick={() => handleUnsuspendUser(user)}
+                  >
+                    Unsuspend
+                  </Button>
+                </Box>
+              );
+            }}
           />
 
           {/* <OrderList /> */}
         </AdminTableLayout>
+      </Box>
+      <Box sx={{ display: "flex", minHeight: "100dvh" }}>
+        {/* Your existing components here */}
+        {snackbar.open && (
+          <SnackBarMessage
+            key={snackbar.key}
+            open={snackbar.open}
+            message={snackbar.message}
+            variant={snackbar.variant}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+          />
+        )}
       </Box>
     </CssVarsProvider>
   );

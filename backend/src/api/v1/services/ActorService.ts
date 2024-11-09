@@ -202,6 +202,19 @@ class ActorService {
             throw new Error(`Could not delete actor with ID ${id}`);
         }
     }
+
+    /**
+     * Retrieves the total number of actors.
+     * @returns {Promise<number>} The total number of actors.
+     * @throws {Error} If there is an issue counting the actors.
+     */
+    async totalActors(): Promise<number> {
+        try {
+            return prisma.actor.count();
+        } catch (error) {
+            throw new Error("Could not count actors");
+        }
+    }
 }
 
 const actorService = new ActorService();

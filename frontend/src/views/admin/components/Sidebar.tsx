@@ -14,11 +14,8 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 
 // Icon
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import MovieRoundedIcon from "@mui/icons-material/MovieRounded";
-import SupportRoundedIcon from "@mui/icons-material/SupportRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
@@ -37,8 +34,7 @@ import MovieNexusLogo from "./MovieNexusLogo";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../contexts/authStore";
 import { Skeleton } from "@mui/joy";
-import movieController from "../../../controllers/MovieController";
-import reviewController from "../../../controllers/ReviewController";
+import { useApprovalStore } from "../../../contexts/approvalStore";
 
 function Toggler({
   defaultExpanded = false,
@@ -93,7 +89,6 @@ export const menu = {
 // selected menu
 type SidebarProps = {
   selected?:
-    | "home"
     | "dashboard"
     | "movies"
     | "actors"
@@ -109,23 +104,21 @@ type SidebarProps = {
 
 export default function Sidebar({ selected }: SidebarProps) {
   const { user, logout } = useAuthStore();
-  const [totalUnapprovedMovies, setTotalUnapprovedMovies] =
-    React.useState<number>(0);
-  const [totalUnapprovedReviews, setTotalUnapprovedReviews] =
-    React.useState<number>(0);
+
+  const {
+    totalUnapprovedMovies,
+    totalUnapprovedReviews,
+    fetchTotalUnapprovedMovies,
+    fetchTotalUnapprovedReviews,
+  } = useApprovalStore();
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const movieResponse = await movieController.totalUnapprovedMovies();
-      setTotalUnapprovedMovies(movieResponse.data);
-
-      const reviewResponse = await reviewController.totalUnapprovedReviews();
-      setTotalUnapprovedReviews(
-        reviewResponse.data
-      );
+      await fetchTotalUnapprovedMovies();
+      await fetchTotalUnapprovedReviews();
     };
     fetchData();
-  }, []);
+  }, [fetchTotalUnapprovedMovies, fetchTotalUnapprovedReviews]);
 
   const isSelected = (item: string) => selected === item;
   const navigate = useNavigate();
@@ -217,18 +210,6 @@ export default function Sidebar({ selected }: SidebarProps) {
             "--ListItem-radius": (theme) => theme.vars.radius.sm,
           }}
         >
-          <ListItem>
-            <ListItemButton
-              onClick={() => navigateTo(menu.home.path)}
-              selected={isSelected(menu.home.name)}
-            >
-              <HomeRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
           <ListItem>
             <ListItemButton
               onClick={() => navigateTo(menu.dashboard.path)}
@@ -342,6 +323,7 @@ export default function Sidebar({ selected }: SidebarProps) {
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <TaskAltRoundedIcon />
+
                   <ListItemContent>
                     <Typography level="title-sm">Approval</Typography>
                   </ListItemContent>
@@ -392,31 +374,6 @@ export default function Sidebar({ selected }: SidebarProps) {
                 </ListItem>
               </List>
             </Toggler>
-          </ListItem>
-        </List>
-        {/* Divider */}
-        <Divider />
-        <List
-          size="sm"
-          sx={{
-            mt: "auto",
-            flexGrow: 0,
-            "--ListItem-radius": (theme) => theme.vars.radius.sm,
-            "--List-gap": "8px",
-            mb: 2,
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-              <SupportRoundedIcon />
-              Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
-            </ListItemButton>
           </ListItem>
         </List>
       </Box>

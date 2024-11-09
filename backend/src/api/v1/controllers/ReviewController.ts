@@ -322,6 +322,31 @@ class ReviewController {
       );
     }
   }
+
+  // total reviews
+  async totalReviews(req: Request, res: Response): Promise<Response> {
+    try {
+      const total = await reviewService.totalReviews();
+
+      return res.json(
+        ResponseApi({
+          code: HttpStatus.OK,
+          message: "Reviews fetched successfully",
+          data: total,
+          version: 1.0,
+        })
+      );
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+        ResponseApi({
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Failed to fetch reviews",
+          errors: error instanceof Error ? error.message : String(error),
+          version: 1.0,
+        })
+      );
+    }
+  }
 }
 
 const reviewController = new ReviewController();

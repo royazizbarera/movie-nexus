@@ -35,6 +35,23 @@ class UserController extends BaseController {
     const { user } = useAuthStore.getState();
     return this.delete<void>(`/${id}`, user!.role!.toString());
   }
+
+  // Menyuspend user berdasarkan ID, hanya untuk admin
+  public async suspendUser(id: number) {
+    const { user } = useAuthStore.getState();
+    return this.put<void>(`/${id}/suspend`, null, user!.role!.toString());
+  }
+
+  // Membatalkan suspensi user berdasarkan ID, hanya untuk admin
+  public async unsuspendUser(id: number) {
+    const { user } = useAuthStore.getState();
+    return this.put<void>(`/${id}/unsuspend`, null, user!.role!.toString());
+  }
+
+  // Mendapatkan total users
+  public async totalUsers() {
+    return this.get<number>('/total');
+  }
 }
 
 const userController = new UserController();

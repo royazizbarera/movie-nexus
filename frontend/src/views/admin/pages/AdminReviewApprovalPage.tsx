@@ -26,6 +26,11 @@ import {
   SORT_ORDER_DROPDOWN,
 } from "../../../configs/constants";
 import { HttpStatusCode } from "axios";
+import { useApprovalStore } from "../../../contexts/approvalStore";
+import SnackBarMessage, {
+  SnackBarMessageProps,
+} from "../../components/SnackbarMessage";
+import { Button } from "@mui/joy";
 
 const columns: any[] = [
   {
@@ -67,6 +72,14 @@ const columns: any[] = [
 ];
 
 export default function AdminReviewApprovalPage() {
+  const [snackbar, setSnackbar] = React.useState<SnackBarMessageProps>({
+    key: "admin-user",
+    open: false,
+    message: "",
+    variant: "danger",
+  });
+
+  const { decrementTotalUnapprovedReviews } = useApprovalStore();
   const [reviews, setReviews] = React.useState<ReviewModelTable[]>([]);
   const [pagination, setPagination] = React.useState<PaginationModel>({
     page: 1,
@@ -86,7 +99,9 @@ export default function AdminReviewApprovalPage() {
   // TODO (DONE): Review CRUD operations
   const fetchReviews = async (reviewParamsModel: ReviewParamsModel) => {
     try {
-      const response = await reviewController.getUnapprovedReviews(reviewParamsModel);
+      const response = await reviewController.getUnapprovedReviews(
+        reviewParamsModel
+      );
       const { data: reviews, pagination } = response;
 
       setReviews(reviews.map(convertReviewModelToTable));
@@ -100,9 +115,7 @@ export default function AdminReviewApprovalPage() {
   const handleAddReview = async (newReview: ReviewModelTable) => {
     try {
       const parsedReview: ReviewModel = convertReviewModelToTable(newReview);
-      const response = await reviewController.addReview(
-        parsedReview
-      );
+      const response = await reviewController.addReview(parsedReview);
       if (
         response.code === HttpStatusCode.Created ||
         response.code === HttpStatusCode.Ok
@@ -124,7 +137,8 @@ export default function AdminReviewApprovalPage() {
   // TODO (DONE): EDIT Review
   const handleEditReview = async (updatedReview: ReviewModelTable) => {
     try {
-      const parsedReview: ReviewModel = convertReviewModelToTable(updatedReview);
+      const parsedReview: ReviewModel =
+        convertReviewModelToTable(updatedReview);
       const response = await reviewController.updateReview(
         updatedReview.id,
         parsedReview
@@ -200,6 +214,7 @@ export default function AdminReviewApprovalPage() {
           </Box>
 
           <GenericTable<ReviewModelTable>
+            actionInFront
             title="Reviews Approval"
             data={reviews}
             columns={columns}
@@ -223,10 +238,59 @@ export default function AdminReviewApprovalPage() {
             onSearchApply={(searchTerm) =>
               handleFilterChange("searchTerm", searchTerm)
             }
+            renderRowActions={(movie) => {
+              // accept and un accept
+              return (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="sm"
+                    onClick={async () => {
+                      try {
+                        await handleEditReview({
+                          ...movie,
+                          approvalStatus: true,
+                        });
+                        decrementTotalUnapprovedReviews();
+                        setSnackbar({
+                          key: "admin-review",
+                          open: true,
+                          message: "Review accepted successfully!",
+                          variant: "success",
+                        });
+                      } catch (error) {
+                        console.error("Error accepting movie:", error);
+                        setSnackbar({
+                          key: "admin-review",
+                          open: true,
+                          message: "Error accepting movie!",
+                          variant: "danger",
+                        });
+                      }
+                    }}
+                  >
+                    Accept Review
+                  </Button>
+                </Box>
+              );
+            }}
           />
 
           {/* <OrderList /> */}
         </AdminTableLayout>
+      </Box>
+      <Box sx={{ display: "flex", minHeight: "100dvh" }}>
+        {/* Your existing components here */}
+        {snackbar.open && (
+          <SnackBarMessage
+            key={snackbar.key}
+            open={snackbar.open}
+            message={snackbar.message}
+            variant={snackbar.variant}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+          />
+        )}
       </Box>
     </CssVarsProvider>
   );

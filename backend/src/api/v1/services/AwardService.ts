@@ -201,6 +201,19 @@ class AwardService {
             throw new Error(`Could not delete award with ID ${id}`);
         }
     }
+
+    /**
+     * Retrieves a list of countries.
+     * @returns {Promise<any[]>} A promise that resolves to an array containing the countries.
+     * @throws {Error} If there is an issue fetching the countries.
+     */
+    async totalAwards(): Promise<any> {
+        try {
+            return prisma.country.count();
+        } catch (error) {
+            throw new Error("Could not fetch countries");
+        }
+    }
 }
 
 const awardService = new AwardService();

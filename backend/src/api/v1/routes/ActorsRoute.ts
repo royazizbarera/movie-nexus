@@ -11,6 +11,9 @@ const router = express.Router();
  */
 router.get("/", actorController.getActors);
 
+// TODO: Refactor if needed
+router.get("/total", actorController.totalActors);
+
 /**
  * @route GET /actors/:id
  * @description Get a single actor by ID

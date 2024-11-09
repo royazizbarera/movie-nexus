@@ -182,6 +182,19 @@ class CountryService {
             throw new Error(`Could not delete country with Code ${code}`);
         }
     }
+
+    /**
+     * Retrieves the total number of countries.
+     * @returns {Promise<number>} The total count of countries.
+     * @throws {Error} If there is an issue fetching the total count of countries.
+     */
+    async totalCountries(): Promise<number> {
+        try {
+            return prisma.country.count();
+        } catch (error) {
+            throw new Error("Could not count countries");
+        }
+    }
 }
 
 const countryService = new CountryService();

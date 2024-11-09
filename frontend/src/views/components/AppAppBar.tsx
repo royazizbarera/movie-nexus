@@ -33,7 +33,6 @@ const appBarContent = [
   { label: "Movies", href: "/movies" },
   { label: "Populars", href: "/populars" },
   { label: "Actors", href: "/actors" },
-  { label: "Genres", href: "/genres" },
 ];
 
 const buttonMenuStyle = {

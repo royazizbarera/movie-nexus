@@ -16,7 +16,7 @@ import AdminReviewApprovalPage from "../views/admin/pages/AdminReviewApprovalPag
 export default function AdminRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<AdminMoviePage />} />
+      <Route path="/" element={<AdminDashboardPage />} />
       <Route path={menu.dashboard.path} element={<AdminDashboardPage />} />
       <Route path={menu.movies.path} element={<AdminMoviePage />} />
       <Route path={menu.actors.path} element={<AdminActorPage />} />

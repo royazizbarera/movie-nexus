@@ -11,6 +11,9 @@ const router = express.Router();
  */
 router.get("/", directorController.getDirectors);
 
+// get total directors
+router.get("/total", directorController.totalDirectors);
+
 /**
  * @route GET /directors/:id
  * @description Get a single director by ID

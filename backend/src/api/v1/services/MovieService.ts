@@ -289,6 +289,7 @@ class MovieService {
 
       return this.refactorMovies([updatedMovie])[0];
     } catch (error) {
+      console.error(error);
       throw new Error(`Could not update movie with ID ${id}`);
     }
   }
@@ -447,6 +448,22 @@ class MovieService {
       return this.refactorMovies(movies);
     } catch (error) {
       throw new Error("Error fetching movies");
+    }
+  }
+
+  // get popular movies
+  async getPopularMovies(): Promise<any[]> {
+    try {
+      const movies = await prisma.movie.findMany({
+        where: { approvalStatus: true },
+        include: this.joinTable.include,
+        orderBy: { rating: "desc" },
+        take: 18,
+      });
+
+      return this.refactorMovies(movies);
+    } catch (error) {
+      throw new Error("Error fetching popular movies");
     }
   }
 }

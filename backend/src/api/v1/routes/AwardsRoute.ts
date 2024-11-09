@@ -11,6 +11,9 @@ const router = express.Router();
  */
 router.get("/", awardController.getAwards);
 
+// get total awards
+router.get("/total", awardController.totalAwards);
+
 /**
  * @route GET /awards/:id
  * @description Get a single award by ID

@@ -15,7 +15,7 @@ export interface UserModel {
   verificationCode?: string;
   verificationCodeExpired?: string;
   verificationRequestDate?: string;
-  isSuspened: boolean;
+  isSuspended: boolean;
 };
 
 
@@ -31,7 +31,7 @@ export interface UserModelTable {
   verificationCode?: string;
   verificationCodeExpired?: string;
   verificationRequestDate?: string;
-  isSuspened: boolean;
+  isSuspended: boolean;
 };
 
 
@@ -44,5 +44,22 @@ export interface UserParamsModel {
   country?: string;
   sortBy?: string;
   sortOrder?: string;
-  isSuspened?: boolean;
+  isSuspended?: boolean;
+}
+
+export function convertUserModelToTable(user: UserModel): UserModelTable {
+  return {
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    password: user.password,
+    photoProfile: user.photoProfile,
+    provider: user.provider,
+    role: user.role?.toString(),
+    isVerified: user.isVerified,
+    verificationCode: user.verificationCode,
+    verificationCodeExpired: user.verificationCodeExpired,
+    verificationRequestDate: user.verificationRequestDate,
+    isSuspended: user.isSuspended,
+  };
 }

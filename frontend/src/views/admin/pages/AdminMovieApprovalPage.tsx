@@ -35,13 +35,17 @@ import {
   SORT_ORDER_DROPDOWN,
 } from "../../../configs/constants";
 import movieController from "../../../controllers/MovieController";
-import { Modal, ModalClose, ModalOverflow } from "@mui/joy";
+import { Button, Modal, ModalClose, ModalOverflow } from "@mui/joy";
 import DetailMovieComponent from "../../components/DetailMovieComponent";
 import { DirectorModel } from "../../../models/DirectorModel";
 import directorController from "../../../controllers/DirectorController";
 import { useAuthStore } from "../../../contexts/authStore";
 import userController from "../../../controllers/UserController";
 import { UserModel } from "../../../models/UserModel";
+import SnackBarMessage, {
+  SnackBarMessageProps,
+} from "../../components/SnackbarMessage";
+import { useApprovalStore } from "../../../contexts/approvalStore";
 
 const columns: Column<MovieModelTable>[] = [
   {
@@ -95,7 +99,7 @@ const columns: Column<MovieModelTable>[] = [
 
 export default function AdminMovieApprovalPage() {
   const { user } = useAuthStore();
-
+  const { decrementTotalUnapprovedMovies } = useApprovalStore();
   const [realMovies, setRealMovies] = React.useState<MovieModel[]>([]);
   const [movies, setMovies] = React.useState<MovieModelTable[]>([]);
   const [pagination, setPagination] = React.useState<PaginationModel>({
@@ -131,6 +135,13 @@ export default function AdminMovieApprovalPage() {
   );
 
   const [users, setUsers] = React.useState<string[]>([]);
+
+  const [snackbar, setSnackbar] = React.useState<SnackBarMessageProps>({
+    key: "admin-user",
+    open: false,
+    message: "",
+    variant: "danger",
+  });
 
   const handleOpenDetailItem = () => {
     setOpenDetailItem(true);
@@ -309,9 +320,21 @@ export default function AdminMovieApprovalPage() {
       console.info("edit movie: ", parsedMovie);
 
       console.info("update movie: ", updatedMovie);
-      return true;
+      setSnackbar({
+        key: "admin-movie",
+        open: true,
+        message: "Movie updated successfully",
+        variant: "success",
+      });
+      return;
     } catch (error) {
       console.error("Error updating movie:", error);
+      setSnackbar({
+        key: "admin-movie",
+        open: true,
+        message: "Error updating movie",
+        variant: "danger",
+      });
       return false;
     }
   };
@@ -420,6 +443,40 @@ export default function AdminMovieApprovalPage() {
               console.info("Detail movie: ", movie);
               handleOpenDetailItem();
             }}
+            renderRowActions={(movie) => {
+              // accept and un accept
+              return (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="sm"
+                    onClick={async () => {
+                      try {
+                        await handleEditMovie({ ...movie, approvalStatus: true });
+                        decrementTotalUnapprovedMovies();
+                        setSnackbar({
+                          key: "admin-movie",
+                          open: true,
+                          message: "Movie accepted successfully",
+                          variant: "success",
+                        });
+                      } catch (error) {
+                        console.error("Error accepting movie:", error);
+                        setSnackbar({
+                          key: "admin-movie",
+                          open: true,
+                          message: "Error accepting movie",
+                          variant: "danger",
+                        });
+                      }
+                    }}
+                  >
+                    Accept Movie
+                  </Button>
+                </Box>
+              );
+            }}
           />
 
           {/* <OrderList /> */}
@@ -440,6 +497,18 @@ export default function AdminMovieApprovalPage() {
           </ModalOverflow>
         </Modal>
       </React.Fragment>
+      <Box sx={{ display: "flex", minHeight: "100dvh" }}>
+        {/* Your existing components here */}
+        {snackbar.open && (
+          <SnackBarMessage
+            key={snackbar.key}
+            open={snackbar.open}
+            message={snackbar.message}
+            variant={snackbar.variant}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+          />
+        )}
+      </Box>
     </CssVarsProvider>
   );
 }

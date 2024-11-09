@@ -224,6 +224,19 @@ class ReviewService {
       throw new Error(`Could not delete review with ID ${id}`);
     }
   }
+
+  /**
+   * Retrieves the total number of reviews.
+   * @returns {Promise<number>} The total number of reviews.
+   * @throws {Error} If there is an issue fetching the total number of reviews.
+   */
+  async totalReviews(): Promise<number> {
+    try {
+      return prisma.review.count();
+    } catch (error) {
+      throw new Error("Could not count reviews");
+    }
+  }
 }
 
 const reviewService = new ReviewService();

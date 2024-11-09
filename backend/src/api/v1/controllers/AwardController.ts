@@ -221,6 +221,38 @@ class AwardController {
             );
         }
     }
+
+    /**
+     * Retrieves a list of award categories.
+     *
+     * @param {Request} req - The Express request object.
+     * @param {Response} res - The Express response object to send back the result.
+     * @returns {Promise<Response>} A promise that resolves to a JSON response containing the award categories.
+     * @throws {Error} If there is an issue fetching the award categories, an error message will be returned.
+     */
+    async totalAwards(req: Request, res: Response): Promise<Response> {
+        try {
+            const awardCategories = await awardService.totalAwards();
+
+            return res.json(
+                ResponseApi({
+                    code: HttpStatus.OK,
+                    message: "Award categories fetched successfully",
+                    data: awardCategories,
+                    version: 1.0,
+                })
+            );
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+                ResponseApi({
+                    code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    message: "Failed to fetch award categories",
+                    errors: error instanceof Error ? error.message : String(error),
+                    version: 1.0,
+                })
+            );
+        }
+    }
 }
 
 const awardController = new AwardController();

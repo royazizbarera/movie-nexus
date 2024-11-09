@@ -7,8 +7,6 @@ import StarIcon from "@mui/icons-material/Star";
 import { Box, Skeleton } from "@mui/joy";
 import { Link } from "react-router-dom";
 import AspectRatio from "@mui/joy/AspectRatio";
-import IconButton from "@mui/joy/IconButton";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAddOutlined";
 
 interface MovieCardProps {
   id?: number;
@@ -43,20 +41,6 @@ export default function MovieCard({
       >
         <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
           <Link to={canClick ? `/movie/${id}` : "/"}>
-            <IconButton
-              aria-label="bookmark Bahamas Islands"
-              variant="plain"
-              color="neutral"
-              size="sm"
-              sx={{
-                position: "absolute",
-                top: "0.5rem",
-                right: "0.5rem",
-                zIndex: 100,
-              }}
-            >
-              <BookmarkAddIcon />
-            </IconButton>
             <AspectRatio ratio="2/3">
               <Skeleton loading={!posterUrl}>
                 <img
@@ -109,7 +93,9 @@ export default function MovieCard({
               <Skeleton loading={!title}>{title || "Title movie"}</Skeleton>
             </Typography>
             <Typography level="body-xs">
-              <Skeleton loading={!year}>{new Date(year!).getFullYear() || 2024}</Skeleton>
+              <Skeleton loading={!year}>
+                {new Date(year!).getFullYear() || 2024}
+              </Skeleton>
             </Typography>
           </CardContent>
         </CardOverflow>

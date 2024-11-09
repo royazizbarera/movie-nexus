@@ -12,6 +12,9 @@ const router = express.Router();
  */
 router.get("/", movieController.getMovies);
 
+// get popular movies list
+router.get("/popular", movieController.getPopularMovies);
+
 /**
  * @route GET /movies/unapproved
  * @description Get a list of all unapproved movies
@@ -19,9 +22,11 @@ router.get("/", movieController.getMovies);
  */
 router.get("/unapproved", verifyAdmin, movieController.getUnapprovedMovies);
 
+// TODO: Refactor if needed
+router.get("/total", movieController.totalMovies);
 
 // TODO: Refactor if needed
-router.get("/total-unapproved-movies", movieController.totalMovies);
+router.get("/total-unapproved-movies", movieController.totalMoviesUnapproved);
 
 // TODO: Refactor if needed
 router.get("/added-by/:username", movieController.getMoviesByUser);

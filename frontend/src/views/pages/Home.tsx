@@ -152,7 +152,7 @@ export default function Home() {
               </ContentLayout>
             </BackgroundTrailer>
           )}
-          {isLoading && (
+          {(isLoading || movies.length === 0) && (
             <BackgroundTrailer
               backgroundUrl={"movies[currentTrailerIndex].backdropUrl"}
             >
