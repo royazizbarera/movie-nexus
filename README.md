@@ -11,13 +11,13 @@ Movie Nexus adalah platform komprehensif yang dirancang untuk menawarkan kepada 
 # Spesifikasi Missions
 ## Fitur Utama yang harus Ada
 1. [*] Beranda
-2. [ ] Detail Movie
+2. [*] Detail Movie
 3. [*] Pencarian dan Filter
-4. [ ] Manajemen Konten (CMS)
+4. [*] Manajemen Konten (CMS)
 5. [*] Sistem Pendaftaran dan Login
 6. [*] Ulasan dan Rating Pengguna
-7. [ ] Menambahkan Movie
-8. [ ] Validasi ulasan dan validasi data drama baru
+7. [*] Menambahkan Movie
+8. [*] Validasi ulasan dan validasi data drama baru
 
 ## Role pengguna website
 1. Admin
@@ -35,7 +35,7 @@ Movie Nexus adalah platform komprehensif yang dirancang untuk menawarkan kepada 
 
 **Fitur Utama yang harus ada sudah diimplementasikan di Frontend**
 1. ~~[*] Beranda~~
-2. [ ] Detail Movie\
+2. [*] Detail Movie\
   2.1. ~~[*] Poster~~\
   2.2. ~~[*] Trailer~~\
   2.3. ~~[*] Detail (Judul, Rating, Tanggal, Sinopsis)~~\
@@ -43,9 +43,9 @@ Movie Nexus adalah platform komprehensif yang dirancang untuk menawarkan kepada 
   2.5. ~~[*] Aktor~~\
   2.6. ~~[*] Country~~\
   2.7. ~~[*] Review~~\
-  2.8. [ ] Tambah Review/Rating\
+  2.8. ~~[*] Tambah Review/Rating~~\
   2.9. ~~[*] Movies Recomendation~~\
-  2.10. [ ] Favorite Movies
+  2.10. ~~[*] Favorite Movies~~
 3. ~~[*] Pencarian dan Filter~~
 4. ~~[*] Manajemen Konten (CMS) CRUD~~\
   4.1. ~~[*] Movies~~\
@@ -57,12 +57,12 @@ Movie Nexus adalah platform komprehensif yang dirancang untuk menawarkan kepada 
   4.7. ~~[*] Users~~\
   4.8. ~~[*] Reviews~~\
   4.9. ~~[*] Aproval Movies and Reviews~~
-5. [ ] Sistem Pendaftaran dan Login\
-  5.1. ~~[ ] Sign In~~\
-  5.2. ~~[ ] Sign Up~~\
-  5.3. ~~[ ] Verification Code/Send Email (Challenge)~~\
-  5.3. [ ] Lupa password (Challenge)\
-  5.4. ~~[ ] Protected Route~~
+5. ~~[*] Sistem Pendaftaran dan Login~~\
+  5.1. ~~[*] Sign In~~\
+  5.2. ~~[*] Sign Up~~\
+  5.3. ~~[*] Verification Code/Send Email (Challenge)~~\
+  5.3. ~~[*] Lupa password (Challenge)~~\
+  5.4. ~~[*] Protected Route~~
 6. ~~[*] Ulasan dan Rating Pengguna~~
 7. ~~[*] Menambahkan Movie~~
 8. ~~[*] Validasi ulasan dan validasi data drama baru~~
@@ -74,7 +74,7 @@ Movie Nexus adalah platform komprehensif yang dirancang untuk menawarkan kepada 
 1. ~~[*] Mission Ketiga Website Authentication~~
 
 ## Misi 4
-1. [ ] CMS
+1. ~~[*] CMS~~
 
 
 
