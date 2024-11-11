@@ -1,0 +1,11 @@
+# Mengabaikan node_modules untuk menghindari duplikasi
+node_modules
+npm-debug.log
+.DS_Store
+
+# Mengabaikan file environment lokal
+.env
+
+# Mengabaikan direktori build lokal
+build
+dist

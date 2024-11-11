@@ -8,6 +8,7 @@ import { setTokenCookies } from "../helpers/setTokenCookies";
 import MailService from "../services/MailService";
 import { User } from "@prisma/client";
 import { FRONTEND_URL } from "../config/constants/url";
+import { isValidEmail } from "../helpers/validateInput";
 
 class AuthController {
   private static instance: AuthController;
@@ -74,7 +75,15 @@ class AuthController {
   public async signUpWithEmailPassword(req: Request, res: Response) {
     // ambil username, email, dan password dari request body
     const { username, email, password } = req.body;
-
+    if (isValidEmail(email) === false) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: "Invalid email",
+          version: 1.0,
+        })
+      );
+    }
     try {
       // daftar pake service
       const user = await authService.signUpEmailAndPassword(
@@ -93,8 +102,7 @@ class AuthController {
           user.email,
           user.verificationCode!
         );
-      } catch (error) {
-      }
+      } catch (error) {}
       // kirim response
       return res.status(HttpStatus.CREATED).json(
         ResponseApi({
@@ -119,6 +127,17 @@ class AuthController {
   // TODO: Implement sign in with email and password controller
   public async signInWithEmailAndPassword(req: Request, res: Response) {
     const { email, password } = req.body;
+
+    if (isValidEmail(email) === false) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: "Invalid email",
+          version: 1.0,
+        })
+      );
+    }
+
     try {
       const user = await authService.signInWithEmailAndPassword(
         email,

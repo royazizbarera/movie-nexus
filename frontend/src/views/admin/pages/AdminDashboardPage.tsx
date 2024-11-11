@@ -79,7 +79,7 @@ function CardTotalItems({
             <CircularProgress />
           ) : (
             <Typography level="h2" color="success">
-              {totalItems || "Loading..."}
+              {totalItems >= 0 ? totalItems : "Loading..."}
             </Typography>
           )}
         </CardContent>

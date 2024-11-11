@@ -69,7 +69,7 @@ class AuthController {
     password: string
   ) {
     try {
-      const resposne = await axios.post(
+      await axios.post(
         `${BASE_AUTH_URL}/sign-up-email`,
         {
           username,
@@ -79,16 +79,22 @@ class AuthController {
         {
           headers: HEADERS,
         }
-      );
-
-      const data = resposne.data;
-
-      if (data.code === CUSTOM_STATUS_CODES.CREATED) {
-        const user = data.data;
-        return user;
-      } else {
-        throw new Error(data.message);
-      }
+      ).then((response) => {
+        const data = response.data;
+        if (data.code === CUSTOM_STATUS_CODES.OK) {
+          return data.data as UserModel;
+        } else {
+          throw new Error(data.message);
+        }
+      })
+      .catch((error) => {
+        const errorResponse = error.response;
+        if (errorResponse) {
+          throw new Error(errorResponse.data.message);
+        } else {
+          throw new Error(error.message);
+        }
+      });
     } catch (error) {
       throw error;
     }

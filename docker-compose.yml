@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: royazizbarera/movie-nexus-backend:v1
+    ports:
+      - "3005:3005"
+    environment:
+      - DATABASE_URL=${POSTGRES_URL}
+    env_file:
+    - .env
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    image: royazizbarera/movie-nexus-frontend:v1
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - REACT_APP_API_URL=http://localhost:3005
+    env_file:
+    - .env
+
+  db:
+    image: postgres:16.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    env_file:
+    - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

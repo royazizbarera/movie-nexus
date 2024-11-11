@@ -25,6 +25,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   Snackbar,
+  CircularProgress,
 } from "@mui/joy";
 
 import PaginationComponent from "./PaginationComponent";
@@ -1196,6 +1197,17 @@ export default function GenericTable<T>({
                 )}
               </tr>
             ))}
+
+            {data.length === 0 && (
+              /* Placeholder for empty data */
+              <tr>
+                <td>
+                  <Box>
+                    <CircularProgress/>
+                  </Box>
+                </td>
+              </tr>
+            )}
             {data.length === 0 && (
               /* Placeholder for empty data */
               <tr>

@@ -69,7 +69,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
         password
       );
       console.log(user);
-      set({ user: user, isAuthenticated: true, isLoading: false });
+      set({ user: user!, isAuthenticated: true, isLoading: false });
     } catch (error: any) {
       const errorThrow = error.message || "Sign up is failed.";
       set({ error: errorThrow, isLoading: false });
@@ -117,7 +117,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       );
       set({ user: user!, isAuthenticated: true, isLoading: false });
     } catch (error: any) {
-      const errorThrow = error.message || "Sign in is failed.";
+      const errorThrow = error || error.message || "Sign in is failed.";
       set({ error: errorThrow, isLoading: false });
       // set({ error: error, isLoading: false });
       throw errorThrow;
