@@ -35,7 +35,13 @@ import {
   SORT_ORDER_DROPDOWN,
 } from "../../../configs/constants";
 import movieController from "../../../controllers/MovieController";
-import { Button, Modal, ModalClose, ModalOverflow } from "@mui/joy";
+import {
+  Button,
+  CircularProgress,
+  Modal,
+  ModalClose,
+  ModalOverflow,
+} from "@mui/joy";
 import DetailMovieComponent from "../../components/DetailMovieComponent";
 import { DirectorModel } from "../../../models/DirectorModel";
 import directorController from "../../../controllers/DirectorController";
@@ -49,48 +55,110 @@ import SnackBarMessage, {
 
 const columns: Column<MovieModelTable>[] = [
   {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
-  {
     key: "addedBy",
     label: "Uploaded By",
     type: "string_autocomplete",
     readonly: true,
+    placeholder: "e.g., John Doe",
   },
   {
     key: "approvalStatus",
     label: "Approval Status",
     type: "boolean",
+    placeholder: "e.g., Approved or Rejected",
   },
-  { key: "title", label: "Title", type: "string", required: true },
-  { key: "synopsis", label: "Synopsis", type: "string", required: true },
-  { key: "posterUrl", label: "Poster", type: "string", required: true },
-  { key: "backdropUrl", label: "Backdrop", type: "string", required: true },
-  { key: "videoUrl", label: "Video", type: "string", required: true },
-  { key: "releaseDate", label: "Release Date", type: "date", required: true },
-
-  { key: "rating", label: "Rating", type: "number", readonly: true },
+  {
+    key: "title",
+    label: "Title",
+    type: "string",
+    required: true,
+    placeholder: "e.g., The Matrix",
+  },
+  {
+    key: "synopsis",
+    label: "Synopsis",
+    type: "string",
+    required: true,
+    placeholder: "e.g., A hacker discovers the truth about his reality...",
+  },
+  {
+    key: "posterUrl",
+    label: "Poster",
+    type: "string",
+    required: true,
+    placeholder: "e.g., https://example.com/poster.jpg",
+  },
+  {
+    key: "backdropUrl",
+    label: "Backdrop",
+    type: "string",
+    required: true,
+    placeholder: "e.g., https://example.com/backdrop.jpg",
+  },
+  {
+    key: "videoUrl",
+    label: "Video",
+    type: "string",
+    required: true,
+    placeholder: "e.g., https://youtu.be/l91Km49W9qI",
+  },
+  {
+    key: "releaseDate",
+    label: "Release Date",
+    type: "date",
+    required: true,
+    placeholder: "e.g., 2023-12-31",
+  },
+  {
+    key: "rating",
+    label: "Rating",
+    type: "number",
+    readonly: true,
+    placeholder: "e.g., 8.5",
+  },
   {
     key: "country",
     label: "Country",
     type: "string_autocomplete",
     required: true,
+    placeholder: "e.g., United States",
   },
   {
     key: "director",
     label: "Director",
     type: "string_autocomplete",
     required: true,
+    placeholder: "e.g., Christopher Nolan",
   },
-  { key: "genres", label: "Genres", type: "string[]", required: true },
-  { key: "actors", label: "Actors", type: "string[]", required: true },
-  { key: "awards", label: "Awards", type: "string[]" },
-  { key: "reviews", label: "Reviews", type: "string[]", readonly: true },
+  {
+    key: "genres",
+    label: "Genres",
+    type: "string[]",
+    required: true,
+    placeholder: "e.g., Action, Sci-Fi",
+  },
+  {
+    key: "actors",
+    label: "Actors",
+    type: "string[]",
+    required: true,
+    placeholder: "e.g., Keanu Reeves, Carrie-Anne Moss",
+  },
+  {
+    key: "awards",
+    label: "Awards",
+    type: "string[]",
+    placeholder: "e.g., Academy Award, Golden Globe",
+  },
+  {
+    key: "reviews",
+    label: "Reviews",
+    type: "string[]",
+    readonly: true,
+    placeholder: "e.g., Positive, 4.5 stars",
+  },
 ];
+
 
 export default function AdminMoviePage() {
   const { user } = useAuthStore();
@@ -138,6 +206,33 @@ export default function AdminMoviePage() {
   );
 
   const [users, setUsers] = React.useState<string[]>([]);
+
+  const [loadingStates, setLoadingStates] = React.useState<{
+    [id: number]: boolean;
+  }>({});
+
+  const handleRejectMovie = async (movie: MovieModelTable) => {
+    setLoadingStates((prev) => ({ ...prev, [movie.id]: true }));
+    try {
+      await handleEditMovie({ ...movie, approvalStatus: false });
+      incrementTotalUnapprovedMovies();
+      setSnackbar({
+        key: "admin-movie",
+        open: true,
+        message: `Movie with id: ${movie.id} has been rejected`,
+        variant: "warning",
+      });
+    } catch (error) {
+      setSnackbar({
+        key: "admin-movie",
+        open: true,
+        message: String(error),
+        variant: "danger",
+      });
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [movie.id]: false }));
+    }
+  };
 
   const handleOpenDetailItem = () => {
     setOpenDetailItem(true);
@@ -425,8 +520,8 @@ export default function AdminMoviePage() {
             </Breadcrumbs>
           </Box>
           <GenericTable<MovieModelTable>
+            widthAction={200}
             title="Movies"
-            actionInFront
             data={movies}
             columns={columns}
             options={{
@@ -476,41 +571,21 @@ export default function AdminMoviePage() {
               console.info("Detail movie: ", movie);
               handleOpenDetailItem();
             }}
-            renderRowActions={(movie) => {
-              return (
-                <Box sx={{ display: "flex", gap: 1 }}>
+            renderRowActions={(movie) => (
+              <Box sx={{ display: "flex", gap: 1 }}>
+                {
                   <Button
                     variant="outlined"
                     color="warning"
                     size="sm"
-                    onClick={async () => {
-                      try {
-                        await handleEditMovie({
-                          ...movie,
-                          approvalStatus: false,
-                        });
-                        incrementTotalUnapprovedMovies();
-                        setSnackbar({
-                          key: "admin-movie",
-                          open: true,
-                          message: `Movie with id: ${movie.id} has been rejected`,
-                          variant: "warning",
-                        });
-                      } catch (error) {
-                        setSnackbar({
-                          key: "admin-movie",
-                          open: true,
-                          message: String(error),
-                          variant: "danger",
-                        });
-                      }
-                    }}
+                    disabled={loadingStates[movie.id]}
+                    onClick={() => handleRejectMovie(movie)}
                   >
-                    Reject
+                    {loadingStates[movie.id] ? <CircularProgress /> : "Reject"}
                   </Button>
-                </Box>
-              );
-            }}
+                }
+              </Box>
+            )}
           />
 
           {/* <OrderList /> */}

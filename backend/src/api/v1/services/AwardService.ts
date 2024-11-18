@@ -209,7 +209,7 @@ class AwardService {
      */
     async totalAwards(): Promise<any> {
         try {
-            return prisma.country.count();
+            return prisma.award.count();
         } catch (error) {
             throw new Error("Could not fetch countries");
         }

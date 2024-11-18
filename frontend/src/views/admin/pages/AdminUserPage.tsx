@@ -32,13 +32,6 @@ import SnackBarMessage, {
 
 const columns: Column<UserModelTable>[] = [
   {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
-  {
     key: "isSuspended",
     label: "Is Suspended",
     type: "boolean",
@@ -47,7 +40,6 @@ const columns: Column<UserModelTable>[] = [
   { key: "username", label: "Username", type: "string", required: true },
   { key: "email", label: "Email", type: "string", required: true },
   { key: "photoProfile", label: "Photo Profile", type: "string" },
-  { key: "provider", label: "Provider", type: "string" },
   { key: "role", label: "Role", type: "string_autocomplete", required: true },
   { key: "isVerified", label: "Is Verified", type: "boolean" },
   {
@@ -232,7 +224,7 @@ export default function AdminUserPage() {
           </Box>
 
           <GenericTable<UserModelTable>
-            actionInFront
+            widthAction={220}
             title="Users"
             data={users}
             columns={columns}
@@ -267,22 +259,25 @@ export default function AdminUserPage() {
             renderRowActions={(user) => {
               return (
                 <Box sx={{ display: "flex", gap: 1 }}>
-                  <Button
-                    variant="outlined"
-                    color="warning"
-                    size="sm"
-                    onClick={() => handleSuspendUser(user)}
-                  >
-                    Suspend
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    size="sm"
-                    onClick={() => handleUnsuspendUser(user)}
-                  >
-                    Unsuspend
-                  </Button>
+                  {user.isSuspended ? (
+                    <Button
+                      variant="outlined"
+                      color="success"
+                      size="sm"
+                      onClick={() => handleUnsuspendUser(user)}
+                    >
+                      Unsuspend
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      color="warning"
+                      size="sm"
+                      onClick={() => handleSuspendUser(user)}
+                    >
+                      Suspend
+                    </Button>
+                  )}
                 </Box>
               );
             }}

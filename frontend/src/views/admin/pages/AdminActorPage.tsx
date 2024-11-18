@@ -30,22 +30,34 @@ import { CountryModel } from "../../../models/CountryModel";
 
 const columns: Column<ActorModelTable>[] = [
   {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
+    key: "name",
+    label: "Name",
+    type: "string",
+    required: true,
+    placeholder: "e.g., Robert Downey Jr.",
   },
-  { key: "name", label: "Name", type: "string", required: true },
-  { key: "birthDate", label: "Birth Date", type: "date", required: true },
-  { key: "photoUrl", label: "Photo Url", type: "string" },
+  {
+    key: "birthDate",
+    label: "Birth Date",
+    type: "date",
+    required: true,
+    placeholder: "e.g., 1965-04-04",
+  },
+  {
+    key: "photoUrl",
+    label: "Photo Url",
+    type: "string",
+    placeholder: "e.g., https://example.com/photo.jpg",
+  },
   {
     key: "country",
     label: "Country",
     type: "string_autocomplete",
     required: true,
+    placeholder: "e.g., United States",
   },
 ];
+
 
 export default function AdminActorPage() {
   const [actors, setActors] = React.useState<ActorModelTable[]>([]);
@@ -201,6 +213,7 @@ export default function AdminActorPage() {
           </Box>
 
           <GenericTable<ActorModelTable>
+            widthAction={100}
             title="Actors"
             data={actors}
             columns={columns}

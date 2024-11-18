@@ -26,6 +26,7 @@ import {
   AccordionDetails,
   Snackbar,
   CircularProgress,
+  IconButton,
 } from "@mui/joy";
 
 import PaginationComponent from "./PaginationComponent";
@@ -39,6 +40,7 @@ import FilterAltRoundedIcon from "@mui/icons-material/FilterAltRounded";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import DangerousOutlinedIcon from "@mui/icons-material/DangerousOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const styleSelect = {
   width: "100%",
@@ -66,12 +68,13 @@ export interface Column<T> {
   readonly?: boolean;
   width?: number | string;
   required?: boolean;
+  placeholder?: string;
 }
 
 interface GenericTableProps<T> {
+  widthAction?: number;
   title?: string; // Title of the table
   titleSolo?: string;
-  actionInFront?: boolean;
   data: T[];
   columns: Column<T>[];
   renderRowActions?: (item: T) => React.ReactNode; // Optionally allow custom row actions
@@ -97,9 +100,9 @@ interface GenericTableProps<T> {
   onDetail?: (item: T) => void;
 }
 export default function GenericTable<T>({
+  widthAction = 250,
   title,
   titleSolo = title,
-  actionInFront = false,
   data,
   columns,
   renderRowActions,
@@ -573,6 +576,7 @@ export default function GenericTable<T>({
       case "string":
         return (
           <Input
+            placeholder={col.placeholder}
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={value as string}
@@ -582,6 +586,7 @@ export default function GenericTable<T>({
       case "number":
         return (
           <Input
+            placeholder={col.placeholder}
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             type="number"
@@ -622,6 +627,11 @@ export default function GenericTable<T>({
       case "string[]":
         return (
           <Autocomplete
+            placeholder={
+              multiSelectValues[col.key as string]?.length
+                ? ""
+                : col.placeholder
+            }
             readOnly={col.readonly}
             multiple
             options={options}
@@ -642,6 +652,7 @@ export default function GenericTable<T>({
       case "string_autocomplete":
         return (
           <Autocomplete
+            placeholder={col.placeholder}
             readOnly={col.readonly}
             options={options}
             name={String(col.key)} // Menggunakan name untuk FormData
@@ -654,6 +665,7 @@ export default function GenericTable<T>({
       case "number[]":
         return (
           <Input
+            placeholder={col.placeholder}
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={(value as number[]).join(", ")}
@@ -662,6 +674,7 @@ export default function GenericTable<T>({
       default:
         return (
           <Input
+            placeholder={col.placeholder}
             readOnly={col.readonly}
             name={String(col.key)} // Menggunakan name untuk FormData
             defaultValue={String(value)}
@@ -1009,6 +1022,7 @@ export default function GenericTable<T>({
               "var(--joy-palette-background-level1)",
             "--TableCell-paddingY": "4px",
             "--TableCell-paddingX": "8px",
+            tableLayout: "fixed",
             width: "100%", // Pastikan tabel menggunakan lebar penuh
           }}
         >
@@ -1043,41 +1057,6 @@ export default function GenericTable<T>({
                   sx={{ verticalAlign: "text-bottom" }}
                 />
               </th>
-              {actionInFront && (
-                <>
-                  <Box
-                    component={"th" as any}
-                    sx={{
-                      width: {
-                        xs: "100px",
-                        sm: 200,
-                      },
-                      flexWrap: "wrap",
-                      verticalAlign: "middle !important",
-                      resize: "horizontal",
-                    }}
-                  >
-                    Actions
-                  </Box>
-                  {renderRowActions && (
-                    <Box
-                      component={"th" as any}
-                      sx={{
-                        width: {
-                          xs: "100px",
-                          sm: 200,
-                        },
-                        flexWrap: "wrap",
-                        verticalAlign: "middle !important",
-                        resize: "horizontal",
-                      }}
-                    >
-                      Other Actions
-                    </Box>
-                  )}
-                </>
-                // Render
-              )}
               {columns.map((col) => (
                 <Box
                   key={(col.key as string) + "-header"}
@@ -1090,45 +1069,36 @@ export default function GenericTable<T>({
                     flexWrap: "wrap",
                     resize: "horizontal",
                     verticalAlign: "middle !important",
+                    position: col.key === "actions" ? "sticky" : "static",
+                    right: col.key === "actions" ? 0 : "unset", // Atur hanya untuk kolom "Actions"
+                    backgroundColor: "var(--joy-palette-background-level1)", // Warna latar belakang header
+                    zIndex: col.key === "actions" ? 2 : 1, // Prioritas lebih tinggi untuk header
                   }}
                 >
                   {col.label}
                 </Box>
               ))}
-              {!actionInFront && (
-                <>
-                  <Box
-                    component={"th" as any}
-                    sx={{
-                      width: {
-                        xs: "100px",
-                        sm: 200,
-                      },
-                      flexWrap: "wrap",
-                      verticalAlign: "middle !important",
-                      resize: "horizontal",
-                    }}
-                  >
-                    Actions
-                  </Box>
-                  {renderRowActions && (
-                    <Box
-                      component={"th" as any}
-                      sx={{
-                        width: {
-                          xs: "100px",
-                          sm: 200,
-                        },
-                        flexWrap: "wrap",
-                        verticalAlign: "middle !important",
-                        resize: "horizontal",
-                      }}
-                    >
-                      Other Actions
-                    </Box>
-                  )}
-                </>
-              )}
+
+              <Box
+                component={"th" as any}
+                sx={{
+                  width: widthAction,
+                  flexWrap: "wrap",
+                  verticalAlign: "middle !important",
+                  resize: "horizontal",
+                  position: "sticky",
+                  right: 0,
+                  zIndex: 2,
+                  backgroundColor:
+                    "var(--joy-palette-background-level1) !important", // Warna latar belakang
+                  borderLeft:
+                    "2px solid var(--joy-palette-info-main)  !important", // Warna border kiri
+                  borderBottom:
+                    "2px solid var(--joy-palette-primary-main)  !important", // Warna border bawah
+                }}
+              >
+                Actions
+              </Box>
             </tr>
           </thead>
           <tbody>
@@ -1148,25 +1118,6 @@ export default function GenericTable<T>({
                     sx={{ verticalAlign: "text-bottom" }}
                   />
                 </td>
-                {actionInFront && (
-                  <td>
-                    <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                      <Button onClick={() => handleOpenEditModal(item)}>
-                        Edit
-                      </Button>
-
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleOpenDeleteItemModal(item)}
-                      >
-                        Delete
-                      </Button>
-                    </Box>
-                  </td>
-                )}
-                {actionInFront && renderRowActions &&(
-                  <td>{renderRowActions && renderRowActions(item)}</td>
-                )}
 
                 {columns.map((col) => (
                   <td
@@ -1178,23 +1129,54 @@ export default function GenericTable<T>({
                     {renderCellData(item, col)}
                   </td>
                 ))}
-                {!actionInFront && (
-                  <td>
-                    <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                      <Button onClick={() => handleOpenEditModal(item)}>
-                        Edit
-                      </Button>
 
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleOpenDeleteItemModal(item)}
-                      >
-                        Delete
-                      </Button>
-                      {renderRowActions && renderRowActions(item)}
-                    </Box>
-                  </td>
-                )}
+                <td
+                  style={{
+                    position: "sticky",
+                    right: 0,
+                    backgroundColor: "var(--joy-palette-background-level1)", // Warna latar belakang header
+                    borderLeft:
+                      "2px solid var(--joy-palette-info-main)  !important", // Warna border kiri
+                    borderBottom:
+                      "2px solid var(--joy-palette-primary-main)  !important", // Warna border bawah
+                    zIndex: 2,
+                    width: widthAction,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 2,
+                      alignItems: "center",
+                      textAlign: "center",
+                      justifyContent: "flex-end", // Ratakan elemen-elemen action ke kanan
+                    }}
+                  >
+                    {renderRowActions && renderRowActions(item)}
+
+                    <IconButton
+                      variant="outlined"
+                      onClick={() => handleOpenEditModal(item)}
+                    >
+                      <EditOutlinedIcon
+                        sx={{
+                          color: "warning.solidBg",
+                        }}
+                      />
+                    </IconButton>
+
+                    <IconButton
+                      variant="outlined"
+                      onClick={() => handleOpenDeleteItemModal(item)}
+                    >
+                      <DeleteForeverRoundedIcon
+                        sx={{
+                          color: "danger.solidBg",
+                        }}
+                      />
+                    </IconButton>
+                  </Box>
+                </td>
               </tr>
             ))}
 
@@ -1203,7 +1185,7 @@ export default function GenericTable<T>({
               <tr>
                 <td>
                   <Box>
-                    <CircularProgress/>
+                    <CircularProgress />
                   </Box>
                 </td>
               </tr>

@@ -7,10 +7,14 @@ const NODE_ENV = process.env.NODE_ENV || NodeEnv.production;
 
 export const PORT = 3005;
 
+
 export const BASE_URL =
-  NODE_ENV === NodeEnv.production
-    ? "https://movie-nexus-backend.vercel.app"
-    : `http://localhost:${PORT}`;
+NODE_ENV === NodeEnv.production
+? "https://movie-nexus-backend.vercel.app"
+: `http://localhost:${PORT}`;
+
+// export const BASE_URL = `http://localhost:${PORT}`;
+
 
 export const BASE_API_URL = `${BASE_URL}/api/v1`;
 export const BASE_AUTH_URL = `${BASE_API_URL}/auth`;

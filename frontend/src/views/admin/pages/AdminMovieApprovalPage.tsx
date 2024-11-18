@@ -49,13 +49,6 @@ import { useApprovalStore } from "../../../contexts/approvalStore";
 
 const columns: Column<MovieModelTable>[] = [
   {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
-  {
     key: "approvalStatus",
     label: "Approval Status",
     type: "boolean",
@@ -393,7 +386,6 @@ export default function AdminMovieApprovalPage() {
           </Box>
           <GenericTable<MovieModelTable>
             title="Movies Approval"
-            actionInFront
             data={movies}
             columns={columns}
             options={{
@@ -453,7 +445,10 @@ export default function AdminMovieApprovalPage() {
                     size="sm"
                     onClick={async () => {
                       try {
-                        await handleEditMovie({ ...movie, approvalStatus: true });
+                        await handleEditMovie({
+                          ...movie,
+                          approvalStatus: true,
+                        });
                         decrementTotalUnapprovedMovies();
                         setSnackbar({
                           key: "admin-movie",

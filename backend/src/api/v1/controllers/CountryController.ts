@@ -221,7 +221,7 @@ class CountryController {
     async totalCountries(req: Request, res: Response): Promise<Response> {
         try {
             const totalCountries = await countryService.totalCountries();
-
+            console.log("Total countries fetched successfully", totalCountries);
             return res.json(ResponseApi({
                 code: HttpStatus.OK,
                 message: "Total countries fetched successfully",

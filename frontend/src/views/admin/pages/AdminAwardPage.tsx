@@ -29,20 +29,14 @@ import {
 import { CountryModel } from "../../../models/CountryModel";
 
 const columns: any[] = [
-  {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
-  { key: "name", label: "Name", type: "string", required: true },
-  { key: "year", label: "Year", type: "date", required: true },
+  { key: "name", label: "Name", type: "string", required: true, placeholder: "e.g., Best Picture" },
+  { key: "year", label: "Year", type: "date", required: true, placeholder: "e.g., 2021" },
   {
     key: "country",
     label: "Country",
     type: "string_autocomplete",
     required: true,
+    placeholder: "e.g., United States",
   },
 ];
 
@@ -197,6 +191,7 @@ export default function AdminAwardPage() {
           </Box>
 
           <GenericTable<AwardModelTable>
+            widthAction={100}
             title="Awards"
             data={awards}
             columns={columns}

@@ -49,13 +49,6 @@ const defaultSnackbarState: SnackbarState = {
 };
 
 const columns: Column<MovieModelTable>[] = [
-  {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
   { key: "title", label: "Title", type: "string", required: true },
   { key: "synopsis", label: "Synopsis", type: "string", required: true },
   { key: "posterUrl", label: "Poster", type: "string", required: true },

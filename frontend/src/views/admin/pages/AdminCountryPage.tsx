@@ -34,6 +34,7 @@ const columns: any[] = [
     type: "string",
     width: 70,
     required: true,
+    placeholder: "e.g., US",
   },
   {
     key: "name",
@@ -41,6 +42,7 @@ const columns: any[] = [
     type: "string",
     width: "100%",
     required: true,
+    placeholder: "e.g., United States",
   },
 ];
 
@@ -166,6 +168,7 @@ export default function AdminCountryPage() {
             </Breadcrumbs>
           </Box>
           <GenericTable<CountryModelTable>
+            widthAction={100}
             simpleAddItem
             title="Countries"
             titleSolo="Country"

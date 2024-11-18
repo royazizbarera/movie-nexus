@@ -35,18 +35,12 @@ function convertGenreModelToTable(genre: GenreModel): GenreModelTable {
 
 const columns: any[] = [
   {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
-  {
     key: "name",
     label: "Genre",
     type: "string",
     width: "100%",
     required: true,
+    placeholder: "e.g., Action",
   },
 ];
 
@@ -183,6 +177,7 @@ export default function AdminGenrePage() {
           </Box>
 
           <GenericTable<GenreModelTable>
+            widthAction={100}
             simpleAddItem
             title="Genres"
             data={genres}

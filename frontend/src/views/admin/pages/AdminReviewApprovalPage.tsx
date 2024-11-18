@@ -34,13 +34,6 @@ import { Button } from "@mui/joy";
 
 const columns: any[] = [
   {
-    key: "id",
-    label: "ID",
-    type: "number",
-    readonly: true,
-    width: 70,
-  },
-  {
     key: "approvalStatus",
     label: "Approval Status",
     type: "boolean",
@@ -111,28 +104,6 @@ export default function AdminReviewApprovalPage() {
     }
   };
 
-  // TODO (DONE): ADD Review
-  const handleAddReview = async (newReview: ReviewModelTable) => {
-    try {
-      const parsedReview: ReviewModel = convertReviewModelToTable(newReview);
-      const response = await reviewController.addReview(parsedReview);
-      if (
-        response.code === HttpStatusCode.Created ||
-        response.code === HttpStatusCode.Ok
-      ) {
-        fetchReviews(reviewParams);
-        console.log("Review added successfully:", response.message);
-        console.info("add review: ", newReview);
-        return true;
-      } else {
-        console.error("Error adding review:", response.message);
-        return false;
-      }
-    } catch (error) {
-      console.error("Error adding review:", error);
-      return false;
-    }
-  };
 
   // TODO (DONE): EDIT Review
   const handleEditReview = async (updatedReview: ReviewModelTable) => {
@@ -214,7 +185,6 @@ export default function AdminReviewApprovalPage() {
           </Box>
 
           <GenericTable<ReviewModelTable>
-            actionInFront
             title="Reviews Approval"
             data={reviews}
             columns={columns}
