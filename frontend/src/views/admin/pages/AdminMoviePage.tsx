@@ -89,7 +89,7 @@ const columns: Column<MovieModelTable>[] = [
   { key: "genres", label: "Genres", type: "string[]", required: true },
   { key: "actors", label: "Actors", type: "string[]", required: true },
   { key: "awards", label: "Awards", type: "string[]" },
-  { key: "reviews", label: "Reviews", type: "string[]" },
+  { key: "reviews", label: "Reviews", type: "string[]", readonly: true },
 ];
 
 export default function AdminMoviePage() {

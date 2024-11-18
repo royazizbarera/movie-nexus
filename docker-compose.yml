@@ -2,9 +2,9 @@ services:
   backend:
     build:
       context: ./backend
-    image: royazizbarera/movie-nexus-backend:v1
+    image: royazizbarera/movie-nexus-backend:v2
     ports:
-      - "3005:3005"
+      - "3008:3008"
     environment:
       - DATABASE_URL=${POSTGRES_URL}
     env_file:
@@ -15,9 +15,9 @@ services:
   frontend:
     build:
       context: ./frontend
-    image: royazizbarera/movie-nexus-frontend:v1
+    image: royazizbarera/movie-nexus-frontend:v2
     ports:
-      - "3002:3002"
+      - "3009:3009"
     volumes:
       - ./frontend:/app
     environment:

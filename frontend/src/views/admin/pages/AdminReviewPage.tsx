@@ -27,7 +27,10 @@ import {
 } from "../../../configs/constants";
 import { HttpStatusCode } from "axios";
 import { Button } from "@mui/joy";
-import SnackBarMessage, { SnackBarMessageProps } from "../../components/SnackbarMessage";
+import SnackBarMessage, {
+  SnackBarMessageProps,
+} from "../../components/SnackbarMessage";
+import { useApprovalStore } from "../../../contexts/approvalStore";
 
 const columns: any[] = [
   {
@@ -69,13 +72,15 @@ const columns: any[] = [
 ];
 
 export default function AdminReviewPage() {
+  const { incrementTotalUnapprovedReviews } = useApprovalStore();
+
   const [snackbar, setSnackbar] = React.useState<SnackBarMessageProps>({
     key: "admin-user",
     open: false,
     message: "",
     variant: "danger",
   });
-  
+
   const [reviews, setReviews] = React.useState<ReviewModelTable[]>([]);
   const [pagination, setPagination] = React.useState<PaginationModel>({
     page: 1,
@@ -109,9 +114,7 @@ export default function AdminReviewPage() {
   const handleAddReview = async (newReview: ReviewModelTable) => {
     try {
       const parsedReview: ReviewModel = convertReviewModelToTable(newReview);
-      const response = await reviewController.addReview(
-        parsedReview
-      );
+      const response = await reviewController.addReview(parsedReview);
       if (
         response.code === HttpStatusCode.Created ||
         response.code === HttpStatusCode.Ok
@@ -133,7 +136,8 @@ export default function AdminReviewPage() {
   // TODO (DONE): EDIT Review
   const handleEditReview = async (updatedReview: ReviewModelTable) => {
     try {
-      const parsedReview: ReviewModel = convertReviewModelToTable(updatedReview);
+      const parsedReview: ReviewModel =
+        convertReviewModelToTable(updatedReview);
       const response = await reviewController.updateReview(
         updatedReview.id,
         parsedReview
@@ -213,7 +217,7 @@ export default function AdminReviewPage() {
             title="Reviews"
             data={reviews}
             columns={columns}
-            onAdd={handleAddReview}
+            // onAdd={handleAddReview}
             onEdit={handleEditReview}
             onDelete={handleDeleteReview}
             onPageChange={handlePageChange}
@@ -234,10 +238,6 @@ export default function AdminReviewPage() {
               handleFilterChange("searchTerm", searchTerm)
             }
             renderRowActions={(review) => {
-              function incrementTotalUnapprovedReviews() {
-                throw new Error("Function not implemented.");
-              }
-
               return (
                 <Box sx={{ display: "flex", gap: 1 }}>
                   <Button

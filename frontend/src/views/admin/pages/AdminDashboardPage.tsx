@@ -56,6 +56,28 @@ function CardTotalItems({
   icon,
   onClick,
 }: CardTotalItemsProps) {
+  const [displayedTotal, setDisplayedTotal] = React.useState(0);
+
+  React.useEffect(() => {
+    // Reset displayed total and start animation if totalItems is positive
+    if (totalItems >= 0) {
+      setDisplayedTotal(0);
+      const increment = Math.ceil(totalItems / 100); // menentukan jumlah peningkatan tiap loop
+      const interval = setInterval(() => {
+        setDisplayedTotal((prev) => {
+          const newTotal = prev + increment;
+          if (newTotal >= totalItems) {
+            clearInterval(interval); // Hentikan interval jika sudah mencapai totalItems
+            return totalItems;
+          }
+          return newTotal;
+        });
+      }, 10); // kecepatan animasi dalam milidetik (10ms)
+
+      return () => clearInterval(interval); // Bersihkan interval saat komponen tidak aktif
+    }
+  }, [totalItems]);
+
   return (
     <Card variant="solid" color="primary" invertedColors>
       <CardContent orientation="horizontal">
@@ -79,7 +101,7 @@ function CardTotalItems({
             <CircularProgress />
           ) : (
             <Typography level="h2" color="success">
-              {totalItems >= 0 ? totalItems : "Loading..."}
+              {displayedTotal}
             </Typography>
           )}
         </CardContent>
@@ -212,6 +234,25 @@ export default function AdminDashboardPage() {
           <BreadcrumbsHome />
           <BreadcrumbsDashboard />
         </Breadcrumbs>
+      </Box>
+      {/* Hello Admin */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          flex: 1,
+          mx: 6,
+          mb: 3,
+        }}
+      >
+        <Typography level="h1" color="primary">
+          Hello, Admin!
+        </Typography>
+        <Typography level="h2" color="primary">
+          Welcome to the admin dashboard
+        </Typography>
       </Box>
       <Box
         sx={{

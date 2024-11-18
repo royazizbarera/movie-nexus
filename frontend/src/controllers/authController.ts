@@ -69,6 +69,7 @@ class AuthController {
     password: string
   ) {
     try {
+      let user;
       await axios.post(
         `${BASE_AUTH_URL}/sign-up-email`,
         {
@@ -81,8 +82,8 @@ class AuthController {
         }
       ).then((response) => {
         const data = response.data;
-        if (data.code === CUSTOM_STATUS_CODES.OK) {
-          return data.data as UserModel;
+        if (data.code === CUSTOM_STATUS_CODES.CREATED) {
+          user = data.data;
         } else {
           throw new Error(data.message);
         }
@@ -95,6 +96,7 @@ class AuthController {
           throw new Error(error.message);
         }
       });
+      return user;
     } catch (error) {
       throw error;
     }

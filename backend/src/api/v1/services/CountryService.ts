@@ -87,7 +87,7 @@ class CountryService {
 
             return [countries, totalItems];
         } catch (error) {
-            throw new Error("Error fetching countries");
+            throw String(error);
         }
     }
 

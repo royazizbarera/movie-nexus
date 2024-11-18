@@ -125,6 +125,15 @@ class GenreService {
     try {
       const { name } = genreData;
 
+      // cek apakah genre sudah ada
+      const existingGenre = await prisma.genre.findFirst({
+        where: { name },
+      });
+
+      if (existingGenre) {
+        throw new Error("Genre already exists");
+      }
+
       return await prisma.$transaction(async (prisma) => {
         const genre = await prisma.genre.create({
           data: {
@@ -137,7 +146,7 @@ class GenreService {
         });
       });
     } catch (error) {
-      throw new Error("Could not create genre");
+      throw String(error);
     }
   }
 

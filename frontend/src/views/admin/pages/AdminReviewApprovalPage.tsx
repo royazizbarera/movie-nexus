@@ -218,7 +218,7 @@ export default function AdminReviewApprovalPage() {
             title="Reviews Approval"
             data={reviews}
             columns={columns}
-            onAdd={handleAddReview}
+            // onAdd={handleAddReview}
             onEdit={handleEditReview}
             onDelete={handleDeleteReview}
             onPageChange={handlePageChange}

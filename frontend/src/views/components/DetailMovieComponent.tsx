@@ -69,8 +69,12 @@ export default function DetailMovieComponent({
           movieId: movie.id,
           content: reviewContent,
           rating: rating || 0,
+          approvalStatus: false,
         };
-        const response = await reviewController.addReview(newReview);
+        const response = await reviewController.addReview({
+          ...newReview,
+          approvalStatus: false,
+        });
         console.log(response);
         handleClose();
         // reload page
@@ -96,7 +100,11 @@ export default function DetailMovieComponent({
       setGenres(movie.genres || []);
       setDirector(movie.director || null);
       setActors(movie.actors || []);
-      setReviews(movie.reviews || []);
+      setReviews(
+        movie.reviews
+          ? movie.reviews.filter((review) => review.approvalStatus)
+          : []
+      );
     }
     // setReviews(movie.reviews);
   }, [movie]);

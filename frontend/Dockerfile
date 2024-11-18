@@ -23,7 +23,7 @@ RUN npm run build
 RUN npm install -g serve
 
 # Expose port yang digunakan oleh aplikasi
-EXPOSE 3002
+EXPOSE 3009
 
 # Jalankan aplikasi
 CMD ["serve", "-s", "build", "-l", "3002"]

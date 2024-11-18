@@ -127,7 +127,15 @@ class AuthController {
   // TODO: Implement sign in with email and password controller
   public async signInWithEmailAndPassword(req: Request, res: Response) {
     const { email, password } = req.body;
-
+    if (!email || !password) {
+      return res.status(HttpStatus.BAD_REQUEST).json(
+        ResponseApi({
+          code: HttpStatus.BAD_REQUEST,
+          message: "Email and password are required",
+          version: 1.0,
+        })
+      );
+    }
     if (isValidEmail(email) === false) {
       return res.status(HttpStatus.BAD_REQUEST).json(
         ResponseApi({
