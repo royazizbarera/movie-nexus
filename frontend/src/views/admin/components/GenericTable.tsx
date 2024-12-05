@@ -743,6 +743,7 @@ export default function GenericTable<T>({
           {/* simple add item */}
           {!simpleAddItem && onAdd && (
             <Button
+              name="add-item-modal-button"
               variant="solid"
               color="success"
               startDecorator={<AddRoundedIcon />}
@@ -1157,6 +1158,7 @@ export default function GenericTable<T>({
                     <IconButton
                       variant="outlined"
                       onClick={() => handleOpenEditModal(item)}
+                      name="edit-item-button"
                     >
                       <EditOutlinedIcon
                         sx={{
@@ -1166,6 +1168,7 @@ export default function GenericTable<T>({
                     </IconButton>
 
                     <IconButton
+                      name="delete-item-button"
                       variant="outlined"
                       onClick={() => handleOpenDeleteItemModal(item)}
                     >
@@ -1252,7 +1255,9 @@ export default function GenericTable<T>({
                     </FormControl>
                   )
                 )}
-                <Button type="submit">Submit</Button>
+                <Button type="submit" name="submit-add-item-button">
+                  Submit
+                </Button>
               </Stack>
             </form>
           </ModalDialog>
@@ -1295,7 +1300,9 @@ export default function GenericTable<T>({
                     </FormControl>
                   )
                 )}
-                <Button type="submit">Submit</Button>
+                <Button type="submit" name="submit-edit-item-button">
+                  Submit
+                </Button>
               </Stack>
             </form>
           </ModalDialog>
@@ -1325,6 +1332,7 @@ export default function GenericTable<T>({
 
           <DialogActions>
             <Button
+              name="discard-notes-button"
               variant="solid"
               color="danger"
               onClick={() => handleDeleteItem()}
@@ -1359,6 +1367,7 @@ export default function GenericTable<T>({
 
           <DialogActions>
             <Button
+              name="delete-selected-items-button"
               variant="solid"
               color="danger"
               onClick={() => handleDeleteItems()}

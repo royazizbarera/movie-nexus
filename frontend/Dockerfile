@@ -1,5 +1,5 @@
-# Gunakan image Node.js sebagai base image
-FROM node:20-alpine
+# Gunakan image Node.js sebagai base image untuk build
+FROM node:20-alpine AS build
 
 # Set working directory
 WORKDIR /app
@@ -8,22 +8,25 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install && npm cache clean --force
+RUN npm install
 
 # Salin seluruh kode aplikasi
 COPY . .
 
-# Hapus folder build lama (jika ada) sebelum melakukan build
-RUN rm -rf build
-
 # Build aplikasi
 RUN npm run build
 
-# Install server sederhana untuk melayani aplikasi
-RUN npm install -g serve
+# Gunakan image Nginx
+FROM nginx:alpine
 
-# Expose port yang digunakan oleh aplikasi
-EXPOSE 3009
+# Salin konfigurasi Nginx ke dalam kontainer
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Jalankan aplikasi
-CMD ["serve", "-s", "build", "-l", "3002"]
+# Salin hasil build React dari /app/build ke direktori yang digunakan Nginx
+COPY --from=build /app/build/ /usr/share/nginx/html/
+
+# Expose port 80
+EXPOSE 80
+
+# Jalankan Nginx
+CMD ["nginx", "-g", "daemon off;"]

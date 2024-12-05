@@ -24,8 +24,11 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
+  "http://localhost", // React app 1 URL
   "http://localhost:3000", // React app 1 URL
   "http://localhost:3002", // React app 2 URL
+  "http://localhost:3008", // React app 2 URL
+  "http://localhost:3009", // React app 2 URL
   "https://completely-safe-moth.ngrok-free.app", // Ngrok URL
   "https://movie-nexus-kappa.vercel.app", // Vercel URL
   "https://movie-nexus-jtk.vercel.app", // Vercel URL
@@ -88,7 +91,7 @@ app.get("/insert-genre", async (req, res) => {
   } catch (error) {
     res.status(500).send(error); // Kirim respons error jika terjadi kesalahan
   }
-}); 
+});
 // hello world
 app.get("/", (req, res) => {
   res.send("Hello World!");

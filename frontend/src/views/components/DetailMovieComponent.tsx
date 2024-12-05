@@ -296,6 +296,7 @@ export default function DetailMovieComponent({
             {/* Add Reviews */}
             {user && (user.role === "writer" || user.role === "admin") && (
               <Button
+                name="add-my-review-button"
                 variant="solid"
                 startDecorator={<AddCommentIcon />}
                 onClick={handleOpen}
@@ -401,6 +402,7 @@ export default function DetailMovieComponent({
               Rating (1 - 10)
             </Typography>
             <Select
+              name="rating-select"
               placeholder="Select rating"
               value={rating}
               onChange={(event, newValue) => setRating(Number(newValue))}
@@ -422,6 +424,7 @@ export default function DetailMovieComponent({
               Review
             </Typography>
             <Input
+              name="review-content"
               value={reviewContent}
               onChange={(event) => setReviewContent(event.target.value)}
               placeholder="Write your review here..."
@@ -433,7 +436,12 @@ export default function DetailMovieComponent({
           </Box>
 
           <DialogActions>
-            <Button variant="solid" color="warning" onClick={handleReview}>
+            <Button
+              variant="solid"
+              color="warning"
+              onClick={handleReview}
+              name="submit-review-button"
+            >
               Review
             </Button>
             <Button variant="plain" color="neutral" onClick={handleClose}>

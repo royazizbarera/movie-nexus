@@ -6685,7 +6685,7 @@ export const actors_ts = [
     countryCode: "US",
   },
   {
-    id: 130081,
+    id: 130051,
     name: "Robin Atkin Downes",
     birthDate: "1976-09-06",
     photoUrl: "https://image.tmdb.org/t/p/w500/qb4xPIJGiKyiQ2MhSDQzFWxN0jS.jpg",
@@ -9520,7 +9520,7 @@ export const actors_ts = [
     countryCode: "US",
   },
   {
-    id: 30082,
+    id: 30052,
     name: "Benedict Wong",
     birthDate: "1971-06-03",
     photoUrl: "https://image.tmdb.org/t/p/w500/yYfLyrC2CE6vBWSJfkpuVKL2POM.jpg",

@@ -20,7 +20,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Expose port yang digunakan oleh aplikasi
-EXPOSE 3008
+EXPOSE 3005
 
 # Jalankan aplikasi
 CMD ["npm", "start"]
