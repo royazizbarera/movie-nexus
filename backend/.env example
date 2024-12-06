@@ -1,0 +1,7 @@
+DATABASE_URL=postgresql://<username>:<password>@localhost:5432/MovieNexus
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+SESSION_SECRET_KEY=eipalingcantik
+JWT_SECRET=eipalingcantik
+ADMIN_PASS=*eipalingcantik26
+PORT=3009
