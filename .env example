@@ -1,4 +1,4 @@
-POSTGRES_URL=postgresql://postgres:eipalingcantik@localhost:5432/MovieNexus
+POSTGRES_URL=postgresql://<username>:<password>@localhost:5432/MovieNexus
 POSTGRES_USER=root
 POSTGRES_PASSWORD=root
 POSTGRES_DB=movienexus
