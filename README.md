@@ -110,7 +110,13 @@ Go to the project directory
   cd movie-nexus
 ```
 
+### Front End
+
 Install dependencies
+
+```bash
+  cd frontend
+```
 
 ```bash
   npm install
@@ -120,6 +126,22 @@ Start the server
 
 ```bash
   npm run start
+```
+
+### Back End
+
+```bash
+  cd backend
+```
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm dev start
 ```
 
 
@@ -219,6 +241,9 @@ import "@fontsource/roboto"
 
 ## CSS
 1. flexGrow: 1 // untuk mengisi ruang kosong yang tersedia, 0 sebaliknya
+
+## Express JS
+1. Melakukan sanitasi terhadap input untuk mencegah SQL injection. Terutama pada service yang menggunakan raw SQL.
 
 # Reference
 1. https://mui.com/joy-ui/ 
