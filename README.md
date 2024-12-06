@@ -75,7 +75,8 @@ Movie Nexus adalah platform komprehensif yang dirancang untuk menawarkan kepada 
 ## Misi 4
 1. ~~[*] CMS~~
 
-## ~~[*] Deployment~~
+## Deployment
+1. ~~[*] DockerFile~~
 
 ## Features
 - Pencarian Film & Serial
