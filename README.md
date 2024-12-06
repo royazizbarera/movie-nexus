@@ -157,8 +157,9 @@ https://movie-nexus-jtk.vercel.app/
 ## Database
 ```bash
   npx prisma migrate dev --name init  
-```# Movie Nexus
+```
 
+# Movie Nexus
 ## Run
 ``` bash
   $env:PORT=3002
@@ -212,7 +213,6 @@ import "@fontsource/roboto"
 # Lesson Learn
 ## Component Joy UI
 1. Menggunakan Container untuk mendefinisikan component yang memiliki ukuran pasti, dalam kasus yang sekarang Container akan digunakan untuk menambahkan padding kiri dan kanan di MainContent
-2. 
 
 ## React
 1. Callback function itu intinya seperti mengambil parameter yang ada di dalam Componen yang mengambil function/melakukan eksekusi function parent di child
